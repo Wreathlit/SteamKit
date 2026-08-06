@@ -13,6 +13,10 @@ namespace Tests
             public bool IsFinished { get; set; }
         }
 
+        class UnexpectedCallback : CallbackMsg
+        {
+        }
+
         [Fact]
         public void AsyncJobFailureWhenClientDiconnected()
         {
@@ -55,6 +59,26 @@ namespace Tests
             client.PostCallback( ourCallback );
 
             Assert.Same( await jobTask, ourCallback );
+        }
+
+        [Fact]
+        public async Task AsyncJobIgnoresUnexpectedCallbackTypeForMatchingJobID()
+        {
+            SteamClient client = ConnectedSteamClient.Get();
+
+            AsyncJob<Callback> asyncJob = new AsyncJob<Callback>( client, 123 );
+            Task<Callback> jobTask = asyncJob.ToTask();
+
+            client.PostCallback( new UnexpectedCallback { JobID = 123 } );
+
+            Assert.False( jobTask.IsCompleted );
+            Assert.True( client.jobManager.asyncJobs.ContainsKey( asyncJob ) );
+
+            var expectedCallback = new Callback { JobID = 123 };
+            client.PostCallback( expectedCallback );
+
+            Assert.Same( expectedCallback, await jobTask );
+            Assert.False( client.jobManager.asyncJobs.ContainsKey( asyncJob ) );
         }
 
         [Fact]
@@ -197,6 +221,29 @@ namespace Tests
             Assert.True( asyncTask.IsCompleted, "Async job should be completed when completion predicate is true" );
             Assert.False( asyncTask.IsCanceled, "Async job should not be canceled when completion predicate is true" );
             Assert.False( asyncTask.IsFaulted, "Async job should not be faulted when completion predicate is true" );
+        }
+
+        [Fact]
+        public async Task AsyncJobMultipleIgnoresUnexpectedCallbackTypeForMatchingJobID()
+        {
+            SteamClient client = ConnectedSteamClient.Get();
+
+            AsyncJobMultiple<Callback> asyncJob = new AsyncJobMultiple<Callback>( client, 123, call => true );
+            Task<AsyncJobMultiple<Callback>.ResultSet> jobTask = asyncJob.ToTask();
+
+            client.PostCallback( new UnexpectedCallback { JobID = 123 } );
+
+            Assert.False( jobTask.IsCompleted );
+            Assert.True( client.jobManager.asyncJobs.ContainsKey( asyncJob ) );
+
+            var expectedCallback = new Callback { JobID = 123 };
+            client.PostCallback( expectedCallback );
+
+            var result = await jobTask;
+            Assert.NotNull( result.Results );
+            Assert.Single( result.Results );
+            Assert.Same( expectedCallback, result.Results[ 0 ] );
+            Assert.False( client.jobManager.asyncJobs.ContainsKey( asyncJob ) );
         }
 
         [Fact]

@@ -195,16 +195,25 @@ namespace SteamKit2
 
 
         /// <summary>
-        /// Adds a callback to the async job's result set. For an <see cref="AsyncJob{T}"/>, this always completes the set.
+        /// Adds a callback to the async job's result set. For an <see cref="AsyncJob{T}"/>, a callback of type
+        /// <typeparamref name="T"/> completes the set.
         /// </summary>
         /// <param name="callback">The callback.</param>
-        /// <returns>Always <c>true</c>.</returns>
+        /// <returns><c>true</c> when the callback has the expected type and completes the job; otherwise, <c>false</c>.</returns>
         internal override bool AddResult( CallbackMsg callback )
         {
             ArgumentNullException.ThrowIfNull( callback );
 
+            if ( callback is not T result )
+            {
+                // Job IDs are supplied by the protocol and an invalid/default ID can be
+                // shared by non-job callbacks. A callback of another type cannot complete
+                // this job and must never escape as an InvalidCastException.
+                return false;
+            }
+
             // we're complete with just this callback
-            tcs.TrySetResult( (T)callback );
+            tcs.TrySetResult( result );
 
             // inform steamclient that this job wishes to be removed from tracking since we've received the single callback we were waiting for
             return true;
@@ -314,7 +323,12 @@ namespace SteamKit2
         {
             ArgumentNullException.ThrowIfNull( callback );
 
-            T callbackMsg = (T)callback;
+            if ( callback is not T callbackMsg )
+            {
+                // Keep waiting for a callback of the type this job was created for. This is
+                // also a defensive boundary against invalid/default JobID collisions.
+                return false;
+            }
 
             // add this callback to our result set
             results.Add( callbackMsg );

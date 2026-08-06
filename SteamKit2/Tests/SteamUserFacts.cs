@@ -1,4 +1,6 @@
 using System;
+using System.Reflection;
+using System.Threading.Tasks;
 using SteamKit2;
 using Xunit;
 
@@ -99,6 +101,36 @@ namespace Tests
 
             Assert.Null( ex );
         }
+
+#if DEBUG
+        [Fact]
+        public async Task DisconnectWhileLogOnIsPendingCancelsJobWithoutCallbackTypeFailure()
+        {
+            SteamClient.SetIsConnected( true );
+            var logOnJob = Handler.LogOn( new SteamUser.LogOnDetails
+            {
+                Username = "abc",
+                AccessToken = "def",
+                LoginID = 1,
+            } );
+            var logOnTask = logOnJob.ToTask();
+            var onClientDisconnected = typeof( SteamClient ).GetMethod(
+                "OnClientDisconnected",
+                BindingFlags.Instance | BindingFlags.NonPublic );
+
+            Assert.False( logOnTask.IsCompleted );
+            Assert.NotNull( onClientDisconnected );
+
+            // CMClient clears this state before invoking SteamClient.OnClientDisconnected.
+            SteamClient.SetIsConnected( false );
+            onClientDisconnected.Invoke( SteamClient, new object[] { true } );
+
+            Assert.True( logOnTask.IsCanceled );
+            Assert.False( SteamClient.jobManager.asyncJobs.ContainsKey( logOnJob ) );
+            Assert.IsType<SteamClient.DisconnectedCallback>( SteamClient.GetCallback() );
+            await Assert.ThrowsAsync<TaskCanceledException>( async () => await logOnTask );
+        }
+#endif
 
         [Fact]
         public void LogOnAnonymousPostsLoggedOnCallbackWhenNoConnection()
