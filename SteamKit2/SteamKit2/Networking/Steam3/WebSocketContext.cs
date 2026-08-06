@@ -63,8 +63,10 @@ namespace SteamKit2
                     }
                 }
 
-                connection.log.LogDebug( nameof(WebSocketContext), "Connected to {0}", connectionUri);
-                connection.Connected?.Invoke(connection, EventArgs.Empty);
+                if (!connection.TryRaiseConnected(this, cancellationToken, connectionUri))
+                {
+                    return;
+                }
 
                 while (!cancellationToken.IsCancellationRequested && socket.State == WebSocketState.Open)
                 {
@@ -109,22 +111,26 @@ namespace SteamKit2
                     return;
                 }
 
-                cts.Cancel();
-                cts.Dispose();
-                runloopTask = null;
-
-                if (socket.State == WebSocketState.Open)
+                try
                 {
+                    cts.Cancel();
+                }
+                finally
+                {
+                    runloopTask = null;
                     try
                     {
-                        socket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None).RunSynchronously();
+                        cts.Dispose();
                     }
-                    catch ( WebSocketException )
+                    finally
                     {
+                        // CloseAsync returns an already-started task, so RunSynchronously cannot
+                        // be used here. Disposal is the synchronous disconnect boundary; cancel
+                        // the run loop above and always release the socket without waiting for a
+                        // graceful close handshake.
+                        socket.Dispose();
                     }
                 }
-
-                socket.Dispose();
             }
 
             async Task<byte[]?> ReadMessageAsync( CancellationToken cancellationToken )

@@ -129,6 +129,11 @@ namespace SteamKit2.Internal
         CancellationTokenSource? connectionCancellation;
         Task? connectionSetupTask;
         volatile IConnection? connection;
+        long lifecycleRequestId;
+
+#if DEBUG
+        internal Action? ConnectBeforeDisconnectCoreForTesting { get; set; }
+#endif
 
         ScheduledFunction heartBeatFunc;
 
@@ -169,72 +174,116 @@ namespace SteamKit2.Internal
         /// </param>
         public void Connect( ServerRecord? cmServer = null )
         {
-            lock ( connectionLock )
+            var requestId = BeginLifecycleRequest();
+            while ( IsLifecycleRequestCurrent( requestId ) )
             {
-                Disconnect( userInitiated: true );
-                DebugLog.Assert( connection == null, nameof( CMClient ), "Connection is not null" );
-                DebugLog.Assert( connectionSetupTask == null, nameof( CMClient ), "Connection setup task is not null" );
-                DebugLog.Assert( connectionCancellation == null, nameof( CMClient ), "Connection cancellation token is not null" );
-
-                connectionCancellation = new CancellationTokenSource();
-                var token = connectionCancellation.Token;
-
-                ExpectDisconnection = false;
-
-                Task<ServerRecord?> recordTask;
-
-                if ( cmServer == null )
+#if DEBUG
+                ConnectBeforeDisconnectCoreForTesting?.Invoke();
+#endif
+                if ( !DisconnectCore( userInitiated: true, expectedRequestId: requestId ) )
                 {
-                    recordTask = Servers.GetNextServerCandidateAsync( Configuration.ProtocolTypes );
-                }
-                else
-                {
-                    recordTask = Task.FromResult( ( ServerRecord? )cmServer );
+                    return;
                 }
 
-                connectionSetupTask = recordTask.ContinueWith( t =>
+                if ( !IsLifecycleRequestCurrent( requestId ) )
                 {
-                    if ( token.IsCancellationRequested )
-                    {
-                        LogDebug( nameof( CMClient ), "Connection cancelled before a server could be chosen." );
-                        OnClientDisconnected( userInitiated: true );
-                        return;
-                    }
-                    else if ( t.IsFaulted || t.IsCanceled )
-                    {
-                        LogDebug( nameof( CMClient ), "Server record task threw exception: {0}", t.Exception );
-                        OnClientDisconnected( userInitiated: false );
-                        return;
-                    }
+                    return;
+                }
 
-                    var record = t.Result;
-
-                    if ( record is null )
-                    {
-                        LogDebug( nameof( CMClient ), "Server record task returned no result." );
-                        OnClientDisconnected( userInitiated: false );
-                        return;
-                    }
-
-                    var newConnection = CreateConnection( record.ProtocolTypes & Configuration.ProtocolTypes );
-
-                    var connectionRelease = Interlocked.Exchange( ref connection, newConnection );
-                    DebugLog.Assert( connectionRelease == null, nameof( CMClient ), "Connection was set during a connect, did you call CMClient.Connect() on multiple threads?" );
-
-                    newConnection.NetMsgReceived += NetMsgReceived;
-                    newConnection.Connected += Connected;
-                    newConnection.Disconnected += Disconnected;
-                    newConnection.Connect( record.EndPoint, ( int )ConnectionTimeout.TotalMilliseconds );
-                }, TaskContinuationOptions.ExecuteSynchronously ).ContinueWith( t =>
+                lock ( connectionLock )
                 {
-                    if ( t.IsFaulted )
+                    if ( !IsLifecycleRequestCurrent( requestId ) )
                     {
-                        LogDebug( nameof( CMClient ), "Unhandled exception when attempting to connect to Steam: {0}", t.Exception );
-                        OnClientDisconnected( userInitiated: false );
+                        return;
                     }
 
-                    connectionSetupTask = null;
-                }, TaskContinuationOptions.ExecuteSynchronously );
+                    // A same-generation race may have installed state after Disconnect released
+                    // the setup lock. Retry its cleanup without creating another lifecycle request.
+                    if ( connection != null
+                        || connectionSetupTask != null
+                        || connectionCancellation != null )
+                    {
+                        continue;
+                    }
+
+                    connectionCancellation = new CancellationTokenSource();
+                    var token = connectionCancellation.Token;
+
+                    ExpectDisconnection = false;
+
+                    Task<ServerRecord?> recordTask;
+
+                    if ( cmServer == null )
+                    {
+                        recordTask = Servers.GetNextServerCandidateAsync( Configuration.ProtocolTypes );
+                    }
+                    else
+                    {
+                        recordTask = Task.FromResult( ( ServerRecord? )cmServer );
+                    }
+
+                    connectionSetupTask = recordTask.ContinueWith( t =>
+                    {
+                        if ( token.IsCancellationRequested )
+                        {
+                            LogDebug( nameof( CMClient ), "Connection cancelled before a server could be chosen." );
+                            OnClientDisconnected( userInitiated: true );
+                            return;
+                        }
+                        else if ( !IsLifecycleRequestCurrent( requestId ) )
+                        {
+                            LogDebug( nameof( CMClient ), "Connection request superseded before a server could be chosen." );
+                            return;
+                        }
+                        else if ( t.IsFaulted || t.IsCanceled )
+                        {
+                            LogDebug( nameof( CMClient ), "Server record task threw exception: {0}", t.Exception );
+                            OnClientDisconnected( userInitiated: false );
+                            return;
+                        }
+
+                        var record = t.Result;
+
+                        if ( record is null )
+                        {
+                            LogDebug( nameof( CMClient ), "Server record task returned no result." );
+                            OnClientDisconnected( userInitiated: false );
+                            return;
+                        }
+
+                        if ( token.IsCancellationRequested )
+                        {
+                            LogDebug( nameof( CMClient ), "Connection cancelled before transport installation." );
+                            OnClientDisconnected( userInitiated: true );
+                            return;
+                        }
+                        else if ( !IsLifecycleRequestCurrent( requestId ) )
+                        {
+                            LogDebug( nameof( CMClient ), "Connection superseded before transport installation." );
+                            return;
+                        }
+
+                        var newConnection = CreateConnection( record.ProtocolTypes & Configuration.ProtocolTypes );
+
+                        var connectionRelease = Interlocked.Exchange( ref connection, newConnection );
+                        DebugLog.Assert( connectionRelease == null, nameof( CMClient ), "Connection was set during a connect, did you call CMClient.Connect() on multiple threads?" );
+
+                        newConnection.NetMsgReceived += NetMsgReceived;
+                        newConnection.Connected += Connected;
+                        newConnection.Disconnected += Disconnected;
+                        newConnection.Connect( record.EndPoint, ( int )ConnectionTimeout.TotalMilliseconds );
+                    }, TaskContinuationOptions.ExecuteSynchronously ).ContinueWith( t =>
+                    {
+                        if ( t.IsFaulted )
+                        {
+                            LogDebug( nameof( CMClient ), "Unhandled exception when attempting to connect to Steam: {0}", t.Exception );
+                            OnClientDisconnected( userInitiated: false );
+                        }
+
+                        connectionSetupTask = null;
+                    }, TaskContinuationOptions.ExecuteSynchronously );
+                    return;
+                }
             }
         }
 
@@ -245,8 +294,29 @@ namespace SteamKit2.Internal
 
         private protected void Disconnect( bool userInitiated )
         {
+            BeginLifecycleRequest();
+            DisconnectCore( userInitiated );
+        }
+
+        long BeginLifecycleRequest()
+            => Interlocked.Increment( ref lifecycleRequestId );
+
+        bool IsLifecycleRequestCurrent( long requestId )
+            => Volatile.Read( ref lifecycleRequestId ) == requestId;
+
+        bool DisconnectCore( bool userInitiated, long? expectedRequestId = null )
+        {
+            IConnection? connectionToDisconnect;
             lock ( connectionLock )
             {
+                // A superseded Connect request must not cancel setup or capture a transport
+                // installed by the newer lifecycle generation.
+                if ( expectedRequestId.HasValue
+                    && !IsLifecycleRequestCurrent( expectedRequestId.Value ) )
+                {
+                    return false;
+                }
+
                 heartBeatFunc.Stop();
 
                 if ( connectionCancellation != null )
@@ -261,10 +331,22 @@ namespace SteamKit2.Internal
                 // though it's ugly, we want to wait for the completion of this task and keep hold of the lock
                 connectionSetupTaskToWait?.GetAwaiter().GetResult();
 
-                // Connection implementations are required to issue the Disconnected callback before Disconnect() returns
-                connection?.Disconnect( userInitiated );
-                DebugLog.Assert( connection == null, nameof( CMClient ), "Connection was not released in disconnect." );
+                connectionToDisconnect = connection;
             }
+
+            // Do not hold connectionLock while waiting for the transport's synchronous logical
+            // disconnect callback. A custom OnClientDisconnected override may synchronously call
+            // Connect/Disconnect; keeping the lock here would create a cross-thread wait cycle.
+            connectionToDisconnect?.Disconnect( userInitiated );
+            if ( connectionToDisconnect != null )
+            {
+                DebugLog.Assert(
+                    !ReferenceEquals( connection, connectionToDisconnect ),
+                    nameof( CMClient ),
+                    "Captured connection generation was not released in disconnect." );
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -439,10 +521,17 @@ namespace SteamKit2.Internal
 
         void Connected( object? sender, EventArgs e )
         {
-            DebugLog.Assert( connection != null, nameof( CMClient ), "No connection object after connecting." );
-            DebugLog.Assert( connection.CurrentEndPoint != null, nameof( CMClient ), "No connection endpoint after connecting - cannot update server list" );
+            if ( sender is not IConnection connectedConnection
+                || !ReferenceEquals(
+                    Interlocked.CompareExchange( ref connection, connectedConnection, connectedConnection ),
+                    connectedConnection ) )
+            {
+                return;
+            }
 
-            Servers.TryMark( connection.CurrentEndPoint, connection.ProtocolTypes, ServerQuality.Good );
+            DebugLog.Assert( connectedConnection.CurrentEndPoint != null, nameof( CMClient ), "No connection endpoint after connecting - cannot update server list" );
+
+            Servers.TryMark( connectedConnection.CurrentEndPoint, connectedConnection.ProtocolTypes, ServerQuality.Good );
 
             IsConnected = true;
 
@@ -459,8 +548,16 @@ namespace SteamKit2.Internal
 
         void Disconnected( object? sender, DisconnectedEventArgs e )
         {
-            var connectionRelease = Interlocked.Exchange( ref connection, null );
-            if ( connectionRelease == null )
+            if ( sender is not IConnection disconnectedConnection )
+            {
+                return;
+            }
+
+            // A delayed callback from a superseded transport must not tear down the newer
+            // connection generation. Connection implementations raise this event with
+            // themselves as sender, so only the currently installed instance may release it.
+            var connectionRelease = Interlocked.CompareExchange( ref connection, null, disconnectedConnection );
+            if ( !ReferenceEquals( connectionRelease, disconnectedConnection ) )
             {
                 return;
             }
