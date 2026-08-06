@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.WebSockets;
@@ -38,6 +39,32 @@ namespace Tests
         public void ThrowsWrongEndPoint()
         {
             Assert.Throws<InvalidOperationException>( () => WebSocketConnection.WebSocketContext.ConstructUri( new DummyEndPoint() ) );
+        }
+
+        [Fact]
+        public void TransportFailureDiagnosticIdentifiesOperationEndpointAndWebSocketReason()
+        {
+            using var handler = new SocketsHttpHandler();
+            using var invoker = new HttpMessageInvoker(handler, disposeHandler: false);
+            var log = new CapturingLogContext();
+            using var connection = new WebSocketConnection(log, invoker);
+            using var context = new WebSocketConnection.WebSocketContext(
+                connection,
+                new DnsEndPoint("example.com", 443));
+
+            InvokeLogTransportFailure(
+                context,
+                "read",
+                new WebSocketException(WebSocketError.ConnectionClosedPrematurely));
+
+            Assert.Equal(nameof(WebSocketConnection.WebSocketContext), log.Category);
+            Assert.Contains("operation=read", log.Message);
+            Assert.Contains("reason=exception", log.Message);
+            Assert.Contains("context=", log.Message);
+            Assert.Contains("endpoint=wss://example.com/cmsocket/", log.Message);
+            Assert.Contains(
+                "websocket_error=ConnectionClosedPrematurely",
+                log.Message);
         }
 
         [Fact]
@@ -447,6 +474,29 @@ namespace Tests
             => Assert.IsType<bool>(typeof(WebSocketConnection)
                 .GetMethod("TryRaiseConnected", BindingFlags.Instance | BindingFlags.NonPublic)!
                 .Invoke(connection, new object[] { context, cancellationToken, connectionUri }));
+
+        static void InvokeLogTransportFailure(
+            WebSocketConnection.WebSocketContext context,
+            string operation,
+            Exception exception)
+            => typeof(WebSocketConnection.WebSocketContext)
+                .GetMethod("LogTransportFailure", BindingFlags.Instance | BindingFlags.NonPublic)!
+                .Invoke(context, new object[] { operation, exception });
+
+        sealed class CapturingLogContext : ILogContext
+        {
+            public string Category { get; private set; }
+            public string Message { get; private set; }
+
+            public void LogDebug(string category, string message, params object[] args)
+            {
+                Category = category;
+                Message = string.Format(
+                    CultureInfo.InvariantCulture,
+                    message,
+                    args ?? Array.Empty<object>());
+            }
+        }
 
         sealed class BlockingHttpMessageHandler : HttpMessageHandler
         {

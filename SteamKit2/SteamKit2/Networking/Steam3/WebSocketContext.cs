@@ -14,11 +14,14 @@ namespace SteamKit2
     {
         internal class WebSocketContext : IDisposable
         {
+            static long nextContextId;
+
             public WebSocketContext(WebSocketConnection connection, EndPoint endPoint)
             {
                 this.connection = connection ?? throw new ArgumentNullException( nameof( connection ) );
                 EndPoint = endPoint ?? throw new ArgumentNullException( nameof( endPoint ) );
 
+                contextId = Interlocked.Increment( ref nextContextId );
                 cts = new CancellationTokenSource();
                 socket = new ClientWebSocket();
                 connectionUri = ConstructUri(endPoint);
@@ -28,6 +31,7 @@ namespace SteamKit2
             readonly CancellationTokenSource cts;
             readonly ClientWebSocket socket;
             readonly Uri connectionUri;
+            readonly long contextId;
             Task? runloopTask;
             int disposed;
 
@@ -49,15 +53,19 @@ namespace SteamKit2
                     {
                         await socket.ConnectAsync(connectionUri, invoker, combinedCancellation.Token).ConfigureAwait(false);
                     }
-                    catch (TaskCanceledException) when (timeout.IsCancellationRequested)
+                    catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                     {
-                        connection.log.LogDebug(nameof(WebSocketContext), "Time out connecting websocket {0} after {1}", connectionUri, connectionTimeout);
+                        return;
+                    }
+                    catch (OperationCanceledException) when (timeout.IsCancellationRequested)
+                    {
+                        connection.log.LogDebug(nameof(WebSocketContext), "Websocket transport ended; operation=connect; reason=timeout; context={0}; endpoint={1}; timeout={2}", contextId, connectionUri, connectionTimeout);
                         connection.DisconnectCore(userInitiated: false, specificContext: this);
                         return;
                     }
                     catch (Exception ex)
                     {
-                        connection.log.LogDebug( nameof(WebSocketContext), "Exception connecting websocket: {0} - {1}", ex.GetType().FullName, ex.Message);
+                        LogTransportFailure( "connect", ex );
                         connection.DisconnectCore(userInitiated: false, specificContext: this);
                         return;
                     }
@@ -76,9 +84,17 @@ namespace SteamKit2
                     {
                         packet = await ReadMessageAsync( cancellationToken ).ConfigureAwait( false );
                     }
+                    catch ( OperationCanceledException ) when ( cancellationToken.IsCancellationRequested )
+                    {
+                        return;
+                    }
+                    catch ( ObjectDisposedException ) when ( cancellationToken.IsCancellationRequested )
+                    {
+                        return;
+                    }
                     catch ( Exception ex )
                     {
-                        connection.log.LogDebug( nameof( WebSocketContext ), "Exception reading from websocket: {0} - {1}", ex.GetType().FullName, ex.Message );
+                        LogTransportFailure( "read", ex );
                         connection.DisconnectCore( userInitiated: false, specificContext: this );
                         return;
                     }
@@ -88,6 +104,17 @@ namespace SteamKit2
                         connection.NetMsgReceived?.Invoke(connection, new NetMsgEventArgs(packet, EndPoint));
                     }
                 }
+
+                if (!cancellationToken.IsCancellationRequested)
+                {
+                    connection.log.LogDebug(
+                        nameof( WebSocketContext ),
+                        "Websocket transport ended; operation=read; reason=socket_state; context={0}; endpoint={1}; state={2}",
+                        contextId,
+                        connectionUri,
+                        socket.State );
+                    connection.DisconnectCore( userInitiated: false, specificContext: this );
+                }
             }
 
             public async Task SendAsync(Memory<byte> data)
@@ -96,11 +123,18 @@ namespace SteamKit2
                 {
                     await socket.SendAsync(data, WebSocketMessageType.Binary, true, cts.Token).ConfigureAwait(false);
                 }
+                catch (OperationCanceledException) when (cts.IsCancellationRequested)
+                {
+                    return;
+                }
+                catch (ObjectDisposedException) when (cts.IsCancellationRequested)
+                {
+                    return;
+                }
                 catch (WebSocketException ex)
                 {
-                    connection.log.LogDebug( nameof(WebSocketContext), "{0} exception when sending message: {1}", ex.GetType().FullName, ex.Message);
+                    LogTransportFailure( "send", ex );
                     connection.DisconnectCore(userInitiated: false, specificContext: this);
-                    return;
                 }
             }
 
@@ -146,25 +180,7 @@ namespace SteamKit2
                 {
                     do
                     {
-                        try
-                        {
-                            result = await socket.ReceiveAsync( readMemory, cancellationToken ).ConfigureAwait( false );
-                        }
-                        catch ( ObjectDisposedException )
-                        {
-                            connection.DisconnectCore( userInitiated: cancellationToken.IsCancellationRequested, specificContext: this );
-                            return null;
-                        }
-                        catch ( WebSocketException )
-                        {
-                            connection.DisconnectCore( userInitiated: false, specificContext: this );
-                            return null;
-                        }
-                        catch ( Win32Exception )
-                        {
-                            connection.DisconnectCore( userInitiated: false, specificContext: this );
-                            return null;
-                        }
+                        result = await socket.ReceiveAsync( readMemory, cancellationToken ).ConfigureAwait( false );
 
                         switch ( result.MessageType )
                         {
@@ -198,6 +214,13 @@ namespace SteamKit2
 
                             case WebSocketMessageType.Close:
                             default:
+                                connection.log.LogDebug(
+                                    nameof( WebSocketContext ),
+                                    "Websocket transport ended; operation=read; reason=remote_close; context={0}; endpoint={1}; close_status={2}; state={3}",
+                                    contextId,
+                                    connectionUri,
+                                    socket.CloseStatus?.ToString() ?? "none",
+                                    socket.State );
                                 connection.DisconnectCore( userInitiated: false, specificContext: this );
                                 return null;
                         }
@@ -214,6 +237,30 @@ namespace SteamKit2
                     ArrayPool<byte>.Shared.Return( readBuffer );
                     ArrayPool<byte>.Shared.Return( outputBuffer );
                 }
+            }
+
+            void LogTransportFailure( string operation, Exception exception )
+            {
+                var websocketError = exception is WebSocketException websocketException
+                    ? websocketException.WebSocketErrorCode.ToString()
+                    : "none";
+                var nativeError = exception switch
+                {
+                    WebSocketException nativeWebsocketException => nativeWebsocketException.NativeErrorCode,
+                    Win32Exception win32Exception => win32Exception.NativeErrorCode,
+                    _ => 0,
+                };
+                connection.log.LogDebug(
+                    nameof( WebSocketContext ),
+                    "Websocket transport ended; operation={0}; reason=exception; context={1}; endpoint={2}; state={3}; exception={4}; websocket_error={5}; native_error={6}; message={7}",
+                    operation,
+                    contextId,
+                    connectionUri,
+                    socket.State,
+                    exception.GetType().FullName,
+                    websocketError,
+                    nativeError,
+                    exception.Message );
             }
 
             internal static Uri ConstructUri(EndPoint endPoint)
