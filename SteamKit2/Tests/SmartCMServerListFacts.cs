@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using SteamKit2;
 using SteamKit2.Discovery;
 using Xunit;
@@ -114,6 +116,45 @@ namespace Tests
             Assert.Equal( ProtocolTypes.Tcp, endPoint.ProtocolTypes );
         }
 
+        [Fact]
+        public void GetNextServerCandidate_RoundRobinsAcrossHealthyServers()
+        {
+            var records = new[]
+            {
+                ServerRecord.CreateWebSocketServer( "10.0.0.1:443" ),
+                ServerRecord.CreateWebSocketServer( "10.0.0.2:443" ),
+                ServerRecord.CreateWebSocketServer( "10.0.0.3:443" ),
+            };
+            serverList.ReplaceList( records );
+
+            for ( var i = 0; i < records.Length * 2; i++ )
+            {
+                var candidate = serverList.GetNextServerCandidate( ProtocolTypes.WebSocket );
+                Assert.Equal( records[ i % records.Length ], candidate );
+            }
+        }
+
+        [Fact]
+        public void GetNextServerCandidate_ConcurrentCallersAreDistributedAcrossHealthyServers()
+        {
+            var records = new ServerRecord[ 10 ];
+            for ( var i = 0; i < records.Length; i++ )
+            {
+                records[ i ] = ServerRecord.CreateWebSocketServer( $"10.0.0.{i + 1}:443" );
+            }
+            serverList.ReplaceList( records );
+
+            var selections = new ConcurrentDictionary<EndPoint, int>();
+            Parallel.For( 0, 1000, _ =>
+            {
+                var candidate = serverList.GetNextServerCandidate( ProtocolTypes.WebSocket );
+                selections.AddOrUpdate( candidate.EndPoint, 1, static ( _, count ) => count + 1 );
+            } );
+
+            Assert.Equal( records.Length, selections.Count );
+            Assert.All( selections.Values, count => Assert.Equal( 100, count ) );
+        }
+
 #if DEBUG
         [Fact]
         public void GetNextServerCandidate_ReturnsServer_IfListHasServers_EvenIfAllServersAreBad()
@@ -130,34 +171,42 @@ namespace Tests
         }
 
         [Fact]
-        public void GetNextServerCandidate_IsBiasedTowardsServerOrdering()
+        public void TryMark_GoodDoesNotEraseRecentBadReport()
         {
-            serverList.GetAllEndPoints();
+            var recentBadRecord = ServerRecord.CreateWebSocketServer( "10.0.0.1:443" );
+            var healthyRecord = ServerRecord.CreateWebSocketServer( "10.0.0.2:443" );
+            serverList.ReplaceList( new[] { recentBadRecord, healthyRecord } );
+            serverList.BadConnectionMemoryTimeSpan = TimeSpan.FromHours( 1 );
 
-            var serverA = IPAddress.Parse( "10.0.0.1" );
-            var serverB = IPAddress.Parse( "10.0.0.2" );
-            
-            var goodRecord = ServerRecord.CreateSocketServer( new IPEndPoint( serverA, 27015 ) );
-            var neutralRecord = ServerRecord.CreateSocketServer( new IPEndPoint( serverA, 27016 ) );
-            var badRecord = ServerRecord.CreateSocketServer( new IPEndPoint( serverA, 27017 ) );
-            var serverBRecord = ServerRecord.CreateSocketServer( new IPEndPoint( serverB, 27017 ) );
+            Assert.True( serverList.TryMark(
+                recentBadRecord.EndPoint,
+                ProtocolTypes.WebSocket,
+                ServerQuality.Bad ) );
+            Assert.True( serverList.TryMark(
+                recentBadRecord.EndPoint,
+                ProtocolTypes.WebSocket,
+                ServerQuality.Good ) );
 
-            serverList.ReplaceList( new List<ServerRecord>() { badRecord, neutralRecord, goodRecord, serverBRecord } );
+            var nextRecord = serverList.GetNextServerCandidate( ProtocolTypes.WebSocket );
+            Assert.Equal( healthyRecord, nextRecord );
+        }
 
-            serverList.TryMark( badRecord.EndPoint, badRecord.ProtocolTypes, ServerQuality.Bad );
-            serverList.TryMark( goodRecord.EndPoint, goodRecord.ProtocolTypes, ServerQuality.Good );
-            
-            // Server A's endpoints were all marked bad, with goodRecord being recovered
-            var nextRecord = serverList.GetNextServerCandidate( ProtocolTypes.Tcp );
-            Assert.Equal( goodRecord.EndPoint, nextRecord.EndPoint );
-            Assert.Equal( ProtocolTypes.Tcp, nextRecord.ProtocolTypes );
+        [Fact]
+        public void GetNextServerCandidate_RestoresBadEndpointAfterCooldown()
+        {
+            var recoveredRecord = ServerRecord.CreateWebSocketServer( "10.0.0.1:443" );
+            var healthyRecord = ServerRecord.CreateWebSocketServer( "10.0.0.2:443" );
+            serverList.ReplaceList( new[] { recoveredRecord, healthyRecord } );
+            serverList.BadConnectionMemoryTimeSpan = TimeSpan.FromMilliseconds( 1 );
 
-            serverList.TryMark( badRecord.EndPoint, badRecord.ProtocolTypes, ServerQuality.Good);
-            
-            // Server A's bad record is now at the front, having been marked good
-            nextRecord = serverList.GetNextServerCandidate( ProtocolTypes.Tcp );
-            Assert.Equal( badRecord.EndPoint, nextRecord.EndPoint );
-            Assert.Equal( ProtocolTypes.Tcp, nextRecord.ProtocolTypes );
+            Assert.True( serverList.TryMark(
+                recoveredRecord.EndPoint,
+                ProtocolTypes.WebSocket,
+                ServerQuality.Bad ) );
+            Thread.Sleep( TimeSpan.FromMilliseconds( 10 ) );
+
+            var nextRecord = serverList.GetNextServerCandidate( ProtocolTypes.WebSocket );
+            Assert.Equal( recoveredRecord, nextRecord );
         }
 
         

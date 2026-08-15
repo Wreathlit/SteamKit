@@ -531,7 +531,10 @@ namespace SteamKit2.Internal
 
             DebugLog.Assert( connectedConnection.CurrentEndPoint != null, nameof( CMClient ), "No connection endpoint after connecting - cannot update server list" );
 
-            Servers.TryMark( connectedConnection.CurrentEndPoint, connectedConnection.ProtocolTypes, ServerQuality.Good );
+            // A transport connection is not proof that this CM accepts a Steam logon. In a
+            // shared server list, marking it good here can erase a newer TryAnotherCM or
+            // ServiceUnavailable report from another concurrent client. Failures remain
+            // authoritative until SmartCMServerList's cooldown expires.
 
             IsConnected = true;
 

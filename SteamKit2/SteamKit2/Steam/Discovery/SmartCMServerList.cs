@@ -15,7 +15,8 @@ namespace SteamKit2.Discovery
     public enum ServerQuality
     {
         /// <summary>
-        /// Known good server.
+        /// Known good server. A recent <see cref="ServerQuality.Bad"/> report remains authoritative until
+        /// <see cref="SmartCMServerList.BadConnectionMemoryTimeSpan"/> expires.
         /// </summary>
         Good,
 
@@ -77,6 +78,7 @@ namespace SteamKit2.Discovery
         object listLock = new();
         Collection<ServerInfo> servers = [];
         DateTime serversLastRefresh = DateTime.MinValue;
+        readonly Dictionary<ProtocolTypes, ulong> nextCandidateSequences = [];
 
         private void StartFetchingServers()
         {
@@ -244,6 +246,7 @@ namespace SteamKit2.Discovery
 
                 serversLastRefresh = serversTime ?? DateTime.UtcNow;
                 servers.Clear();
+                nextCandidateSequences.Clear();
 
                 for ( var i = 0; i < distinctEndPoints.Length; i++ )
                 {
@@ -314,13 +317,18 @@ namespace SteamKit2.Discovery
             }
         }
 
-        static void MarkServerCore( ServerInfo serverInfo, ServerQuality quality )
+        void MarkServerCore( ServerInfo serverInfo, ServerQuality quality )
         {
             switch ( quality )
             {
                 case ServerQuality.Good:
                 {
-                    if ( serverInfo.LastBadConnectionTimeUtc.HasValue )
+                    // A shared server list can receive a transport-connected callback from an
+                    // older concurrent attempt after another client has already reported this CM
+                    // as unavailable. Keep the newer failure authoritative for the full cooldown;
+                    // ResetOldScores will make the endpoint eligible again afterwards.
+                    if ( serverInfo.LastBadConnectionTimeUtc is DateTime lastBadConnectionTimeUtc
+                        && DateTime.UtcNow - lastBadConnectionTimeUtc >= BadConnectionMemoryTimeSpan )
                     {
                         serverInfo.LastBadConnectionTimeUtc = null;
                     }
@@ -351,20 +359,35 @@ namespace SteamKit2.Discovery
                 // isn't a problem.
                 ResetOldScores();
 
-                var result = servers
+                var compatibleServers = servers
                     .Where( o => o.Protocol.HasFlagsFast( supportedProtocolTypes ) )
-                    .Select( static ( server, index ) => (Server: server, Index: index) )
-                    .OrderBy( static o => o.Server.LastBadConnectionTimeUtc.GetValueOrDefault() )
-                    .ThenBy( static o => o.Index )
-                    .Select( static o => o.Server )
-                    .FirstOrDefault();
-
-                if ( result == null )
+                    .GroupBy( static server => server.Record.EndPoint )
+                    .Select( static group =>
+                        group.FirstOrDefault( static server => !server.LastBadConnectionTimeUtc.HasValue )
+                        ?? group.First() )
+                    .ToArray();
+                if ( compatibleServers.Length == 0 )
                 {
                     return null;
                 }
 
-                DebugWrite( $"Next server candidate: {result.Record.EndPoint} ({result.Protocol})" );
+                var healthyServers = compatibleServers
+                    .Where( static server => !server.LastBadConnectionTimeUtc.HasValue )
+                    .ToArray();
+                var candidates = healthyServers.Length > 0
+                    ? healthyServers
+                    : compatibleServers;
+                nextCandidateSequences.TryGetValue( supportedProtocolTypes, out var nextCandidateSequence );
+                var selectedIndex = (int)( nextCandidateSequence % (ulong)candidates.Length );
+                nextCandidateSequences[ supportedProtocolTypes ] = nextCandidateSequence == ulong.MaxValue
+                    ? 0
+                    : nextCandidateSequence + 1;
+                var result = candidates[ selectedIndex ];
+
+                DebugWrite(
+                    $"Next server candidate: {result.Record.EndPoint} ({result.Protocol}); " +
+                    $"healthy_endpoints={healthyServers.Length}; compatible_endpoints={compatibleServers.Length}; " +
+                    $"selection_index={selectedIndex}" );
                 return new ServerRecord( result.Record.EndPoint, result.Protocol );
             }
         }
