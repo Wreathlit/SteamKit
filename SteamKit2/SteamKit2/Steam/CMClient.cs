@@ -509,9 +509,47 @@ namespace SteamKit2.Internal
         }
 
 
+        // Identifies the transport connection whose message is currently being dispatched on
+        // this thread. Dispatch is fully synchronous, so the captured source stays valid for
+        // the message handlers even if the connection field is superseded by a newer
+        // generation mid-dispatch.
+        [ThreadStatic]
+        static MessageSource? currentMessageSource;
+
+        readonly struct MessageSource
+        {
+            public MessageSource( EndPoint endPoint, ProtocolTypes protocolTypes )
+            {
+                EndPoint = endPoint;
+                ProtocolTypes = protocolTypes;
+            }
+
+            public EndPoint EndPoint { get; }
+            public ProtocolTypes ProtocolTypes { get; }
+        }
+
         void NetMsgReceived( object? sender, NetMsgEventArgs e )
         {
-            OnClientMsgReceived( GetPacketMsg( e.Data, this ) );
+            // A delayed message from a superseded transport must not mutate the state of the
+            // newer connection generation. Connection implementations raise this event with
+            // themselves as sender, so only the currently installed instance may dispatch
+            // messages.
+            if ( sender is not IConnection sourceConnection || !ReferenceEquals( connection, sourceConnection ) )
+            {
+                return;
+            }
+
+            var previousMessageSource = currentMessageSource;
+            currentMessageSource = new MessageSource( e.EndPoint, sourceConnection.ProtocolTypes );
+
+            try
+            {
+                OnClientMsgReceived( GetPacketMsg( e.Data, this ) );
+            }
+            finally
+            {
+                currentMessageSource = previousMessageSource;
+            }
         }
 
 #if DEBUG
@@ -700,9 +738,12 @@ namespace SteamKit2.Internal
             }
             else if ( logonResult == EResult.TryAnotherCM || logonResult == EResult.ServiceUnavailable )
             {
-                if ( connection?.CurrentEndPoint != null )
+                // Attribute the failure to the connection that delivered this message. The
+                // connection field may already belong to a newer generation (or be null) if
+                // this dispatch was superseded mid-flight.
+                if ( currentMessageSource is { } messageSource )
                 {
-                    Servers.TryMark( connection.CurrentEndPoint, connection.ProtocolTypes, ServerQuality.Bad );
+                    Servers.TryMark( messageSource.EndPoint, messageSource.ProtocolTypes, ServerQuality.Bad );
                 }
             }
         }
@@ -725,9 +766,13 @@ namespace SteamKit2.Internal
 
                 if ( logoffResult == EResult.TryAnotherCM || logoffResult == EResult.ServiceUnavailable )
                 {
-                    DebugLog.Assert( connection != null, nameof( CMClient ), "No connection object during ClientLoggedOff." );
-                    DebugLog.Assert( connection.CurrentEndPoint != null, nameof( CMClient ), "No connection endpoint during ClientLoggedOff - cannot update server list status" );
-                    Servers.TryMark( connection.CurrentEndPoint, connection.ProtocolTypes, ServerQuality.Bad );
+                    // Attribute the failure to the connection that delivered this message. The
+                    // connection field may already belong to a newer generation (or be null) if
+                    // this dispatch was superseded mid-flight.
+                    if ( currentMessageSource is { } messageSource )
+                    {
+                        Servers.TryMark( messageSource.EndPoint, messageSource.ProtocolTypes, ServerQuality.Bad );
+                    }
                 }
             }
         }

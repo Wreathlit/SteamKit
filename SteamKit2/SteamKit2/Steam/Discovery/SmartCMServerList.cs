@@ -78,18 +78,36 @@ namespace SteamKit2.Discovery
         object listLock = new();
         Collection<ServerInfo> servers = [];
         DateTime serversLastRefresh = DateTime.MinValue;
+        DateTime nextRefreshAttempt = DateTime.MinValue;
         readonly Dictionary<ProtocolTypes, ulong> nextCandidateSequences = [];
 
         private void StartFetchingServers()
         {
             lock ( listLock )
             {
+                // While a resolve is in flight, every caller awaits its completion instead
+                // of starting another concurrent resolve of the same shared list.
+                if ( listTask is { IsCompleted: false } )
+                {
+                    return;
+                }
+
                 if ( servers.Count > 0 )
                 {
                     // if the server list has been populated, check if it is still fresh
                     if ( DateTime.UtcNow - serversLastRefresh >= ServerListBeforeRefreshTimeSpan )
                     {
-                        listTask = ResolveServerList( forceRefresh: true );
+                        // A stale list is refreshed at a controlled cadence. Between attempts
+                        // the current list, which may be a fallback list from a previous
+                        // resolve, keeps serving candidates.
+                        if ( DateTime.UtcNow >= nextRefreshAttempt )
+                        {
+                            listTask = BeginResolveServerListLocked( forceRefresh: true );
+                        }
+                        else
+                        {
+                            listTask = Task.CompletedTask;
+                        }
                     }
                     else
                     {
@@ -99,9 +117,19 @@ namespace SteamKit2.Discovery
                 }
                 else if ( listTask == null || listTask.IsFaulted || listTask.IsCanceled )
                 {
-                    listTask = ResolveServerList();
+                    listTask = BeginResolveServerListLocked( forceRefresh: false );
                 }
             }
+        }
+
+        Task BeginResolveServerListLocked( bool forceRefresh )
+        {
+            // Record the attempt before starting: if the resolve cannot obtain a fresh list
+            // and has to fall back, the next automatic refresh may only start after
+            // ServerListRefreshRetryTimeSpan elapses rather than once per candidate request.
+            nextRefreshAttempt = DateTime.UtcNow + ServerListRefreshRetryTimeSpan;
+
+            return ResolveServerList( forceRefresh );
         }
 
         private bool WaitForServersFetched()
@@ -138,14 +166,14 @@ namespace SteamKit2.Discovery
             {
                 DebugWrite( $"Querying {nameof( SteamDirectory )} for a fresh server list" );
 
-                var directoryList = await SteamDirectory.LoadAsync( configuration ).ConfigureAwait( false );
+                var directoryList = await TryLoadDirectoryListAsync().ConfigureAwait( false );
                 alreadyTriedDirectoryFetch = true;
 
                 // Fresh server list has been loaded
                 if ( directoryList.Count > 0 )
                 {
                     DebugWrite( $"Resolved {directoryList.Count} servers from {nameof( SteamDirectory )}" );
-                    ReplaceList( directoryList, writeProvider: true, DateTime.UtcNow );
+                    ReplaceListCore( directoryList, writeProvider: true, DateTime.UtcNow );
                     return;
                 }
 
@@ -156,14 +184,13 @@ namespace SteamKit2.Discovery
                 DebugWrite( "Resolving server list using the provider" );
             }
 
-            IEnumerable<ServerRecord> serverList = await configuration.ServerListProvider.FetchServerListAsync().ConfigureAwait( false );
-            IReadOnlyCollection<ServerRecord> endpointList = serverList.ToList();
+            IReadOnlyCollection<ServerRecord> endpointList = await TryFetchProviderListAsync().ConfigureAwait( false );
 
             // Provider server list is fresh enough and it provided servers
             if ( endpointList.Count > 0 )
             {
                 DebugWrite( $"Resolved {endpointList.Count} servers from the provider" );
-                ReplaceList( endpointList, writeProvider: false, providerRefreshTime );
+                ReplaceListCore( endpointList, writeProvider: false, providerRefreshTime );
                 return;
             }
 
@@ -171,7 +198,7 @@ namespace SteamKit2.Discovery
             if ( !configuration.AllowDirectoryFetch )
             {
                 DebugWrite( $"Server list provider had no entries, and {nameof( SteamConfiguration.AllowDirectoryFetch )} is false" );
-                ReplaceList( [], writeProvider: false, DateTime.MinValue );
+                ReplaceListCore( [], writeProvider: false, DateTime.MinValue );
                 return;
             }
 
@@ -179,12 +206,12 @@ namespace SteamKit2.Discovery
             if ( !alreadyTriedDirectoryFetch )
             {
                 DebugWrite( $"Server list provider had no entries, will query {nameof( SteamDirectory )}" );
-                endpointList = await SteamDirectory.LoadAsync( configuration ).ConfigureAwait( false );
+                endpointList = await TryLoadDirectoryListAsync().ConfigureAwait( false );
 
                 if ( endpointList.Count > 0 )
                 {
                     DebugWrite( $"Resolved {endpointList.Count} servers from {nameof( SteamDirectory )}" );
-                    ReplaceList( endpointList, writeProvider: true, DateTime.UtcNow );
+                    ReplaceListCore( endpointList, writeProvider: true, DateTime.UtcNow );
                     return;
                 }
             }
@@ -198,13 +225,52 @@ namespace SteamKit2.Discovery
                 ServerRecord.CreateDnsSocketServer( DefaultServerNetfilter ),
             ];
 
-            ReplaceList( endpointList, writeProvider: false, DateTime.MinValue );
+            ReplaceListCore( endpointList, writeProvider: false, DateTime.MinValue );
+        }
+
+        async Task<IReadOnlyCollection<ServerRecord>> TryLoadDirectoryListAsync()
+        {
+            try
+            {
+                return await SteamDirectory.LoadAsync( configuration ).ConfigureAwait( false );
+            }
+            catch ( Exception ex )
+            {
+                // A directory failure must not abort the resolve; the fallback ladder
+                // (provider, then default servers) still applies.
+                DebugWrite( $"Failed to query {nameof( SteamDirectory )}: {ex}" );
+                return [];
+            }
+        }
+
+        async Task<IReadOnlyCollection<ServerRecord>> TryFetchProviderListAsync()
+        {
+            try
+            {
+                var serverList = await configuration.ServerListProvider.FetchServerListAsync().ConfigureAwait( false );
+                return serverList.ToList();
+            }
+            catch ( Exception ex )
+            {
+                // A provider failure must not abort the resolve; the fallback ladder
+                // (directory, then default servers) still applies.
+                DebugWrite( $"Failed to fetch the server list from the provider: {ex}" );
+                return [];
+            }
         }
 
         /// <summary>
         /// Determines how long the server list cache is used as-is before attempting to refresh from the Steam Directory.
         /// </summary>
         public TimeSpan ServerListBeforeRefreshTimeSpan { get; set; } = TimeSpan.FromDays( 7 );
+
+        /// <summary>
+        /// Determines how long to wait before another automatic refresh attempt may start after
+        /// a refresh could not obtain a fresh server list, for example when a fallback list is
+        /// in use because the Steam Directory was unavailable. Between attempts the current
+        /// list keeps serving candidates.
+        /// </summary>
+        public TimeSpan ServerListRefreshRetryTimeSpan { get; set; } = TimeSpan.FromMinutes( 5 );
 
         /// <summary>
         /// Determines how long a server's bad connection state is remembered for.
@@ -242,15 +308,56 @@ namespace SteamKit2.Discovery
 
             lock ( listLock )
             {
+                // An externally supplied list carries no relation to the current one, so all
+                // per-endpoint state and the candidate rotation sequences start over.
+                nextCandidateSequences.Clear();
+
+                ReplaceListCore( endpointList, writeProvider, serversTime ?? DateTime.UtcNow, preserveEndpointState: false );
+            }
+        }
+
+        // Replaces the list from an internal refresh. Unlike the public ReplaceList, an
+        // internal refresh must not erase what this process has learned about individual
+        // CMs: endpoints that survive the refresh keep their bad connection memory, and the
+        // rotation sequences keep distributing shared clients across the new list.
+        void ReplaceListCore( IEnumerable<ServerRecord> endpointList, bool writeProvider, DateTime serversTime, bool preserveEndpointState = true )
+        {
+            lock ( listLock )
+            {
                 var distinctEndPoints = endpointList.Distinct().ToArray();
 
-                serversLastRefresh = serversTime ?? DateTime.UtcNow;
+                Dictionary<(EndPoint EndPoint, ProtocolTypes Protocol), DateTime>? lastBadConnectionTimes = null;
+
+                if ( preserveEndpointState )
+                {
+                    lastBadConnectionTimes = [];
+
+                    foreach ( var server in servers )
+                    {
+                        if ( server.LastBadConnectionTimeUtc is DateTime lastBadConnectionTimeUtc )
+                        {
+                            lastBadConnectionTimes[ (server.Record.EndPoint, server.Protocol) ] = lastBadConnectionTimeUtc;
+                        }
+                    }
+                }
+
+                serversLastRefresh = serversTime;
                 servers.Clear();
-                nextCandidateSequences.Clear();
 
                 for ( var i = 0; i < distinctEndPoints.Length; i++ )
                 {
                     AddCore( distinctEndPoints[ i ] );
+                }
+
+                if ( lastBadConnectionTimes is { Count: > 0 } )
+                {
+                    foreach ( var server in servers )
+                    {
+                        if ( lastBadConnectionTimes.TryGetValue( (server.Record.EndPoint, server.Protocol), out var lastBadConnectionTimeUtc ) )
+                        {
+                            server.LastBadConnectionTimeUtc = lastBadConnectionTimeUtc;
+                        }
+                    }
                 }
 
                 if ( writeProvider )
@@ -450,7 +557,14 @@ namespace SteamKit2.Discovery
         {
             lock ( listLock )
             {
-                listTask = ResolveServerList( forceRefresh: true );
+                // Join a resolve that is already in flight instead of starting another
+                // concurrent resolve of the same shared list.
+                if ( listTask is { IsCompleted: false } resolveInFlight )
+                {
+                    return resolveInFlight;
+                }
+
+                listTask = BeginResolveServerListLocked( forceRefresh: true );
 
                 return listTask;
             }

@@ -126,6 +126,81 @@ namespace Tests
             InvokeDisconnected(client, currentConnection, userInitiated: true);
         }
 
+        [Fact]
+        public void StaleNetMsgReceivedSenderDoesNotDispatchMessage()
+        {
+            var client = new TestCMClient();
+            using var staleConnection = new TestConnection(new DnsEndPoint("stale.example.com", 443));
+            using var currentConnection = new TestConnection(new DnsEndPoint("current.example.com", 443));
+            SetConnection(client, currentConnection);
+            client.SetIsConnected(true);
+
+            var heartbeat = new ClientMsgProtobuf<CMsgClientHeartBeat>(EMsg.ClientHeartBeat);
+            var data = heartbeat.Serialize();
+
+            InvokeNetMsgReceived(client, staleConnection, new NetMsgEventArgs(data, staleConnection.CurrentEndPoint));
+
+            Assert.Equal(0, client.MsgReceivedCount);
+
+            InvokeNetMsgReceived(client, currentConnection, new NetMsgEventArgs(data, currentConnection.CurrentEndPoint));
+
+            Assert.Equal(1, client.MsgReceivedCount);
+
+            InvokeDisconnected(client, currentConnection, userInitiated: true);
+        }
+
+        [Fact]
+        public void LoggedOffTryAnotherCMMarksMessageSourceEvenWhenConnectionIsSuperseded()
+        {
+            var configuration = SteamConfiguration.Create(builder => builder.WithDirectoryFetch(false));
+            var client = new TestCMClient(configuration);
+            var sourceRecord = ServerRecord.CreateWebSocketServer("10.0.0.1:443");
+            var otherRecord = ServerRecord.CreateWebSocketServer("10.0.0.2:443");
+            client.Servers.ReplaceList(new[] { sourceRecord, otherRecord }, writeProvider: false);
+            using var sourceConnection = new TestConnection(sourceRecord.EndPoint);
+            SetConnection(client, sourceConnection);
+            client.SetIsConnected(true);
+
+            var loggedOff = new ClientMsgProtobuf<CMsgClientLoggedOff>(EMsg.ClientLoggedOff);
+            loggedOff.Body.eresult = (int)EResult.TryAnotherCM;
+
+            // Simulate the dispatch racing with a connection teardown: by the time the
+            // handler runs, the connection field no longer holds the source connection.
+            client.MsgReceivedAction = () => SetConnection(client, null);
+
+            InvokeNetMsgReceived(client, sourceConnection, new NetMsgEventArgs(loggedOff.Serialize(), sourceRecord.EndPoint));
+
+            Assert.Equal(1, client.MsgReceivedCount);
+            var candidate = client.Servers.GetNextServerCandidate(ProtocolTypes.WebSocket);
+            Assert.Equal(otherRecord, candidate);
+        }
+
+        [Fact]
+        public void LogOnResponseTryAnotherCMMarksMessageSourceEvenWhenConnectionIsSuperseded()
+        {
+            var configuration = SteamConfiguration.Create(builder => builder.WithDirectoryFetch(false));
+            var client = new TestCMClient(configuration);
+            var sourceRecord = ServerRecord.CreateWebSocketServer("10.0.0.1:443");
+            var otherRecord = ServerRecord.CreateWebSocketServer("10.0.0.2:443");
+            client.Servers.ReplaceList(new[] { sourceRecord, otherRecord }, writeProvider: false);
+            using var sourceConnection = new TestConnection(sourceRecord.EndPoint);
+            SetConnection(client, sourceConnection);
+            client.SetIsConnected(true);
+
+            var logonResponse = new ClientMsgProtobuf<CMsgClientLogonResponse>(EMsg.ClientLogOnResponse);
+            logonResponse.Body.eresult = (int)EResult.TryAnotherCM;
+
+            // Simulate the dispatch racing with a connection teardown: by the time the
+            // handler runs, the connection field no longer holds the source connection.
+            client.MsgReceivedAction = () => SetConnection(client, null);
+
+            InvokeNetMsgReceived(client, sourceConnection, new NetMsgEventArgs(logonResponse.Serialize(), sourceRecord.EndPoint));
+
+            Assert.Equal(1, client.MsgReceivedCount);
+            var candidate = client.Servers.GetNextServerCandidate(ProtocolTypes.WebSocket);
+            Assert.Equal(otherRecord, candidate);
+        }
+
         [Theory]
         [InlineData(false)]
         [InlineData(true)]
@@ -358,6 +433,11 @@ namespace Tests
                 .GetMethod("Connected", BindingFlags.Instance | BindingFlags.NonPublic)!
                 .Invoke(client, new object[] { sender, EventArgs.Empty });
 
+        static void InvokeNetMsgReceived(CMClient client, IConnection sender, NetMsgEventArgs args)
+            => typeof(CMClient)
+                .GetMethod("NetMsgReceived", BindingFlags.Instance | BindingFlags.NonPublic)!
+                .Invoke(client, new object[] { sender, args });
+
         sealed class TestCMClient : CMClient
         {
             public TestCMClient()
@@ -372,7 +452,16 @@ namespace Tests
 
             public int DisconnectedCount { get; private set; }
             public int ConnectedCount { get; private set; }
+            public int MsgReceivedCount { get; private set; }
             public Action DisconnectedAction { get; set; }
+            public Action MsgReceivedAction { get; set; }
+
+            protected override bool OnClientMsgReceived(IPacketMsg packetMsg)
+            {
+                MsgReceivedCount++;
+                MsgReceivedAction?.Invoke();
+                return base.OnClientMsgReceived(packetMsg);
+            }
 
             protected override void OnClientConnected()
                 => ConnectedCount++;

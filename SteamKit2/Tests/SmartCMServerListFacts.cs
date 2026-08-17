@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using SteamKit2;
@@ -153,6 +154,106 @@ namespace Tests
 
             Assert.Equal( records.Length, selections.Count );
             Assert.All( selections.Values, count => Assert.Equal( 100, count ) );
+        }
+
+        [Fact]
+        public async Task StaleListRefreshIsSingleFlight()
+        {
+            var provider = new TrackedServerListProvider();
+            var configuration = SteamConfiguration.Create( b => b
+                .WithDirectoryFetch( false )
+                .WithServerListProvider( provider ) );
+            var staleServerList = new SmartCMServerList( configuration );
+
+            var record = ServerRecord.CreateWebSocketServer( "10.0.0.1:443" );
+            staleServerList.ReplaceList( new[] { record }, writeProvider: false, DateTime.UtcNow - TimeSpan.FromDays( 8 ) );
+
+            var first = staleServerList.GetNextServerCandidateAsync( ProtocolTypes.WebSocket );
+            var second = staleServerList.GetNextServerCandidateAsync( ProtocolTypes.WebSocket );
+
+            // Both callers must share the single resolve that is in flight.
+            Assert.Equal( 1, provider.FetchCount );
+
+            provider.CompleteFetch( new[] { record } );
+
+            Assert.NotNull( await first );
+            Assert.NotNull( await second );
+            Assert.Equal( 1, provider.FetchCount );
+
+            Assert.NotNull( await staleServerList.GetNextServerCandidateAsync( ProtocolTypes.WebSocket ) );
+            Assert.Equal( 1, provider.FetchCount );
+        }
+
+        [Fact]
+        public async Task ForceRefreshServerListJoinsResolveInFlight()
+        {
+            var provider = new TrackedServerListProvider();
+            var configuration = SteamConfiguration.Create( b => b
+                .WithDirectoryFetch( false )
+                .WithServerListProvider( provider ) );
+            var refreshingServerList = new SmartCMServerList( configuration );
+
+            var first = refreshingServerList.ForceRefreshServerList();
+            var second = refreshingServerList.ForceRefreshServerList();
+
+            Assert.Same( first, second );
+            Assert.Equal( 1, provider.FetchCount );
+
+            provider.CompleteFetch( new[] { ServerRecord.CreateWebSocketServer( "10.0.0.1:443" ) } );
+            await first;
+            await second;
+
+            Assert.Equal( 1, provider.FetchCount );
+        }
+
+        [Fact]
+        public async Task DirectoryFailureFallsBackToDefaultServers()
+        {
+            using var handler = new ThrowingHttpMessageHandler();
+            var configuration = SteamConfiguration.Create( b => b
+                .WithDirectoryFetch( true )
+                .WithHttpClientFactory( _ => new HttpClient( handler, disposeHandler: false ) ) );
+            var fallbackServerList = new SmartCMServerList( configuration );
+
+            var candidate = await fallbackServerList.GetNextServerCandidateAsync( ProtocolTypes.WebSocket );
+
+            Assert.NotNull( candidate );
+            Assert.Equal( ServerRecord.CreateWebSocketServer( SmartCMServerList.DefaultServerWebsocket ), candidate );
+            var requestsAfterResolve = handler.RequestCount;
+            Assert.True( requestsAfterResolve > 0 );
+
+            // The fallback list keeps serving candidates; the directory is retried on a
+            // controlled cadence instead of once per candidate request.
+            candidate = await fallbackServerList.GetNextServerCandidateAsync( ProtocolTypes.WebSocket );
+
+            Assert.NotNull( candidate );
+            Assert.Equal( requestsAfterResolve, handler.RequestCount );
+        }
+
+        [Fact]
+        public async Task InternalRefreshPreservesCandidateRotation()
+        {
+            var recordA = ServerRecord.CreateWebSocketServer( "10.0.0.1:443" );
+            var recordB = ServerRecord.CreateWebSocketServer( "10.0.0.2:443" );
+            var provider = new TrackedServerListProvider();
+            provider.CompleteFetch( new[] { recordA, recordB } );
+            var configuration = SteamConfiguration.Create( b => b
+                .WithDirectoryFetch( false )
+                .WithServerListProvider( provider ) );
+            var rotatingServerList = new SmartCMServerList( configuration )
+            {
+                ServerListBeforeRefreshTimeSpan = TimeSpan.FromMilliseconds( 50 ),
+            };
+
+            rotatingServerList.ReplaceList( new[] { recordA, recordB }, writeProvider: false );
+
+            Assert.Equal( recordA, await rotatingServerList.GetNextServerCandidateAsync( ProtocolTypes.WebSocket ) );
+
+            Thread.Sleep( 100 );
+
+            // The now-stale list triggers an internal refresh; the refreshed list must keep
+            // rotating shared clients across candidates instead of restarting from the first.
+            Assert.Equal( recordB, await rotatingServerList.GetNextServerCandidateAsync( ProtocolTypes.WebSocket ) );
         }
 
 #if DEBUG
@@ -314,6 +415,65 @@ namespace Tests
             var marked = serverList.TryMark( new IPEndPoint( IPAddress.Loopback, 27016 ), record.ProtocolTypes, ServerQuality.Good );
             Assert.False( marked );
         }
+
+        [Fact]
+        public async Task InternalRefreshPreservesBadEndpointMemory()
+        {
+            var recordA = ServerRecord.CreateWebSocketServer( "10.0.0.1:443" );
+            var recordB = ServerRecord.CreateWebSocketServer( "10.0.0.2:443" );
+            var provider = new TrackedServerListProvider();
+            provider.CompleteFetch( new[] { recordA, recordB } );
+            var configuration = SteamConfiguration.Create( b => b
+                .WithDirectoryFetch( false )
+                .WithServerListProvider( provider ) );
+            var refreshedServerList = new SmartCMServerList( configuration );
+
+            refreshedServerList.ReplaceList( new[] { recordA, recordB }, writeProvider: false, DateTime.UtcNow - TimeSpan.FromDays( 8 ) );
+            refreshedServerList.TryMark( recordA.EndPoint, ProtocolTypes.WebSocket, ServerQuality.Bad );
+
+            // The stale list triggers an internal refresh; the refreshed list must keep the
+            // bad connection memory of the endpoints that survived it.
+            var candidate = await refreshedServerList.GetNextServerCandidateAsync( ProtocolTypes.WebSocket );
+
+            Assert.Equal( recordB, candidate );
+            Assert.Equal( 1, provider.FetchCount );
+        }
 #endif
+
+        sealed class TrackedServerListProvider : IServerListProvider
+        {
+            readonly TaskCompletionSource<IEnumerable<ServerRecord>> fetchGate = new(
+                TaskCreationOptions.RunContinuationsAsynchronously );
+            int fetchCount;
+
+            public int FetchCount => Volatile.Read( ref fetchCount );
+
+            public DateTime LastServerListRefresh { get; set; } = DateTime.UtcNow;
+
+            public Task<IEnumerable<ServerRecord>> FetchServerListAsync()
+            {
+                Interlocked.Increment( ref fetchCount );
+                return fetchGate.Task;
+            }
+
+            public void CompleteFetch( IEnumerable<ServerRecord> records )
+                => fetchGate.TrySetResult( records );
+
+            public Task UpdateServerListAsync( IEnumerable<ServerRecord> endpoints )
+                => Task.CompletedTask;
+        }
+
+        sealed class ThrowingHttpMessageHandler : HttpMessageHandler
+        {
+            int requestCount;
+
+            public int RequestCount => Volatile.Read( ref requestCount );
+
+            protected override Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
+            {
+                Interlocked.Increment( ref requestCount );
+                throw new HttpRequestException( "Simulated Steam Directory failure" );
+            }
+        }
     }
 }
