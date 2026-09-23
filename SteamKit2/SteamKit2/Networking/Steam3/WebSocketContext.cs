@@ -15,6 +15,15 @@ namespace SteamKit2
         internal class WebSocketContext : IDisposable
         {
             static long nextContextId;
+            // A transport write must finish independently of the GC response budget or the
+            // lifetime of this connection. The connection timeout covers only ConnectAsync;
+            // it cannot cancel a later stalled write through IConnection's synchronous Send.
+            internal static readonly TimeSpan SendTimeout = TimeSpan.FromSeconds(5);
+
+#if DEBUG
+            internal TimeSpan? SendTimeoutForTesting { get; set; }
+            internal Func<Memory<byte>, CancellationToken, ValueTask>? SocketSendOverrideForTesting { get; set; }
+#endif
 
             public WebSocketContext(WebSocketConnection connection, EndPoint endPoint)
             {
@@ -119,9 +128,25 @@ namespace SteamKit2
 
             public async Task SendAsync(Memory<byte> data)
             {
+                var sendTimeout = SendTimeout;
+#if DEBUG
+                sendTimeout = SendTimeoutForTesting ?? sendTimeout;
+#endif
+                using var deadline = new CancellationTokenSource(sendTimeout);
                 try
                 {
-                    await socket.SendAsync(data, WebSocketMessageType.Binary, true, cts.Token).ConfigureAwait(false);
+                    using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, deadline.Token);
+                    await SendSocketAsync(data, cancellation.Token).ConfigureAwait(false);
+                }
+                catch (OperationCanceledException) when (deadline.IsCancellationRequested)
+                {
+                    connection.log.LogDebug(nameof(WebSocketContext),
+                        "Websocket transport ended; operation=send; reason=timeout; context={0}; endpoint={1}; timeout={2}",
+                        contextId, connectionUri, sendTimeout);
+                    // Send may be called synchronously by the Connected notification owner.
+                    // Disconnecting on this continuation would wait for that owner while it
+                    // waits for us. Let synchronous Send disconnect this exact context instead.
+                    throw;
                 }
                 catch (OperationCanceledException) when (cts.IsCancellationRequested)
                 {
@@ -134,7 +159,7 @@ namespace SteamKit2
                 catch (WebSocketException ex)
                 {
                     LogTransportFailure( "send", ex );
-                    connection.DisconnectCore(userInitiated: false, specificContext: this);
+                    throw;
                 }
             }
 
@@ -237,6 +262,15 @@ namespace SteamKit2
                     ArrayPool<byte>.Shared.Return( readBuffer );
                     ArrayPool<byte>.Shared.Return( outputBuffer );
                 }
+            }
+
+            ValueTask SendSocketAsync(Memory<byte> data, CancellationToken cancellationToken)
+            {
+#if DEBUG
+                if (SocketSendOverrideForTesting is { } send)
+                    return send(data, cancellationToken);
+#endif
+                return socket.SendAsync(data, WebSocketMessageType.Binary, true, cancellationToken);
             }
 
             void LogTransportFailure( string operation, Exception exception )

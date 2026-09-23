@@ -192,6 +192,8 @@ namespace SteamKit2
 #if DEBUG
                 SendFailureObservedForTesting?.Invoke();
 #endif
+                // Keep disconnect on the synchronous caller: a Connected callback may be
+                // sending its first message and owns the notification completion fence.
                 DisconnectCore(userInitiated: false, specificContext: context);
             }
         }
