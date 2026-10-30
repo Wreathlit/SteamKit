@@ -57,13 +57,14 @@ namespace SteamKit2
                     lobby_type = ( int )lobbyType,
                     max_members = maxMembers,
                     lobby_flags = lobbyFlags,
-                    metadata = Lobby.EncodeMetadata( metadata ),
                     cell_id = Client.CellID.Value,
                     public_ip = NetHelpers.GetMsgIPAddress( Client.PublicIP! ),
                     persona_name_owner = personaName
                 },
                 SourceJobID = Client.GetNextJobID()
             };
+
+            createLobby.Body.metadata.AddRange( Lobby.EncodeMetadata( metadata ) );
 
             Send( createLobby, appId );
 
@@ -94,10 +95,11 @@ namespace SteamKit2
                     lobby_type = ( int )lobbyType,
                     max_members = maxMembers,
                     lobby_flags = lobbyFlags,
-                    metadata = Lobby.EncodeMetadata( metadata ),
                 },
                 SourceJobID = Client.GetNextJobID()
             };
+
+            setLobbyData.Body.metadata.AddRange( Lobby.EncodeMetadata( metadata ) );
 
             Send( setLobbyData, appId );
 
@@ -126,10 +128,11 @@ namespace SteamKit2
                     app_id = appId,
                     steam_id_lobby = lobbySteamId,
                     steam_id_member = Client.SteamID,
-                    metadata = Lobby.EncodeMetadata( metadata )
                 },
                 SourceJobID = Client.GetNextJobID()
             };
+
+            setLobbyData.Body.metadata.AddRange( Lobby.EncodeMetadata( metadata ) );
 
             Send( setLobbyData, appId );
 
@@ -376,7 +379,7 @@ namespace SteamKit2
                             ( ELobbyType )createLobby.lobby_type,
                             createLobby.lobby_flags,
                             Client.SteamID,
-                            Lobby.DecodeMetadata( createLobby.metadata ),
+                            Lobby.DecodeMetadata( createLobby.metadata, createLobby.metadata_kv ),
                             createLobby.max_members,
                             1,
                             members.AsReadOnly(),
@@ -409,7 +412,7 @@ namespace SteamKit2
 
                     if ( lobby != null )
                     {
-                        var metadata = Lobby.DecodeMetadata( setLobbyData.metadata );
+                        var metadata = Lobby.DecodeMetadata( setLobbyData.metadata, setLobbyData.metadata_kv );
 
                         if ( setLobbyData.steam_id_member == 0 )
                         {
@@ -487,7 +490,7 @@ namespace SteamKit2
                         ( ELobbyType )lobby.lobby_type,
                         lobby.lobby_flags,
                         existingLobby?.OwnerSteamID,
-                        Lobby.DecodeMetadata( lobby.metadata ),
+                        Lobby.DecodeMetadata( lobby.metadata, lobby.metadata_kv ),
                         lobby.max_members,
                         lobby.num_members,
                         members,
@@ -522,7 +525,7 @@ namespace SteamKit2
                     body.members.ConvertAll( member => new Lobby.Member(
                         member.steam_id,
                         member.persona_name,
-                        Lobby.DecodeMetadata( member.metadata )
+                        Lobby.DecodeMetadata( member.metadata, member.metadata_kv )
                     ) );
 
                 var cachedLobby = lobbyCache.GetLobby( body.app_id, body.steam_id_lobby );
@@ -532,7 +535,7 @@ namespace SteamKit2
                     ( ELobbyType )body.lobby_type,
                     body.lobby_flags,
                     body.steam_id_owner,
-                    Lobby.DecodeMetadata( body.metadata ),
+                    Lobby.DecodeMetadata( body.metadata, body.metadata_kv ),
                     body.max_members,
                     members.Count,
                     members,
@@ -581,7 +584,7 @@ namespace SteamKit2
                 : body.members.ConvertAll( member => new Lobby.Member(
                     member.steam_id,
                     member.persona_name,
-                    Lobby.DecodeMetadata( member.metadata )
+                    Lobby.DecodeMetadata( member.metadata, member.metadata_kv )
                 ) );
 
             var updatedLobby = new Lobby(
@@ -589,7 +592,7 @@ namespace SteamKit2
                 ( ELobbyType )body.lobby_type,
                 body.lobby_flags,
                 body.steam_id_owner,
-                Lobby.DecodeMetadata( body.metadata ),
+                Lobby.DecodeMetadata( body.metadata, body.metadata_kv ),
                 body.max_members,
                 body.num_members,
                 members,

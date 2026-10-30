@@ -362,6 +362,16 @@ namespace SteamKit2.Internal
         public void Resetcontent_type() => __pbn__content_type = null;
         private string __pbn__content_type;
 
+        [global::ProtoBuf.ProtoMember(6)]
+        public bool is_public
+        {
+            get => __pbn__is_public.GetValueOrDefault();
+            set => __pbn__is_public = value;
+        }
+        public bool ShouldSerializeis_public() => __pbn__is_public != null;
+        public void Resetis_public() => __pbn__is_public = null;
+        private bool? __pbn__is_public;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -2173,6 +2183,16 @@ namespace SteamKit2.Internal
         public bool ShouldSerializemachine_name_index() => __pbn__machine_name_index != null;
         public void Resetmachine_name_index() => __pbn__machine_name_index = null;
         private uint? __pbn__machine_name_index;
+
+        [global::ProtoBuf.ProtoMember(9)]
+        public bool reupload_requested
+        {
+            get => __pbn__reupload_requested.GetValueOrDefault();
+            set => __pbn__reupload_requested = value;
+        }
+        public bool ShouldSerializereupload_requested() => __pbn__reupload_requested != null;
+        public void Resetreupload_requested() => __pbn__reupload_requested = null;
+        private bool? __pbn__reupload_requested;
 
     }
 

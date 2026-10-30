@@ -319,6 +319,16 @@ namespace SteamKit2.Internal
         public void Resetconnected_paired_network_hash() => __pbn__connected_paired_network_hash = null;
         private ulong? __pbn__connected_paired_network_hash;
 
+        [global::ProtoBuf.ProtoMember(32, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong connecting_paired_network_hash
+        {
+            get => __pbn__connecting_paired_network_hash.GetValueOrDefault();
+            set => __pbn__connecting_paired_network_hash = value;
+        }
+        public bool ShouldSerializeconnecting_paired_network_hash() => __pbn__connecting_paired_network_hash != null;
+        public void Resetconnecting_paired_network_hash() => __pbn__connecting_paired_network_hash = null;
+        private ulong? __pbn__connecting_paired_network_hash;
+
         [global::ProtoBuf.ProtoMember(29)]
         public bool wifi_dongle_present
         {
@@ -328,6 +338,26 @@ namespace SteamKit2.Internal
         public bool ShouldSerializewifi_dongle_present() => __pbn__wifi_dongle_present != null;
         public void Resetwifi_dongle_present() => __pbn__wifi_dongle_present = null;
         private bool? __pbn__wifi_dongle_present;
+
+        [global::ProtoBuf.ProtoMember(30)]
+        public bool is_low_spec_hardware
+        {
+            get => __pbn__is_low_spec_hardware.GetValueOrDefault();
+            set => __pbn__is_low_spec_hardware = value;
+        }
+        public bool ShouldSerializeis_low_spec_hardware() => __pbn__is_low_spec_hardware != null;
+        public void Resetis_low_spec_hardware() => __pbn__is_low_spec_hardware = null;
+        private bool? __pbn__is_low_spec_hardware;
+
+        [global::ProtoBuf.ProtoMember(31)]
+        public uint gaming_device_type
+        {
+            get => __pbn__gaming_device_type.GetValueOrDefault();
+            set => __pbn__gaming_device_type = value;
+        }
+        public bool ShouldSerializegaming_device_type() => __pbn__gaming_device_type != null;
+        public void Resetgaming_device_type() => __pbn__gaming_device_type = null;
+        private uint? __pbn__gaming_device_type;
 
         [global::ProtoBuf.ProtoContract()]
         public partial class User : global::ProtoBuf.IExtensible
@@ -609,6 +639,74 @@ namespace SteamKit2.Internal
 
         [global::ProtoBuf.ProtoMember(1, IsRequired = true)]
         public ERemoteDeviceAuthorizationResult result { get; set; } = ERemoteDeviceAuthorizationResult.k_ERemoteDeviceAuthorizationSuccess;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgRemoteClientBroadcastClientPairingState : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong my_paired_network_hash
+        {
+            get => __pbn__my_paired_network_hash.GetValueOrDefault();
+            set => __pbn__my_paired_network_hash = value;
+        }
+        public bool ShouldSerializemy_paired_network_hash() => __pbn__my_paired_network_hash != null;
+        public void Resetmy_paired_network_hash() => __pbn__my_paired_network_hash = null;
+        private ulong? __pbn__my_paired_network_hash;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public uint my_pairing_time
+        {
+            get => __pbn__my_pairing_time.GetValueOrDefault();
+            set => __pbn__my_pairing_time = value;
+        }
+        public bool ShouldSerializemy_pairing_time() => __pbn__my_pairing_time != null;
+        public void Resetmy_pairing_time() => __pbn__my_pairing_time = null;
+        private uint? __pbn__my_pairing_time;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgRemoteClientBroadcastClientPairingExclusivity : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong if_paired_network_hash_is
+        {
+            get => __pbn__if_paired_network_hash_is.GetValueOrDefault();
+            set => __pbn__if_paired_network_hash_is = value;
+        }
+        public bool ShouldSerializeif_paired_network_hash_is() => __pbn__if_paired_network_hash_is != null;
+        public void Resetif_paired_network_hash_is() => __pbn__if_paired_network_hash_is = null;
+        private ulong? __pbn__if_paired_network_hash_is;
+
+        [global::ProtoBuf.ProtoMember(2, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong unpair_unless_you_are_client_id
+        {
+            get => __pbn__unpair_unless_you_are_client_id.GetValueOrDefault();
+            set => __pbn__unpair_unless_you_are_client_id = value;
+        }
+        public bool ShouldSerializeunpair_unless_you_are_client_id() => __pbn__unpair_unless_you_are_client_id != null;
+        public void Resetunpair_unless_you_are_client_id() => __pbn__unpair_unless_you_are_client_id = null;
+        private ulong? __pbn__unpair_unless_you_are_client_id;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public uint last_known_pairing_time
+        {
+            get => __pbn__last_known_pairing_time.GetValueOrDefault();
+            set => __pbn__last_known_pairing_time = value;
+        }
+        public bool ShouldSerializelast_known_pairing_time() => __pbn__last_known_pairing_time != null;
+        public void Resetlast_known_pairing_time() => __pbn__last_known_pairing_time = null;
+        private uint? __pbn__last_known_pairing_time;
 
     }
 
@@ -1079,6 +1177,8 @@ namespace SteamKit2.Internal
         k_ERemoteDeviceStreamTransportSignal = 12,
         k_ERemoteDeviceStreamingProgress = 13,
         k_ERemoteDeviceAuthorizationConfirmed = 14,
+        k_ERemoteClientBroadcastMsgPairingState = 15,
+        k_ERemoteClientBroadcastMsgPairingExclusivity = 16,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1090,6 +1190,8 @@ namespace SteamKit2.Internal
         k_ERemoteClientServiceSiteLicense = 4,
         k_ERemoteClientServiceContentCache = 8,
         k_ERemoteClientServiceContentServer = 16,
+        k_ERemoteClientServiceManageDownloads = 32,
+        k_ERemoteClientServiceRemoteInstallWithoutPin = 64,
     }
 
     [global::ProtoBuf.ProtoContract()]

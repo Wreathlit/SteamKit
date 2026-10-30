@@ -1416,14 +1416,14 @@ namespace SteamKit2.Internal
         private int? __pbn__primary_language;
 
         [global::ProtoBuf.ProtoMember(2)]
-        public uint secondary_languages
+        public ulong secondary_languages
         {
             get => __pbn__secondary_languages.GetValueOrDefault();
             set => __pbn__secondary_languages = value;
         }
         public bool ShouldSerializesecondary_languages() => __pbn__secondary_languages != null;
         public void Resetsecondary_languages() => __pbn__secondary_languages = null;
-        private uint? __pbn__secondary_languages;
+        private ulong? __pbn__secondary_languages;
 
         [global::ProtoBuf.ProtoMember(3)]
         public bool platform_windows

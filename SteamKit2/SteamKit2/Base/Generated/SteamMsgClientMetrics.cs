@@ -525,6 +525,17 @@ namespace SteamKit2.Internal
             public void Resetcontext() => __pbn__context = null;
             private string __pbn__context;
 
+            [global::ProtoBuf.ProtoMember(5)]
+            [global::System.ComponentModel.DefaultValue("")]
+            public string url
+            {
+                get => __pbn__url ?? "";
+                set => __pbn__url = value;
+            }
+            public bool ShouldSerializeurl() => __pbn__url != null;
+            public void Reseturl() => __pbn__url = null;
+            private string __pbn__url;
+
         }
 
     }
@@ -718,6 +729,26 @@ namespace SteamKit2.Internal
             public bool ShouldSerializemiss_bytes() => __pbn__miss_bytes != null;
             public void Resetmiss_bytes() => __pbn__miss_bytes = null;
             private ulong? __pbn__miss_bytes;
+
+            [global::ProtoBuf.ProtoMember(13)]
+            public uint chunks_scored
+            {
+                get => __pbn__chunks_scored.GetValueOrDefault();
+                set => __pbn__chunks_scored = value;
+            }
+            public bool ShouldSerializechunks_scored() => __pbn__chunks_scored != null;
+            public void Resetchunks_scored() => __pbn__chunks_scored = null;
+            private uint? __pbn__chunks_scored;
+
+            [global::ProtoBuf.ProtoMember(14)]
+            public double sum_chunk_scores
+            {
+                get => __pbn__sum_chunk_scores.GetValueOrDefault();
+                set => __pbn__sum_chunk_scores = value;
+            }
+            public bool ShouldSerializesum_chunk_scores() => __pbn__sum_chunk_scores != null;
+            public void Resetsum_chunk_scores() => __pbn__sum_chunk_scores = null;
+            private double? __pbn__sum_chunk_scores;
 
         }
 
@@ -1244,6 +1275,26 @@ namespace SteamKit2.Internal
         public void Resetprocess_name() => __pbn__process_name = null;
         private string __pbn__process_name;
 
+        [global::ProtoBuf.ProtoMember(7)]
+        public int kernel_version_major
+        {
+            get => __pbn__kernel_version_major.GetValueOrDefault();
+            set => __pbn__kernel_version_major = value;
+        }
+        public bool ShouldSerializekernel_version_major() => __pbn__kernel_version_major != null;
+        public void Resetkernel_version_major() => __pbn__kernel_version_major = null;
+        private int? __pbn__kernel_version_major;
+
+        [global::ProtoBuf.ProtoMember(8)]
+        public int kernel_version_minor
+        {
+            get => __pbn__kernel_version_minor.GetValueOrDefault();
+            set => __pbn__kernel_version_minor = value;
+        }
+        public bool ShouldSerializekernel_version_minor() => __pbn__kernel_version_minor != null;
+        public void Resetkernel_version_minor() => __pbn__kernel_version_minor = null;
+        private int? __pbn__kernel_version_minor;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1573,6 +1624,29 @@ namespace SteamKit2.Internal
             public bool ShouldSerializeframegen_frame_rate() => __pbn__framegen_frame_rate != null;
             public void Resetframegen_frame_rate() => __pbn__framegen_frame_rate = null;
             private uint? __pbn__framegen_frame_rate;
+
+            [global::ProtoBuf.ProtoMember(5)]
+            public GamePerformanceSettings game_settings { get; set; }
+
+            [global::ProtoBuf.ProtoMember(6)]
+            public uint seconds_since_active
+            {
+                get => __pbn__seconds_since_active.GetValueOrDefault();
+                set => __pbn__seconds_since_active = value;
+            }
+            public bool ShouldSerializeseconds_since_active() => __pbn__seconds_since_active != null;
+            public void Resetseconds_since_active() => __pbn__seconds_since_active = null;
+            private uint? __pbn__seconds_since_active;
+
+            [global::ProtoBuf.ProtoMember(7)]
+            public uint frame_rate_limit
+            {
+                get => __pbn__frame_rate_limit.GetValueOrDefault();
+                set => __pbn__frame_rate_limit = value;
+            }
+            public bool ShouldSerializeframe_rate_limit() => __pbn__frame_rate_limit != null;
+            public void Resetframe_rate_limit() => __pbn__frame_rate_limit = null;
+            private uint? __pbn__frame_rate_limit;
 
         }
 

@@ -347,21 +347,43 @@ namespace SteamKit2
                 Weight = weight;
             }
 
-            internal static byte[] EncodeMetadata( IReadOnlyDictionary<string, string>? metadata )
+            internal static IEnumerable<MMSKeyValuePair> EncodeMetadata( IReadOnlyDictionary<string, string>? metadata )
             {
-                var keyValue = new KeyValue( "" );
-
-                if ( metadata != null )
+                if ( metadata == null )
                 {
-                    foreach ( var entry in metadata )
-                    {
-                        keyValue[ entry.Key ] = new KeyValue( null, entry.Value );
-                    }
+                    yield break;
                 }
 
-                using var ms = new MemoryStream();
-                keyValue.SaveToStream( ms, true );
-                return ms.ToArray();
+                foreach ( var entry in metadata )
+                {
+                    yield return new MMSKeyValuePair { name = entry.Key, value = entry.Value };
+                }
+            }
+
+            /// <summary>
+            /// Decodes lobby metadata, preferring the key-value pair list and falling back to the
+            /// legacy binary <see cref="KeyValue"/> blob when the list is empty.
+            /// </summary>
+            internal static ReadOnlyDictionary<string, string> DecodeMetadata( List<MMSKeyValuePair> pairs, byte[]? legacyBuffer )
+            {
+                if ( pairs.Count == 0 )
+                {
+                    return DecodeMetadata( legacyBuffer );
+                }
+
+                var metadata = new Dictionary<string, string>( pairs.Count );
+
+                foreach ( var pair in pairs )
+                {
+                    if ( pair.name is null )
+                    {
+                        continue;
+                    }
+
+                    metadata[ pair.name ] = pair.value ?? string.Empty;
+                }
+
+                return new ReadOnlyDictionary<string, string>( metadata );
             }
 
             internal static ReadOnlyDictionary<string, string> DecodeMetadata( byte[]? buffer )

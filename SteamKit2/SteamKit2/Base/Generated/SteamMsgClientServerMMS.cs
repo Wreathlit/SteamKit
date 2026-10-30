@@ -10,6 +10,37 @@ namespace SteamKit2.Internal
 {
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class MMSKeyValuePair : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string name
+        {
+            get => __pbn__name ?? "";
+            set => __pbn__name = value;
+        }
+        public bool ShouldSerializename() => __pbn__name != null;
+        public void Resetname() => __pbn__name = null;
+        private string __pbn__name;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string value
+        {
+            get => __pbn__value ?? "";
+            set => __pbn__value = value;
+        }
+        public bool ShouldSerializevalue() => __pbn__value != null;
+        public void Resetvalue() => __pbn__value = null;
+        private string __pbn__value;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public partial class CMsgClientMMSSetRatelimitPolicyOnClient : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -126,14 +157,14 @@ namespace SteamKit2.Internal
         private uint? __pbn__deprecated_public_ip;
 
         [global::ProtoBuf.ProtoMember(7)]
-        public byte[] metadata
+        public byte[] metadata_kv
         {
-            get => __pbn__metadata;
-            set => __pbn__metadata = value;
+            get => __pbn__metadata_kv;
+            set => __pbn__metadata_kv = value;
         }
-        public bool ShouldSerializemetadata() => __pbn__metadata != null;
-        public void Resetmetadata() => __pbn__metadata = null;
-        private byte[] __pbn__metadata;
+        public bool ShouldSerializemetadata_kv() => __pbn__metadata_kv != null;
+        public void Resetmetadata_kv() => __pbn__metadata_kv = null;
+        private byte[] __pbn__metadata_kv;
 
         [global::ProtoBuf.ProtoMember(8)]
         [global::System.ComponentModel.DefaultValue("")]
@@ -159,6 +190,9 @@ namespace SteamKit2.Internal
         public bool ShouldSerializenetwork_ping_location() => __pbn__network_ping_location != null;
         public void Resetnetwork_ping_location() => __pbn__network_ping_location = null;
         private string __pbn__network_ping_location;
+
+        [global::ProtoBuf.ProtoMember(11)]
+        public global::System.Collections.Generic.List<MMSKeyValuePair> metadata { get; } = new global::System.Collections.Generic.List<MMSKeyValuePair>();
 
     }
 
@@ -341,17 +375,20 @@ namespace SteamKit2.Internal
         private ulong? __pbn__steam_id_owner;
 
         [global::ProtoBuf.ProtoMember(8)]
-        public byte[] metadata
+        public byte[] metadata_kv
         {
-            get => __pbn__metadata;
-            set => __pbn__metadata = value;
+            get => __pbn__metadata_kv;
+            set => __pbn__metadata_kv = value;
         }
-        public bool ShouldSerializemetadata() => __pbn__metadata != null;
-        public void Resetmetadata() => __pbn__metadata = null;
-        private byte[] __pbn__metadata;
+        public bool ShouldSerializemetadata_kv() => __pbn__metadata_kv != null;
+        public void Resetmetadata_kv() => __pbn__metadata_kv = null;
+        private byte[] __pbn__metadata_kv;
 
         [global::ProtoBuf.ProtoMember(9)]
         public global::System.Collections.Generic.List<Member> members { get; } = new global::System.Collections.Generic.List<Member>();
+
+        [global::ProtoBuf.ProtoMember(10)]
+        public global::System.Collections.Generic.List<MMSKeyValuePair> metadata { get; } = new global::System.Collections.Generic.List<MMSKeyValuePair>();
 
         [global::ProtoBuf.ProtoContract()]
         public partial class Member : global::ProtoBuf.IExtensible
@@ -382,14 +419,17 @@ namespace SteamKit2.Internal
             private string __pbn__persona_name;
 
             [global::ProtoBuf.ProtoMember(3)]
-            public byte[] metadata
+            public byte[] metadata_kv
             {
-                get => __pbn__metadata;
-                set => __pbn__metadata = value;
+                get => __pbn__metadata_kv;
+                set => __pbn__metadata_kv = value;
             }
-            public bool ShouldSerializemetadata() => __pbn__metadata != null;
-            public void Resetmetadata() => __pbn__metadata = null;
-            private byte[] __pbn__metadata;
+            public bool ShouldSerializemetadata_kv() => __pbn__metadata_kv != null;
+            public void Resetmetadata_kv() => __pbn__metadata_kv = null;
+            private byte[] __pbn__metadata_kv;
+
+            [global::ProtoBuf.ProtoMember(4)]
+            public global::System.Collections.Generic.List<MMSKeyValuePair> metadata { get; } = new global::System.Collections.Generic.List<MMSKeyValuePair>();
 
         }
 
@@ -660,14 +700,14 @@ namespace SteamKit2.Internal
             private int? __pbn__lobby_flags;
 
             [global::ProtoBuf.ProtoMember(5)]
-            public byte[] metadata
+            public byte[] metadata_kv
             {
-                get => __pbn__metadata;
-                set => __pbn__metadata = value;
+                get => __pbn__metadata_kv;
+                set => __pbn__metadata_kv = value;
             }
-            public bool ShouldSerializemetadata() => __pbn__metadata != null;
-            public void Resetmetadata() => __pbn__metadata = null;
-            private byte[] __pbn__metadata;
+            public bool ShouldSerializemetadata_kv() => __pbn__metadata_kv != null;
+            public void Resetmetadata_kv() => __pbn__metadata_kv = null;
+            private byte[] __pbn__metadata_kv;
 
             [global::ProtoBuf.ProtoMember(6)]
             public int num_members
@@ -718,6 +758,9 @@ namespace SteamKit2.Internal
             public bool ShouldSerializemissing_ping() => __pbn__missing_ping != null;
             public void Resetmissing_ping() => __pbn__missing_ping = null;
             private int? __pbn__missing_ping;
+
+            [global::ProtoBuf.ProtoMember(11)]
+            public global::System.Collections.Generic.List<MMSKeyValuePair> metadata { get; } = new global::System.Collections.Generic.List<MMSKeyValuePair>();
 
         }
 
@@ -791,14 +834,14 @@ namespace SteamKit2.Internal
         private int? __pbn__lobby_flags;
 
         [global::ProtoBuf.ProtoMember(7)]
-        public byte[] metadata
+        public byte[] metadata_kv
         {
-            get => __pbn__metadata;
-            set => __pbn__metadata = value;
+            get => __pbn__metadata_kv;
+            set => __pbn__metadata_kv = value;
         }
-        public bool ShouldSerializemetadata() => __pbn__metadata != null;
-        public void Resetmetadata() => __pbn__metadata = null;
-        private byte[] __pbn__metadata;
+        public bool ShouldSerializemetadata_kv() => __pbn__metadata_kv != null;
+        public void Resetmetadata_kv() => __pbn__metadata_kv = null;
+        private byte[] __pbn__metadata_kv;
 
         [global::ProtoBuf.ProtoMember(8)]
         [global::System.ComponentModel.DefaultValue("")]
@@ -810,6 +853,9 @@ namespace SteamKit2.Internal
         public bool ShouldSerializenetwork_ping_location() => __pbn__network_ping_location != null;
         public void Resetnetwork_ping_location() => __pbn__network_ping_location = null;
         private string __pbn__network_ping_location;
+
+        [global::ProtoBuf.ProtoMember(9)]
+        public global::System.Collections.Generic.List<MMSKeyValuePair> metadata { get; } = new global::System.Collections.Generic.List<MMSKeyValuePair>();
 
     }
 
@@ -960,14 +1006,14 @@ namespace SteamKit2.Internal
         private ulong? __pbn__steam_id_owner;
 
         [global::ProtoBuf.ProtoMember(8)]
-        public byte[] metadata
+        public byte[] metadata_kv
         {
-            get => __pbn__metadata;
-            set => __pbn__metadata = value;
+            get => __pbn__metadata_kv;
+            set => __pbn__metadata_kv = value;
         }
-        public bool ShouldSerializemetadata() => __pbn__metadata != null;
-        public void Resetmetadata() => __pbn__metadata = null;
-        private byte[] __pbn__metadata;
+        public bool ShouldSerializemetadata_kv() => __pbn__metadata_kv != null;
+        public void Resetmetadata_kv() => __pbn__metadata_kv = null;
+        private byte[] __pbn__metadata_kv;
 
         [global::ProtoBuf.ProtoMember(9)]
         public global::System.Collections.Generic.List<Member> members { get; } = new global::System.Collections.Generic.List<Member>();
@@ -991,6 +1037,9 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeowner_should_accept_changes() => __pbn__owner_should_accept_changes != null;
         public void Resetowner_should_accept_changes() => __pbn__owner_should_accept_changes = null;
         private bool? __pbn__owner_should_accept_changes;
+
+        [global::ProtoBuf.ProtoMember(12)]
+        public global::System.Collections.Generic.List<MMSKeyValuePair> metadata { get; } = new global::System.Collections.Generic.List<MMSKeyValuePair>();
 
         [global::ProtoBuf.ProtoContract()]
         public partial class Member : global::ProtoBuf.IExtensible
@@ -1021,14 +1070,14 @@ namespace SteamKit2.Internal
             private string __pbn__persona_name;
 
             [global::ProtoBuf.ProtoMember(3)]
-            public byte[] metadata
+            public byte[] metadata_kv
             {
-                get => __pbn__metadata;
-                set => __pbn__metadata = value;
+                get => __pbn__metadata_kv;
+                set => __pbn__metadata_kv = value;
             }
-            public bool ShouldSerializemetadata() => __pbn__metadata != null;
-            public void Resetmetadata() => __pbn__metadata = null;
-            private byte[] __pbn__metadata;
+            public bool ShouldSerializemetadata_kv() => __pbn__metadata_kv != null;
+            public void Resetmetadata_kv() => __pbn__metadata_kv = null;
+            private byte[] __pbn__metadata_kv;
 
             [global::ProtoBuf.ProtoMember(4)]
             [global::System.ComponentModel.DefaultValue("")]
@@ -1040,6 +1089,9 @@ namespace SteamKit2.Internal
             public bool ShouldSerializeping_data() => __pbn__ping_data != null;
             public void Resetping_data() => __pbn__ping_data = null;
             private string __pbn__ping_data;
+
+            [global::ProtoBuf.ProtoMember(5)]
+            public global::System.Collections.Generic.List<MMSKeyValuePair> metadata { get; } = new global::System.Collections.Generic.List<MMSKeyValuePair>();
 
         }
 

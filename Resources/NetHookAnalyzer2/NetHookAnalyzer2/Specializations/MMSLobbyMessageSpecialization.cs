@@ -14,19 +14,19 @@ namespace NetHookAnalyzer2.Specializations
 
 			if ( messageObject is CMsgClientMMSSetLobbyData setLobbyData )
 			{
-				data = setLobbyData.metadata;
+				data = setLobbyData.metadata_kv;
 			}
 			else if ( messageObject is CMsgClientMMSLobbyData lobbyData )
 			{
-				data = lobbyData.metadata;
+				data = lobbyData.metadata_kv;
 			}
 			else if ( messageObject is CMsgClientMMSJoinLobbyResponse joinLobbyResponse )
 			{
-				data = joinLobbyResponse.metadata;
+				data = joinLobbyResponse.metadata_kv;
 			}
 			else if ( messageObject is CMsgClientMMSCreateLobby createLobby )
 			{
-				data = createLobby.metadata;
+				data = createLobby.metadata_kv;
 			}
 			else if ( messageObject is CMsgClientMMSSendLobbyChatMsg or CMsgClientMMSLobbyChatMsg )
 			{

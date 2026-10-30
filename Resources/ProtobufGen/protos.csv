@@ -8,6 +8,7 @@ steam,encrypted_app_ticket.proto,SteamMsgAppTicket.cs,SteamKit2.Internal
 steam,offline_ticket.proto,OfflineTicket.cs,SteamKit2.Internal
 steam,steammessages_client_objects.proto,ClientObjects.cs,SteamKit2.Internal
 steam,steammessages_accounthardware.steamclient.proto,SteamMsgAccountHardware.cs,SteamKit2.Internal
+steam,steammessages_appratings_types.proto,SteamMsgAppRatingsTypes.cs,SteamKit2.Internal
 steam,steammessages_auth.steamclient.proto,SteamMsgAuth.cs,SteamKit2.Internal
 steam,steammessages_base.proto,SteamMsgBase.cs,SteamKit2.Internal
 steam,steammessages_broadcast.steamclient.proto,SteamMsgBroadcast.cs,SteamKit2.Internal
@@ -54,10 +55,12 @@ steam,steammessages_remoteclient.proto,SteamMsgRemoteClientBase.cs,SteamKit2.Int
 steam,steammessages_remoteclient_discovery.proto,SteamMsgRemoteClientDiscovery.cs,SteamKit2.Internal
 steam,steammessages_remoteclient_service_messages.proto,SteamMsgRemoteClientMessages.cs,SteamKit2.Internal
 steam,steammessages_remoteclient_service.steamclient.proto,SteamMsgRemoteClient.cs,SteamKit2.Internal
+steam,steammessages_seasonpass_types.proto,SteamMsgSeasonPassTypes.cs,SteamKit2.Internal
 steam,steammessages_secrets.steamclient.proto,SteamMsgSecrets.cs,SteamKit2.Internal
 steam,steammessages_shader.steamclient.proto,SteamMsgShader.cs,SteamKit2.Internal
 steam,steammessages_site_license.steamclient.proto,SteamMsgSiteLicense.cs,SteamKit2.Internal
 steam,steammessages_sitelicenseclient.proto,SteamMsgSiteLicenseClient.cs,SteamKit2.Internal
+steam,steammessages_steamawards_types.proto,SteamMsgSteamAwardsTypes.cs,SteamKit2.Internal
 steam,steammessages_steamtv.steamclient.proto,SteamMsgSteamTV.cs,SteamKit2.Internal
 steam,steammessages_store.steamclient.proto,SteamMsgStore.cs,SteamKit2.Internal
 steam,steammessages_storebrowse.steamclient.proto,SteamMsgStoreBrowse.cs,SteamKit2.Internal
@@ -113,6 +116,8 @@ dota2,dota_match_metadata.proto,GC\Dota\MsgMatchMetadata.cs,SteamKit2.GC.Dota.In
 dota2,dota_shared_enums.proto,GC\Dota\MsgSharedEnums.cs,SteamKit2.GC.Dota.Internal
 dota2,econ_gcmessages.proto,GC\Dota\SteamMsgGCEcon.cs,SteamKit2.GC.Dota.Internal
 dota2,econ_shared_enums.proto,GC\Dota\SteamMsgGCEconSharedEnums.cs,SteamKit2.GC.Dota.Internal
+dota2,event_gcmessages_common.proto,GC\Dota\MsgEventCommon.cs,SteamKit2.GC.Dota.Internal
+dota2,events.proto,GC\Dota\MsgEvents.cs,SteamKit2.GC.Dota.Internal
 dota2,gcsdk_gcmessages.proto,GC\Dota\SteamMsgGCSDK.cs,SteamKit2.GC.Dota.Internal
 dota2,gcsystemmsgs.proto,GC\Dota\SteamMsgGCSystem.cs,SteamKit2.GC.Dota.Internal
 dota2,network_connection.proto,GC\Dota\NetworkConnection.cs,SteamKit2.GC.Dota.Internal

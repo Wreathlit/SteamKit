@@ -138,14 +138,14 @@ namespace SteamKit2.WebUI.Internal
             => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
         [global::ProtoBuf.ProtoMember(1)]
-        public long gidshoppingcart
+        public ulong gidshoppingcart
         {
             get => __pbn__gidshoppingcart.GetValueOrDefault();
             set => __pbn__gidshoppingcart = value;
         }
         public bool ShouldSerializegidshoppingcart() => __pbn__gidshoppingcart != null;
         public void Resetgidshoppingcart() => __pbn__gidshoppingcart = null;
-        private long? __pbn__gidshoppingcart;
+        private ulong? __pbn__gidshoppingcart;
 
         [global::ProtoBuf.ProtoMember(2)]
         public StoreBrowseContext context { get; set; }
@@ -391,6 +391,16 @@ namespace SteamKit2.WebUI.Internal
         public void Resetcommercial_license_restricted() => __pbn__commercial_license_restricted = null;
         private bool? __pbn__commercial_license_restricted;
 
+        [global::ProtoBuf.ProtoMember(14)]
+        public bool gift_not_valid_for_recipient_region
+        {
+            get => __pbn__gift_not_valid_for_recipient_region.GetValueOrDefault();
+            set => __pbn__gift_not_valid_for_recipient_region = value;
+        }
+        public bool ShouldSerializegift_not_valid_for_recipient_region() => __pbn__gift_not_valid_for_recipient_region != null;
+        public void Resetgift_not_valid_for_recipient_region() => __pbn__gift_not_valid_for_recipient_region = null;
+        private bool? __pbn__gift_not_valid_for_recipient_region;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -428,6 +438,16 @@ namespace SteamKit2.WebUI.Internal
         public bool ShouldSerializenon_refundable() => __pbn__non_refundable != null;
         public void Resetnon_refundable() => __pbn__non_refundable = null;
         private bool? __pbn__non_refundable;
+
+        [global::ProtoBuf.ProtoMember(6)]
+        public bool gift_recipient_higher_price
+        {
+            get => __pbn__gift_recipient_higher_price.GetValueOrDefault();
+            set => __pbn__gift_recipient_higher_price = value;
+        }
+        public bool ShouldSerializegift_recipient_higher_price() => __pbn__gift_recipient_higher_price != null;
+        public void Resetgift_recipient_higher_price() => __pbn__gift_recipient_higher_price = null;
+        private bool? __pbn__gift_recipient_higher_price;
 
     }
 

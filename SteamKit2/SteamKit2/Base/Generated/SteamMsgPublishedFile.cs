@@ -495,6 +495,16 @@ namespace SteamKit2.Internal
         public void Reseturl() => __pbn__url = null;
         private string __pbn__url;
 
+        [global::ProtoBuf.ProtoMember(17)]
+        public int language
+        {
+            get => __pbn__language.GetValueOrDefault();
+            set => __pbn__language = value;
+        }
+        public bool ShouldSerializelanguage() => __pbn__language != null;
+        public void Resetlanguage() => __pbn__language = null;
+        private int? __pbn__language;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1875,6 +1885,16 @@ namespace SteamKit2.Internal
         public void Resetdesired_revision() => __pbn__desired_revision = null;
         private EPublishedFileRevision? __pbn__desired_revision;
 
+        [global::ProtoBuf.ProtoMember(5)]
+        public bool full_reconcile
+        {
+            get => __pbn__full_reconcile.GetValueOrDefault();
+            set => __pbn__full_reconcile = value;
+        }
+        public bool ShouldSerializefull_reconcile() => __pbn__full_reconcile != null;
+        public void Resetfull_reconcile() => __pbn__full_reconcile = null;
+        private bool? __pbn__full_reconcile;
+
         [global::ProtoBuf.ProtoContract()]
         public partial class WorkshopItem : global::ProtoBuf.IExtensible
         {
@@ -2161,6 +2181,12 @@ namespace SteamKit2.Internal
         [global::ProtoBuf.ProtoMember(34)]
         public global::System.Collections.Generic.List<TagGroup> taggroups { get; } = new global::System.Collections.Generic.List<TagGroup>();
 
+        [global::ProtoBuf.ProtoMember(39)]
+        public DateRange date_range_created { get; set; }
+
+        [global::ProtoBuf.ProtoMember(40)]
+        public DateRange date_range_updated { get; set; }
+
         [global::ProtoBuf.ProtoMember(37)]
         public global::System.Collections.Generic.List<EContentDescriptorID> excluded_content_descriptors { get; } = new global::System.Collections.Generic.List<EContentDescriptorID>();
 
@@ -2173,6 +2199,9 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeadmin_query() => __pbn__admin_query != null;
         public void Resetadmin_query() => __pbn__admin_query = null;
         private bool? __pbn__admin_query;
+
+        [global::ProtoBuf.ProtoMember(41)]
+        public global::System.Collections.Generic.List<EContentDescriptorID> excluded_apps_with_content_descriptors { get; } = new global::System.Collections.Generic.List<EContentDescriptorID>();
 
         [global::ProtoBuf.ProtoMember(17)]
         public bool totalonly
@@ -2380,6 +2409,35 @@ namespace SteamKit2.Internal
 
             [global::ProtoBuf.ProtoMember(1)]
             public global::System.Collections.Generic.List<string> tags { get; } = new global::System.Collections.Generic.List<string>();
+
+        }
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class DateRange : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            public uint timestamp_start
+            {
+                get => __pbn__timestamp_start.GetValueOrDefault();
+                set => __pbn__timestamp_start = value;
+            }
+            public bool ShouldSerializetimestamp_start() => __pbn__timestamp_start != null;
+            public void Resettimestamp_start() => __pbn__timestamp_start = null;
+            private uint? __pbn__timestamp_start;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            public uint timestamp_end
+            {
+                get => __pbn__timestamp_end.GetValueOrDefault();
+                set => __pbn__timestamp_end = value;
+            }
+            public bool ShouldSerializetimestamp_end() => __pbn__timestamp_end != null;
+            public void Resettimestamp_end() => __pbn__timestamp_end = null;
+            private uint? __pbn__timestamp_end;
 
         }
 
@@ -2657,6 +2715,17 @@ namespace SteamKit2.Internal
         public void Resetspoiler_tag() => __pbn__spoiler_tag = null;
         private bool? __pbn__spoiler_tag;
 
+        [global::ProtoBuf.ProtoMember(14)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string collectiontype
+        {
+            get => __pbn__collectiontype ?? "";
+            set => __pbn__collectiontype = value;
+        }
+        public bool ShouldSerializecollectiontype() => __pbn__collectiontype != null;
+        public void Resetcollectiontype() => __pbn__collectiontype = null;
+        private string __pbn__collectiontype;
+
         [global::ProtoBuf.ProtoMember(15)]
         public uint image_width
         {
@@ -2686,6 +2755,16 @@ namespace SteamKit2.Internal
         public bool ShouldSerializelanguage() => __pbn__language != null;
         public void Resetlanguage() => __pbn__language = null;
         private int? __pbn__language;
+
+        [global::ProtoBuf.ProtoMember(18)]
+        public bool update_tags
+        {
+            get => __pbn__update_tags.GetValueOrDefault();
+            set => __pbn__update_tags = value;
+        }
+        public bool ShouldSerializeupdate_tags() => __pbn__update_tags != null;
+        public void Resetupdate_tags() => __pbn__update_tags = null;
+        private bool? __pbn__update_tags;
 
     }
 
@@ -3296,6 +3375,34 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeadmin_query() => __pbn__admin_query != null;
         public void Resetadmin_query() => __pbn__admin_query = null;
         private bool? __pbn__admin_query;
+
+        [global::ProtoBuf.ProtoMember(48)]
+        [global::System.ComponentModel.DefaultValue(EQueryFilesSpecialFilter.k_EQueryFilesSpecialFilter_None)]
+        public EQueryFilesSpecialFilter special_filter
+        {
+            get => __pbn__special_filter ?? EQueryFilesSpecialFilter.k_EQueryFilesSpecialFilter_None;
+            set => __pbn__special_filter = value;
+        }
+        public bool ShouldSerializespecial_filter() => __pbn__special_filter != null;
+        public void Resetspecial_filter() => __pbn__special_filter = null;
+        private EQueryFilesSpecialFilter? __pbn__special_filter;
+
+        [global::ProtoBuf.ProtoMember(49)]
+        public global::System.Collections.Generic.List<uint> appids_required_for_use { get; } = new global::System.Collections.Generic.List<uint>();
+
+        [global::ProtoBuf.ProtoMember(51)]
+        public global::System.Collections.Generic.List<uint> excluded_appids_required_for_use { get; } = new global::System.Collections.Generic.List<uint>();
+
+        [global::ProtoBuf.ProtoMember(50)]
+        [global::System.ComponentModel.DefaultValue(EQueryFilesSearchTextTarget.k_EQueryFilesSearchTextTarget_AllText)]
+        public EQueryFilesSearchTextTarget search_text_target
+        {
+            get => __pbn__search_text_target ?? EQueryFilesSearchTextTarget.k_EQueryFilesSearchTextTarget_AllText;
+            set => __pbn__search_text_target = value;
+        }
+        public bool ShouldSerializesearch_text_target() => __pbn__search_text_target != null;
+        public void Resetsearch_text_target() => __pbn__search_text_target = null;
+        private EQueryFilesSearchTextTarget? __pbn__search_text_target;
 
         [global::ProtoBuf.ProtoMember(16)]
         public bool totalonly
@@ -4202,6 +4309,16 @@ namespace SteamKit2.Internal
             public void Resetreported() => __pbn__reported = null;
             private bool? __pbn__reported;
 
+            [global::ProtoBuf.ProtoMember(5)]
+            public bool vote_later
+            {
+                get => __pbn__vote_later.GetValueOrDefault();
+                set => __pbn__vote_later = value;
+            }
+            public bool ShouldSerializevote_later() => __pbn__vote_later != null;
+            public void Resetvote_later() => __pbn__vote_later = null;
+            private bool? __pbn__vote_later;
+
         }
 
     }
@@ -4253,6 +4370,16 @@ namespace SteamKit2.Internal
         public bool ShouldSerializedesired_revision() => __pbn__desired_revision != null;
         public void Resetdesired_revision() => __pbn__desired_revision = null;
         private EPublishedFileRevision? __pbn__desired_revision;
+
+        [global::ProtoBuf.ProtoMember(5)]
+        public bool include_legacy_items
+        {
+            get => __pbn__include_legacy_items.GetValueOrDefault();
+            set => __pbn__include_legacy_items = value;
+        }
+        public bool ShouldSerializeinclude_legacy_items() => __pbn__include_legacy_items != null;
+        public void Resetinclude_legacy_items() => __pbn__include_legacy_items = null;
+        private bool? __pbn__include_legacy_items;
 
     }
 
@@ -4315,6 +4442,16 @@ namespace SteamKit2.Internal
 
             [global::ProtoBuf.ProtoMember(4)]
             public global::System.Collections.Generic.List<PublishedFileAuthorSnapshot> author_snapshots { get; } = new global::System.Collections.Generic.List<PublishedFileAuthorSnapshot>();
+
+            [global::ProtoBuf.ProtoMember(5)]
+            public uint flags
+            {
+                get => __pbn__flags.GetValueOrDefault();
+                set => __pbn__flags = value;
+            }
+            public bool ShouldSerializeflags() => __pbn__flags != null;
+            public void Resetflags() => __pbn__flags = null;
+            private uint? __pbn__flags;
 
         }
 
@@ -4442,6 +4579,160 @@ namespace SteamKit2.Internal
         public bool ShouldSerializetimestamp_updated() => __pbn__timestamp_updated != null;
         public void Resettimestamp_updated() => __pbn__timestamp_updated = null;
         private uint? __pbn__timestamp_updated;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPublishedFile_SanctionPublishedFile_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong publishedfileid
+        {
+            get => __pbn__publishedfileid.GetValueOrDefault();
+            set => __pbn__publishedfileid = value;
+        }
+        public bool ShouldSerializepublishedfileid() => __pbn__publishedfileid != null;
+        public void Resetpublishedfileid() => __pbn__publishedfileid = null;
+        private ulong? __pbn__publishedfileid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue(EContentReportReason.k_EContentReportReason_Invalid)]
+        public EContentReportReason reason
+        {
+            get => __pbn__reason ?? EContentReportReason.k_EContentReportReason_Invalid;
+            set => __pbn__reason = value;
+        }
+        public bool ShouldSerializereason() => __pbn__reason != null;
+        public void Resetreason() => __pbn__reason = null;
+        private EContentReportReason? __pbn__reason;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string note
+        {
+            get => __pbn__note ?? "";
+            set => __pbn__note = value;
+        }
+        public bool ShouldSerializenote() => __pbn__note != null;
+        public void Resetnote() => __pbn__note = null;
+        private string __pbn__note;
+
+        [global::ProtoBuf.ProtoMember(4)]
+        [global::System.ComponentModel.DefaultValue(EResolutionAutomation.k_EResolutionAutomation_Manual)]
+        public EResolutionAutomation resolved_by_automation
+        {
+            get => __pbn__resolved_by_automation ?? EResolutionAutomation.k_EResolutionAutomation_Manual;
+            set => __pbn__resolved_by_automation = value;
+        }
+        public bool ShouldSerializeresolved_by_automation() => __pbn__resolved_by_automation != null;
+        public void Resetresolved_by_automation() => __pbn__resolved_by_automation = null;
+        private EResolutionAutomation? __pbn__resolved_by_automation;
+
+        [global::ProtoBuf.ProtoMember(5)]
+        public global::System.Collections.Generic.List<Sanction> sanctions { get; } = new global::System.Collections.Generic.List<Sanction>();
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class Sanction : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            [global::System.ComponentModel.DefaultValue(EContentModerationSanction.k_EContentModerationSanction_Invalid)]
+            public EContentModerationSanction sanction
+            {
+                get => __pbn__sanction ?? EContentModerationSanction.k_EContentModerationSanction_Invalid;
+                set => __pbn__sanction = value;
+            }
+            public bool ShouldSerializesanction() => __pbn__sanction != null;
+            public void Resetsanction() => __pbn__sanction = null;
+            private EContentModerationSanction? __pbn__sanction;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            public int days
+            {
+                get => __pbn__days.GetValueOrDefault();
+                set => __pbn__days = value;
+            }
+            public bool ShouldSerializedays() => __pbn__days != null;
+            public void Resetdays() => __pbn__days = null;
+            private int? __pbn__days;
+
+            [global::ProtoBuf.ProtoMember(3)]
+            [global::System.ComponentModel.DefaultValue(EContentModeratorLevel.k_EContentModeratorLevel_Any)]
+            public EContentModeratorLevel escalate_to
+            {
+                get => __pbn__escalate_to ?? EContentModeratorLevel.k_EContentModeratorLevel_Any;
+                set => __pbn__escalate_to = value;
+            }
+            public bool ShouldSerializeescalate_to() => __pbn__escalate_to != null;
+            public void Resetescalate_to() => __pbn__escalate_to = null;
+            private EContentModeratorLevel? __pbn__escalate_to;
+
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPublishedFile_SanctionPublishedFile_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public bool force_unbanned
+        {
+            get => __pbn__force_unbanned.GetValueOrDefault();
+            set => __pbn__force_unbanned = value;
+        }
+        public bool ShouldSerializeforce_unbanned() => __pbn__force_unbanned != null;
+        public void Resetforce_unbanned() => __pbn__force_unbanned = null;
+        private bool? __pbn__force_unbanned;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPublishedFile_AcquitPublishedFile_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong publishedfileid
+        {
+            get => __pbn__publishedfileid.GetValueOrDefault();
+            set => __pbn__publishedfileid = value;
+        }
+        public bool ShouldSerializepublishedfileid() => __pbn__publishedfileid != null;
+        public void Resetpublishedfileid() => __pbn__publishedfileid = null;
+        private ulong? __pbn__publishedfileid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue(EResolutionAutomation.k_EResolutionAutomation_Manual)]
+        public EResolutionAutomation resolved_by_automation
+        {
+            get => __pbn__resolved_by_automation ?? EResolutionAutomation.k_EResolutionAutomation_Manual;
+            set => __pbn__resolved_by_automation = value;
+        }
+        public bool ShouldSerializeresolved_by_automation() => __pbn__resolved_by_automation != null;
+        public void Resetresolved_by_automation() => __pbn__resolved_by_automation = null;
+        private EResolutionAutomation? __pbn__resolved_by_automation;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPublishedFile_AcquitPublishedFile_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
     }
 
@@ -4681,6 +4972,27 @@ namespace SteamKit2.Internal
         k_PFFSS_TentativeApproval = 5,
     }
 
+    [global::ProtoBuf.ProtoContract()]
+    public enum EQueryFilesSpecialFilter
+    {
+        k_EQueryFilesSpecialFilter_None = 0,
+        k_EQueryFilesSpecialFilter_AcceptedForUse = 1,
+        k_EQueryFilesSpecialFilter_FavoritedByFriends = 2,
+        k_EQueryFilesSpecialFilter_CreateByFriends = 3,
+        k_EQueryFilesSpecialFilter_CreatedByFollowed = 4,
+        k_EQueryFilesSpecialFilter_Reported = 5,
+        k_EQueryFilesSpecialFilter_ParentItems = 6,
+        k_EQueryFilesSpecialFilter_ParentCollections = 7,
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public enum EQueryFilesSearchTextTarget
+    {
+        k_EQueryFilesSearchTextTarget_AllText = 0,
+        k_EQueryFilesSearchTextTarget_Title = 1,
+        k_EQueryFilesSearchTextTarget_Description = 2,
+    }
+
     public class PublishedFile : SteamUnifiedMessages.UnifiedService
     {
         public override string ServiceName { get; } = "PublishedFile";
@@ -4850,6 +5162,16 @@ namespace SteamKit2.Internal
             return UnifiedMessages.SendMessage<CPublishedFile_UpdateContentDescriptors_Request, CPublishedFile_UpdateContentDescriptors_Response>( "PublishedFile.UpdateContentDescriptors#1", request );
         }
 
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CPublishedFile_SanctionPublishedFile_Response>> SanctionPublishedFile( CPublishedFile_SanctionPublishedFile_Request request )
+        {
+            return UnifiedMessages.SendMessage<CPublishedFile_SanctionPublishedFile_Request, CPublishedFile_SanctionPublishedFile_Response>( "PublishedFile.SanctionPublishedFile#1", request );
+        }
+
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CPublishedFile_AcquitPublishedFile_Response>> AcquitPublishedFile( CPublishedFile_AcquitPublishedFile_Request request )
+        {
+            return UnifiedMessages.SendMessage<CPublishedFile_AcquitPublishedFile_Request, CPublishedFile_AcquitPublishedFile_Response>( "PublishedFile.AcquitPublishedFile#1", request );
+        }
+
         public override void HandleResponseMsg( string methodName, PacketClientMsgProtobuf packetMsg )
         {
             switch ( methodName )
@@ -4952,6 +5274,12 @@ namespace SteamKit2.Internal
                     break;
                 case "UpdateContentDescriptors":
                     PostResponseMsg<CPublishedFile_UpdateContentDescriptors_Response>( packetMsg );
+                    break;
+                case "SanctionPublishedFile":
+                    PostResponseMsg<CPublishedFile_SanctionPublishedFile_Response>( packetMsg );
+                    break;
+                case "AcquitPublishedFile":
+                    PostResponseMsg<CPublishedFile_AcquitPublishedFile_Response>( packetMsg );
                     break;
             }
         }

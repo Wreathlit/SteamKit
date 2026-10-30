@@ -1481,26 +1481,6 @@ namespace SteamKit2.Internal
         public void Resetfsr_sharpness_max() => __pbn__fsr_sharpness_max = null;
         private int? __pbn__fsr_sharpness_max;
 
-        [global::ProtoBuf.ProtoMember(5)]
-        public int gpu_performance_manual_min_mhz
-        {
-            get => __pbn__gpu_performance_manual_min_mhz.GetValueOrDefault();
-            set => __pbn__gpu_performance_manual_min_mhz = value;
-        }
-        public bool ShouldSerializegpu_performance_manual_min_mhz() => __pbn__gpu_performance_manual_min_mhz != null;
-        public void Resetgpu_performance_manual_min_mhz() => __pbn__gpu_performance_manual_min_mhz = null;
-        private int? __pbn__gpu_performance_manual_min_mhz;
-
-        [global::ProtoBuf.ProtoMember(6)]
-        public int gpu_performance_manual_max_mhz
-        {
-            get => __pbn__gpu_performance_manual_max_mhz.GetValueOrDefault();
-            set => __pbn__gpu_performance_manual_max_mhz = value;
-        }
-        public bool ShouldSerializegpu_performance_manual_max_mhz() => __pbn__gpu_performance_manual_max_mhz != null;
-        public void Resetgpu_performance_manual_max_mhz() => __pbn__gpu_performance_manual_max_mhz = null;
-        private int? __pbn__gpu_performance_manual_max_mhz;
-
         [global::ProtoBuf.ProtoMember(7)]
         public bool perf_overlay_is_standalone
         {
@@ -1520,9 +1500,6 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeis_manual_display_refresh_rate_available() => __pbn__is_manual_display_refresh_rate_available != null;
         public void Resetis_manual_display_refresh_rate_available() => __pbn__is_manual_display_refresh_rate_available = null;
         private bool? __pbn__is_manual_display_refresh_rate_available;
-
-        [global::ProtoBuf.ProtoMember(10)]
-        public global::System.Collections.Generic.List<EGPUPerformanceLevel> gpu_performance_levels_available { get; } = new global::System.Collections.Generic.List<EGPUPerformanceLevel>();
 
         [global::ProtoBuf.ProtoMember(11)]
         public int display_refresh_manual_hz_min
@@ -1769,16 +1746,6 @@ namespace SteamKit2.Internal
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
             => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
-        [global::ProtoBuf.ProtoMember(1)]
-        public int gpu_performance_manual_mhz
-        {
-            get => __pbn__gpu_performance_manual_mhz.GetValueOrDefault();
-            set => __pbn__gpu_performance_manual_mhz = value;
-        }
-        public bool ShouldSerializegpu_performance_manual_mhz() => __pbn__gpu_performance_manual_mhz != null;
-        public void Resetgpu_performance_manual_mhz() => __pbn__gpu_performance_manual_mhz = null;
-        private int? __pbn__gpu_performance_manual_mhz;
-
         [global::ProtoBuf.ProtoMember(2)]
         public int fps_limit
         {
@@ -1909,17 +1876,6 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeis_game_perf_profile_enabled() => __pbn__is_game_perf_profile_enabled != null;
         public void Resetis_game_perf_profile_enabled() => __pbn__is_game_perf_profile_enabled = null;
         private bool? __pbn__is_game_perf_profile_enabled;
-
-        [global::ProtoBuf.ProtoMember(15)]
-        [global::System.ComponentModel.DefaultValue(EGPUPerformanceLevel.k_EGPUPerformanceLevel_Invalid)]
-        public EGPUPerformanceLevel gpu_performance_level
-        {
-            get => __pbn__gpu_performance_level ?? EGPUPerformanceLevel.k_EGPUPerformanceLevel_Invalid;
-            set => __pbn__gpu_performance_level = value;
-        }
-        public bool ShouldSerializegpu_performance_level() => __pbn__gpu_performance_level != null;
-        public void Resetgpu_performance_level() => __pbn__gpu_performance_level = null;
-        private EGPUPerformanceLevel? __pbn__gpu_performance_level;
 
         [global::ProtoBuf.ProtoMember(17)]
         public int display_external_refresh_manual_hz
@@ -3129,6 +3085,46 @@ namespace SteamKit2.Internal
         [global::ProtoBuf.ProtoMember(18)]
         public global::System.Collections.Generic.List<int> supported_refresh_rates { get; } = new global::System.Collections.Generic.List<int>();
 
+        [global::ProtoBuf.ProtoMember(19)]
+        [global::System.ComponentModel.DefaultValue(EDisplayManagerRGBRange.k_EDisplayManagerRGBRange_Automatic)]
+        public EDisplayManagerRGBRange rgb_range
+        {
+            get => __pbn__rgb_range ?? EDisplayManagerRGBRange.k_EDisplayManagerRGBRange_Automatic;
+            set => __pbn__rgb_range = value;
+        }
+        public bool ShouldSerializergb_range() => __pbn__rgb_range != null;
+        public void Resetrgb_range() => __pbn__rgb_range = null;
+        private EDisplayManagerRGBRange? __pbn__rgb_range;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgSystemDisplayManagerGameResolution : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint width
+        {
+            get => __pbn__width.GetValueOrDefault();
+            set => __pbn__width = value;
+        }
+        public bool ShouldSerializewidth() => __pbn__width != null;
+        public void Resetwidth() => __pbn__width = null;
+        private uint? __pbn__width;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public uint height
+        {
+            get => __pbn__height.GetValueOrDefault();
+            set => __pbn__height = value;
+        }
+        public bool ShouldSerializeheight() => __pbn__height != null;
+        public void Resetheight() => __pbn__height = null;
+        private uint? __pbn__height;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -3162,6 +3158,12 @@ namespace SteamKit2.Internal
         public void Resetcompatibility_mode() => __pbn__compatibility_mode = null;
         private ESystemDisplayCompatibilityMode? __pbn__compatibility_mode;
 
+        [global::ProtoBuf.ProtoMember(4)]
+        public CMsgSystemDisplayManagerGameResolution game_resolution_override_native { get; set; }
+
+        [global::ProtoBuf.ProtoMember(5)]
+        public CMsgSystemDisplayManagerGameResolution game_resolution_override_default { get; set; }
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -3190,6 +3192,17 @@ namespace SteamKit2.Internal
         public bool ShouldSerializemode_id() => __pbn__mode_id != null;
         public void Resetmode_id() => __pbn__mode_id = null;
         private int? __pbn__mode_id;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue(EDisplayManagerRGBRange.k_EDisplayManagerRGBRange_Automatic)]
+        public EDisplayManagerRGBRange rgb_range
+        {
+            get => __pbn__rgb_range ?? EDisplayManagerRGBRange.k_EDisplayManagerRGBRange_Automatic;
+            set => __pbn__rgb_range = value;
+        }
+        public bool ShouldSerializergb_range() => __pbn__rgb_range != null;
+        public void Resetrgb_range() => __pbn__rgb_range = null;
+        private EDisplayManagerRGBRange? __pbn__rgb_range;
 
     }
 
@@ -3400,16 +3413,6 @@ namespace SteamKit2.Internal
         public void Resetdisplay_brightness_adaptivemax() => __pbn__display_brightness_adaptivemax = null;
         private float? __pbn__display_brightness_adaptivemax;
 
-        [global::ProtoBuf.ProtoMember(26)]
-        public bool is_wifi_powersave_enabled
-        {
-            get => __pbn__is_wifi_powersave_enabled.GetValueOrDefault();
-            set => __pbn__is_wifi_powersave_enabled = value;
-        }
-        public bool ShouldSerializeis_wifi_powersave_enabled() => __pbn__is_wifi_powersave_enabled != null;
-        public void Resetis_wifi_powersave_enabled() => __pbn__is_wifi_powersave_enabled = null;
-        private bool? __pbn__is_wifi_powersave_enabled;
-
         [global::ProtoBuf.ProtoMember(27)]
         public bool is_fan_control_available
         {
@@ -3573,14 +3576,14 @@ namespace SteamKit2.Internal
             => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
         [global::ProtoBuf.ProtoMember(1)]
-        public float stage_progress
+        public float total_progress
         {
-            get => __pbn__stage_progress.GetValueOrDefault();
-            set => __pbn__stage_progress = value;
+            get => __pbn__total_progress.GetValueOrDefault();
+            set => __pbn__total_progress = value;
         }
-        public bool ShouldSerializestage_progress() => __pbn__stage_progress != null;
-        public void Resetstage_progress() => __pbn__stage_progress = null;
-        private float? __pbn__stage_progress;
+        public bool ShouldSerializetotal_progress() => __pbn__total_progress != null;
+        public void Resettotal_progress() => __pbn__total_progress = null;
+        private float? __pbn__total_progress;
 
         [global::ProtoBuf.ProtoMember(2)]
         public long stage_size_bytes
@@ -3601,6 +3604,16 @@ namespace SteamKit2.Internal
         public bool ShouldSerializertime_estimated_completion() => __pbn__rtime_estimated_completion != null;
         public void Resetrtime_estimated_completion() => __pbn__rtime_estimated_completion = null;
         private uint? __pbn__rtime_estimated_completion;
+
+        [global::ProtoBuf.ProtoMember(4)]
+        public long stage_bytes_downloaded
+        {
+            get => __pbn__stage_bytes_downloaded.GetValueOrDefault();
+            set => __pbn__stage_bytes_downloaded = value;
+        }
+        public bool ShouldSerializestage_bytes_downloaded() => __pbn__stage_bytes_downloaded != null;
+        public void Resetstage_bytes_downloaded() => __pbn__stage_bytes_downloaded = null;
+        private long? __pbn__stage_bytes_downloaded;
 
     }
 
@@ -3696,6 +3709,9 @@ namespace SteamKit2.Internal
 
         [global::ProtoBuf.ProtoMember(1)]
         public global::System.Collections.Generic.List<EUpdaterType> apply_types { get; } = new global::System.Collections.Generic.List<EUpdaterType>();
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public global::System.Collections.Generic.List<EUpdaterType> recheck_types { get; } = new global::System.Collections.Generic.List<EUpdaterType>();
 
     }
 
@@ -4255,6 +4271,14 @@ namespace SteamKit2.Internal
         k_ECloudPendingRemoteOperationUploadInProgress = 2,
         k_ECloudPendingRemoteOperationUploadPending = 3,
         k_ECloudPendingRemoteOperationAppSessionSuspended = 4,
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public enum EDisplayManagerRGBRange
+    {
+        k_EDisplayManagerRGBRange_Automatic = 0,
+        k_EDisplayManagerRGBRange_Full = 1,
+        k_EDisplayManagerRGBRange_Limited = 2,
     }
 
     [global::ProtoBuf.ProtoContract()]

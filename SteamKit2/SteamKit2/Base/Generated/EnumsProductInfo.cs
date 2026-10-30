@@ -20,6 +20,16 @@ namespace SteamKit2.Internal
         k_EContentDescriptorMAX = 6,
     }
 
+    [global::ProtoBuf.ProtoContract()]
+    public enum EInteractiveElement
+    {
+        k_EInteractiveElement_Invalid = 0,
+        k_EInteractiveElement_InGamePurchases = 1,
+        k_EInteractiveElement_InGamePurchasesOfRandomizedItems = 2,
+        k_EInteractiveElement_InGameChat = 3,
+        k_EInteractiveElement_OnlineInteractivity = 4,
+    }
+
 }
 
 #pragma warning restore CS0612, CS0618, CS1591, CS3021, CS8981, IDE0079, IDE1006, RCS1036, RCS1057, RCS1085, RCS1192

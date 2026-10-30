@@ -962,6 +962,39 @@ namespace SteamKit2.Internal
             public void Resetspectator_name_strindex() => __pbn__spectator_name_strindex = null;
             private uint? __pbn__spectator_name_strindex;
 
+            [global::ProtoBuf.ProtoMember(33, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+            public global::System.Collections.Generic.List<ulong> friends { get; } = new global::System.Collections.Generic.List<ulong>();
+
+            [global::ProtoBuf.ProtoMember(34)]
+            public uint friends_count
+            {
+                get => __pbn__friends_count.GetValueOrDefault();
+                set => __pbn__friends_count = value;
+            }
+            public bool ShouldSerializefriends_count() => __pbn__friends_count != null;
+            public void Resetfriends_count() => __pbn__friends_count = null;
+            private uint? __pbn__friends_count;
+
+            [global::ProtoBuf.ProtoMember(35)]
+            public uint friends_count_connected
+            {
+                get => __pbn__friends_count_connected.GetValueOrDefault();
+                set => __pbn__friends_count_connected = value;
+            }
+            public bool ShouldSerializefriends_count_connected() => __pbn__friends_count_connected != null;
+            public void Resetfriends_count_connected() => __pbn__friends_count_connected = null;
+            private uint? __pbn__friends_count_connected;
+
+            [global::ProtoBuf.ProtoMember(36)]
+            public uint ping_estimate
+            {
+                get => __pbn__ping_estimate.GetValueOrDefault();
+                set => __pbn__ping_estimate = value;
+            }
+            public bool ShouldSerializeping_estimate() => __pbn__ping_estimate != null;
+            public void Resetping_estimate() => __pbn__ping_estimate = null;
+            private uint? __pbn__ping_estimate;
+
         }
 
         [global::ProtoBuf.ProtoContract()]

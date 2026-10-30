@@ -649,6 +649,28 @@ namespace SteamKit2.Internal
         public void Resetsealed_type() => __pbn__sealed_type = null;
         private uint? __pbn__sealed_type;
 
+        [global::ProtoBuf.ProtoMember(38)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string market_name_inside_group
+        {
+            get => __pbn__market_name_inside_group ?? "";
+            set => __pbn__market_name_inside_group = value;
+        }
+        public bool ShouldSerializemarket_name_inside_group() => __pbn__market_name_inside_group != null;
+        public void Resetmarket_name_inside_group() => __pbn__market_name_inside_group = null;
+        private string __pbn__market_name_inside_group;
+
+        [global::ProtoBuf.ProtoMember(39)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string market_bucket_id
+        {
+            get => __pbn__market_bucket_id ?? "";
+            set => __pbn__market_bucket_id = value;
+        }
+        public bool ShouldSerializemarket_bucket_id() => __pbn__market_bucket_id != null;
+        public void Resetmarket_bucket_id() => __pbn__market_bucket_id = null;
+        private string __pbn__market_bucket_id;
+
     }
 
     [global::ProtoBuf.ProtoContract()]

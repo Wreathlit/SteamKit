@@ -116,6 +116,17 @@ namespace SteamKit2.Internal
         public void Resetdlc_appid() => __pbn__dlc_appid = null;
         private uint? __pbn__dlc_appid;
 
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string remote_client_name
+        {
+            get => __pbn__remote_client_name ?? "";
+            set => __pbn__remote_client_name = value;
+        }
+        public bool ShouldSerializeremote_client_name() => __pbn__remote_client_name != null;
+        public void Resetremote_client_name() => __pbn__remote_client_name = null;
+        private string __pbn__remote_client_name;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1278,6 +1289,111 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class CClientNotificationControllerLowBattery : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint controller_type
+        {
+            get => __pbn__controller_type.GetValueOrDefault();
+            set => __pbn__controller_type = value;
+        }
+        public bool ShouldSerializecontroller_type() => __pbn__controller_type != null;
+        public void Resetcontroller_type() => __pbn__controller_type = null;
+        private uint? __pbn__controller_type;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public float pct_remaining
+        {
+            get => __pbn__pct_remaining.GetValueOrDefault();
+            set => __pbn__pct_remaining = value;
+        }
+        public bool ShouldSerializepct_remaining() => __pbn__pct_remaining != null;
+        public void Resetpct_remaining() => __pbn__pct_remaining = null;
+        private float? __pbn__pct_remaining;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CClientNotificationControllerConnected : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint controller_index
+        {
+            get => __pbn__controller_index.GetValueOrDefault();
+            set => __pbn__controller_index = value;
+        }
+        public bool ShouldSerializecontroller_index() => __pbn__controller_index != null;
+        public void Resetcontroller_index() => __pbn__controller_index = null;
+        private uint? __pbn__controller_index;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CClientNotificationControllerDisconnected : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint controller_type
+        {
+            get => __pbn__controller_type.GetValueOrDefault();
+            set => __pbn__controller_type = value;
+        }
+        public bool ShouldSerializecontroller_type() => __pbn__controller_type != null;
+        public void Resetcontroller_type() => __pbn__controller_type = null;
+        private uint? __pbn__controller_type;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string controller_name
+        {
+            get => __pbn__controller_name ?? "";
+            set => __pbn__controller_name = value;
+        }
+        public bool ShouldSerializecontroller_name() => __pbn__controller_name != null;
+        public void Resetcontroller_name() => __pbn__controller_name = null;
+        private string __pbn__controller_name;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CClientNotificationLoggedInAsUser : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CClientNotificationRestartNeeded : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CClientNotificationRedeemFramePromo : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public enum EClientNotificationType
     {
         k_EClientNotificationType_Invalid = 0,
@@ -1340,6 +1456,12 @@ namespace SteamKit2.Internal
         k_EClientNotificationType_PlaytestInvite = 59,
         k_EClientNotificationType_TradeReversal = 60,
         k_EClientNotificationType_HardwareUpdateAvailable = 61,
+        k_EClientNotificationType_ControllerLowBattery = 62,
+        k_EClientNotificationType_ControllerConnected = 63,
+        k_EClientNotificationType_ControllerDisconnected = 64,
+        k_EClientNotificationType_LoggedInAsUser = 65,
+        k_EClientNotificationType_RestartNeeded = 66,
+        k_EClientNotificationType_RedeemFramePromo = 67,
     }
 
     [global::ProtoBuf.ProtoContract()]

@@ -163,6 +163,499 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class CUserAccount_GetOptOutEmailOptions_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string opt_out_token
+        {
+            get => __pbn__opt_out_token ?? "";
+            set => __pbn__opt_out_token = value;
+        }
+        public bool ShouldSerializeopt_out_token() => __pbn__opt_out_token != null;
+        public void Resetopt_out_token() => __pbn__opt_out_token = null;
+        private string __pbn__opt_out_token;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPerAppEmailOptions : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint appid
+        {
+            get => __pbn__appid.GetValueOrDefault();
+            set => __pbn__appid = value;
+        }
+        public bool ShouldSerializeappid() => __pbn__appid != null;
+        public void Resetappid() => __pbn__appid = null;
+        private uint? __pbn__appid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue(false)]
+        public bool opt_out_in_library_events
+        {
+            get => __pbn__opt_out_in_library_events ?? false;
+            set => __pbn__opt_out_in_library_events = value;
+        }
+        public bool ShouldSerializeopt_out_in_library_events() => __pbn__opt_out_in_library_events != null;
+        public void Resetopt_out_in_library_events() => __pbn__opt_out_in_library_events = null;
+        private bool? __pbn__opt_out_in_library_events;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPerClanEmailOptions : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint clanid
+        {
+            get => __pbn__clanid.GetValueOrDefault();
+            set => __pbn__clanid = value;
+        }
+        public bool ShouldSerializeclanid() => __pbn__clanid != null;
+        public void Resetclanid() => __pbn__clanid = null;
+        private uint? __pbn__clanid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue(false)]
+        public bool opt_out_in_library_events
+        {
+            get => __pbn__opt_out_in_library_events ?? false;
+            set => __pbn__opt_out_in_library_events = value;
+        }
+        public bool ShouldSerializeopt_out_in_library_events() => __pbn__opt_out_in_library_events != null;
+        public void Resetopt_out_in_library_events() => __pbn__opt_out_in_library_events = null;
+        private bool? __pbn__opt_out_in_library_events;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CUserAccount_GetOptOutEmailOptions_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string email
+        {
+            get => __pbn__email ?? "";
+            set => __pbn__email = value;
+        }
+        public bool ShouldSerializeemail() => __pbn__email != null;
+        public void Resetemail() => __pbn__email = null;
+        private string __pbn__email;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public bool opt_out_all
+        {
+            get => __pbn__opt_out_all.GetValueOrDefault();
+            set => __pbn__opt_out_all = value;
+        }
+        public bool ShouldSerializeopt_out_all() => __pbn__opt_out_all != null;
+        public void Resetopt_out_all() => __pbn__opt_out_all = null;
+        private bool? __pbn__opt_out_all;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public bool opt_out_wishlist_sales
+        {
+            get => __pbn__opt_out_wishlist_sales.GetValueOrDefault();
+            set => __pbn__opt_out_wishlist_sales = value;
+        }
+        public bool ShouldSerializeopt_out_wishlist_sales() => __pbn__opt_out_wishlist_sales != null;
+        public void Resetopt_out_wishlist_sales() => __pbn__opt_out_wishlist_sales = null;
+        private bool? __pbn__opt_out_wishlist_sales;
+
+        [global::ProtoBuf.ProtoMember(4)]
+        public bool opt_out_seasonal_promo
+        {
+            get => __pbn__opt_out_seasonal_promo.GetValueOrDefault();
+            set => __pbn__opt_out_seasonal_promo = value;
+        }
+        public bool ShouldSerializeopt_out_seasonal_promo() => __pbn__opt_out_seasonal_promo != null;
+        public void Resetopt_out_seasonal_promo() => __pbn__opt_out_seasonal_promo = null;
+        private bool? __pbn__opt_out_seasonal_promo;
+
+        [global::ProtoBuf.ProtoMember(5)]
+        public bool opt_out_wishlist_releases
+        {
+            get => __pbn__opt_out_wishlist_releases.GetValueOrDefault();
+            set => __pbn__opt_out_wishlist_releases = value;
+        }
+        public bool ShouldSerializeopt_out_wishlist_releases() => __pbn__opt_out_wishlist_releases != null;
+        public void Resetopt_out_wishlist_releases() => __pbn__opt_out_wishlist_releases = null;
+        private bool? __pbn__opt_out_wishlist_releases;
+
+        [global::ProtoBuf.ProtoMember(6)]
+        public bool opt_out_greenlight_releases
+        {
+            get => __pbn__opt_out_greenlight_releases.GetValueOrDefault();
+            set => __pbn__opt_out_greenlight_releases = value;
+        }
+        public bool ShouldSerializeopt_out_greenlight_releases() => __pbn__opt_out_greenlight_releases != null;
+        public void Resetopt_out_greenlight_releases() => __pbn__opt_out_greenlight_releases = null;
+        private bool? __pbn__opt_out_greenlight_releases;
+
+        [global::ProtoBuf.ProtoMember(7)]
+        public bool opt_out_curator_connect
+        {
+            get => __pbn__opt_out_curator_connect.GetValueOrDefault();
+            set => __pbn__opt_out_curator_connect = value;
+        }
+        public bool ShouldSerializeopt_out_curator_connect() => __pbn__opt_out_curator_connect != null;
+        public void Resetopt_out_curator_connect() => __pbn__opt_out_curator_connect = null;
+        private bool? __pbn__opt_out_curator_connect;
+
+        [global::ProtoBuf.ProtoMember(8)]
+        public bool opt_out_creator_home_releases
+        {
+            get => __pbn__opt_out_creator_home_releases.GetValueOrDefault();
+            set => __pbn__opt_out_creator_home_releases = value;
+        }
+        public bool ShouldSerializeopt_out_creator_home_releases() => __pbn__opt_out_creator_home_releases != null;
+        public void Resetopt_out_creator_home_releases() => __pbn__opt_out_creator_home_releases = null;
+        private bool? __pbn__opt_out_creator_home_releases;
+
+        [global::ProtoBuf.ProtoMember(9)]
+        public bool opt_out_in_library_events
+        {
+            get => __pbn__opt_out_in_library_events.GetValueOrDefault();
+            set => __pbn__opt_out_in_library_events = value;
+        }
+        public bool ShouldSerializeopt_out_in_library_events() => __pbn__opt_out_in_library_events != null;
+        public void Resetopt_out_in_library_events() => __pbn__opt_out_in_library_events = null;
+        private bool? __pbn__opt_out_in_library_events;
+
+        [global::ProtoBuf.ProtoMember(10)]
+        public global::System.Collections.Generic.List<CPerAppEmailOptions> per_app_opt_outs { get; } = new global::System.Collections.Generic.List<CPerAppEmailOptions>();
+
+        [global::ProtoBuf.ProtoMember(11)]
+        public global::System.Collections.Generic.List<CPerClanEmailOptions> per_clan_opt_outs { get; } = new global::System.Collections.Generic.List<CPerClanEmailOptions>();
+
+        [global::ProtoBuf.ProtoMember(12)]
+        public bool opt_out_loyalty_awards_received
+        {
+            get => __pbn__opt_out_loyalty_awards_received.GetValueOrDefault();
+            set => __pbn__opt_out_loyalty_awards_received = value;
+        }
+        public bool ShouldSerializeopt_out_loyalty_awards_received() => __pbn__opt_out_loyalty_awards_received != null;
+        public void Resetopt_out_loyalty_awards_received() => __pbn__opt_out_loyalty_awards_received = null;
+        private bool? __pbn__opt_out_loyalty_awards_received;
+
+        [global::ProtoBuf.ProtoMember(13)]
+        public bool opt_out_partner_messages
+        {
+            get => __pbn__opt_out_partner_messages.GetValueOrDefault();
+            set => __pbn__opt_out_partner_messages = value;
+        }
+        public bool ShouldSerializeopt_out_partner_messages() => __pbn__opt_out_partner_messages != null;
+        public void Resetopt_out_partner_messages() => __pbn__opt_out_partner_messages = null;
+        private bool? __pbn__opt_out_partner_messages;
+
+        [global::ProtoBuf.ProtoMember(14)]
+        public bool opt_out_year_in_review
+        {
+            get => __pbn__opt_out_year_in_review.GetValueOrDefault();
+            set => __pbn__opt_out_year_in_review = value;
+        }
+        public bool ShouldSerializeopt_out_year_in_review() => __pbn__opt_out_year_in_review != null;
+        public void Resetopt_out_year_in_review() => __pbn__opt_out_year_in_review = null;
+        private bool? __pbn__opt_out_year_in_review;
+
+        [global::ProtoBuf.ProtoMember(15)]
+        public bool opt_out_wishlist_demo_releases
+        {
+            get => __pbn__opt_out_wishlist_demo_releases.GetValueOrDefault();
+            set => __pbn__opt_out_wishlist_demo_releases = value;
+        }
+        public bool ShouldSerializeopt_out_wishlist_demo_releases() => __pbn__opt_out_wishlist_demo_releases != null;
+        public void Resetopt_out_wishlist_demo_releases() => __pbn__opt_out_wishlist_demo_releases = null;
+        private bool? __pbn__opt_out_wishlist_demo_releases;
+
+        [global::ProtoBuf.ProtoMember(16)]
+        public bool opt_out_creator_home_demo_releases
+        {
+            get => __pbn__opt_out_creator_home_demo_releases.GetValueOrDefault();
+            set => __pbn__opt_out_creator_home_demo_releases = value;
+        }
+        public bool ShouldSerializeopt_out_creator_home_demo_releases() => __pbn__opt_out_creator_home_demo_releases != null;
+        public void Resetopt_out_creator_home_demo_releases() => __pbn__opt_out_creator_home_demo_releases = null;
+        private bool? __pbn__opt_out_creator_home_demo_releases;
+
+        [global::ProtoBuf.ProtoMember(17)]
+        [global::System.ComponentModel.DefaultValue(true)]
+        public bool opt_out_next_fest_starts
+        {
+            get => __pbn__opt_out_next_fest_starts ?? true;
+            set => __pbn__opt_out_next_fest_starts = value;
+        }
+        public bool ShouldSerializeopt_out_next_fest_starts() => __pbn__opt_out_next_fest_starts != null;
+        public void Resetopt_out_next_fest_starts() => __pbn__opt_out_next_fest_starts = null;
+        private bool? __pbn__opt_out_next_fest_starts;
+
+        [global::ProtoBuf.ProtoMember(18)]
+        [global::System.ComponentModel.DefaultValue(true)]
+        public bool opt_out_theme_sale_starts
+        {
+            get => __pbn__opt_out_theme_sale_starts ?? true;
+            set => __pbn__opt_out_theme_sale_starts = value;
+        }
+        public bool ShouldSerializeopt_out_theme_sale_starts() => __pbn__opt_out_theme_sale_starts != null;
+        public void Resetopt_out_theme_sale_starts() => __pbn__opt_out_theme_sale_starts = null;
+        private bool? __pbn__opt_out_theme_sale_starts;
+
+        [global::ProtoBuf.ProtoMember(19)]
+        public bool opt_out_season_pass_ship
+        {
+            get => __pbn__opt_out_season_pass_ship.GetValueOrDefault();
+            set => __pbn__opt_out_season_pass_ship = value;
+        }
+        public bool ShouldSerializeopt_out_season_pass_ship() => __pbn__opt_out_season_pass_ship != null;
+        public void Resetopt_out_season_pass_ship() => __pbn__opt_out_season_pass_ship = null;
+        private bool? __pbn__opt_out_season_pass_ship;
+
+        [global::ProtoBuf.ProtoMember(20)]
+        public bool opt_out_roadmap_ship
+        {
+            get => __pbn__opt_out_roadmap_ship.GetValueOrDefault();
+            set => __pbn__opt_out_roadmap_ship = value;
+        }
+        public bool ShouldSerializeopt_out_roadmap_ship() => __pbn__opt_out_roadmap_ship != null;
+        public void Resetopt_out_roadmap_ship() => __pbn__opt_out_roadmap_ship = null;
+        private bool? __pbn__opt_out_roadmap_ship;
+
+        [global::ProtoBuf.ProtoMember(21)]
+        public bool is_self
+        {
+            get => __pbn__is_self.GetValueOrDefault();
+            set => __pbn__is_self = value;
+        }
+        public bool ShouldSerializeis_self() => __pbn__is_self != null;
+        public void Resetis_self() => __pbn__is_self = null;
+        private bool? __pbn__is_self;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CUserAccount_SetOptOutEmailOptions_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string opt_out_token
+        {
+            get => __pbn__opt_out_token ?? "";
+            set => __pbn__opt_out_token = value;
+        }
+        public bool ShouldSerializeopt_out_token() => __pbn__opt_out_token != null;
+        public void Resetopt_out_token() => __pbn__opt_out_token = null;
+        private string __pbn__opt_out_token;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public bool opt_out_all
+        {
+            get => __pbn__opt_out_all.GetValueOrDefault();
+            set => __pbn__opt_out_all = value;
+        }
+        public bool ShouldSerializeopt_out_all() => __pbn__opt_out_all != null;
+        public void Resetopt_out_all() => __pbn__opt_out_all = null;
+        private bool? __pbn__opt_out_all;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public bool opt_out_wishlist_sales
+        {
+            get => __pbn__opt_out_wishlist_sales.GetValueOrDefault();
+            set => __pbn__opt_out_wishlist_sales = value;
+        }
+        public bool ShouldSerializeopt_out_wishlist_sales() => __pbn__opt_out_wishlist_sales != null;
+        public void Resetopt_out_wishlist_sales() => __pbn__opt_out_wishlist_sales = null;
+        private bool? __pbn__opt_out_wishlist_sales;
+
+        [global::ProtoBuf.ProtoMember(4)]
+        public bool opt_out_seasonal_promo
+        {
+            get => __pbn__opt_out_seasonal_promo.GetValueOrDefault();
+            set => __pbn__opt_out_seasonal_promo = value;
+        }
+        public bool ShouldSerializeopt_out_seasonal_promo() => __pbn__opt_out_seasonal_promo != null;
+        public void Resetopt_out_seasonal_promo() => __pbn__opt_out_seasonal_promo = null;
+        private bool? __pbn__opt_out_seasonal_promo;
+
+        [global::ProtoBuf.ProtoMember(5)]
+        public bool opt_out_wishlist_releases
+        {
+            get => __pbn__opt_out_wishlist_releases.GetValueOrDefault();
+            set => __pbn__opt_out_wishlist_releases = value;
+        }
+        public bool ShouldSerializeopt_out_wishlist_releases() => __pbn__opt_out_wishlist_releases != null;
+        public void Resetopt_out_wishlist_releases() => __pbn__opt_out_wishlist_releases = null;
+        private bool? __pbn__opt_out_wishlist_releases;
+
+        [global::ProtoBuf.ProtoMember(6)]
+        public bool opt_out_greenlight_releases
+        {
+            get => __pbn__opt_out_greenlight_releases.GetValueOrDefault();
+            set => __pbn__opt_out_greenlight_releases = value;
+        }
+        public bool ShouldSerializeopt_out_greenlight_releases() => __pbn__opt_out_greenlight_releases != null;
+        public void Resetopt_out_greenlight_releases() => __pbn__opt_out_greenlight_releases = null;
+        private bool? __pbn__opt_out_greenlight_releases;
+
+        [global::ProtoBuf.ProtoMember(7)]
+        public bool opt_out_curator_connect
+        {
+            get => __pbn__opt_out_curator_connect.GetValueOrDefault();
+            set => __pbn__opt_out_curator_connect = value;
+        }
+        public bool ShouldSerializeopt_out_curator_connect() => __pbn__opt_out_curator_connect != null;
+        public void Resetopt_out_curator_connect() => __pbn__opt_out_curator_connect = null;
+        private bool? __pbn__opt_out_curator_connect;
+
+        [global::ProtoBuf.ProtoMember(8)]
+        public bool opt_out_creator_home_releases
+        {
+            get => __pbn__opt_out_creator_home_releases.GetValueOrDefault();
+            set => __pbn__opt_out_creator_home_releases = value;
+        }
+        public bool ShouldSerializeopt_out_creator_home_releases() => __pbn__opt_out_creator_home_releases != null;
+        public void Resetopt_out_creator_home_releases() => __pbn__opt_out_creator_home_releases = null;
+        private bool? __pbn__opt_out_creator_home_releases;
+
+        [global::ProtoBuf.ProtoMember(9)]
+        public bool opt_out_in_library_events
+        {
+            get => __pbn__opt_out_in_library_events.GetValueOrDefault();
+            set => __pbn__opt_out_in_library_events = value;
+        }
+        public bool ShouldSerializeopt_out_in_library_events() => __pbn__opt_out_in_library_events != null;
+        public void Resetopt_out_in_library_events() => __pbn__opt_out_in_library_events = null;
+        private bool? __pbn__opt_out_in_library_events;
+
+        [global::ProtoBuf.ProtoMember(10)]
+        public global::System.Collections.Generic.List<CPerAppEmailOptions> per_app_opt_outs { get; } = new global::System.Collections.Generic.List<CPerAppEmailOptions>();
+
+        [global::ProtoBuf.ProtoMember(11)]
+        public global::System.Collections.Generic.List<CPerClanEmailOptions> per_clan_opt_outs { get; } = new global::System.Collections.Generic.List<CPerClanEmailOptions>();
+
+        [global::ProtoBuf.ProtoMember(12)]
+        public bool opt_out_loyalty_awards_received
+        {
+            get => __pbn__opt_out_loyalty_awards_received.GetValueOrDefault();
+            set => __pbn__opt_out_loyalty_awards_received = value;
+        }
+        public bool ShouldSerializeopt_out_loyalty_awards_received() => __pbn__opt_out_loyalty_awards_received != null;
+        public void Resetopt_out_loyalty_awards_received() => __pbn__opt_out_loyalty_awards_received = null;
+        private bool? __pbn__opt_out_loyalty_awards_received;
+
+        [global::ProtoBuf.ProtoMember(13)]
+        public bool opt_out_partner_messages
+        {
+            get => __pbn__opt_out_partner_messages.GetValueOrDefault();
+            set => __pbn__opt_out_partner_messages = value;
+        }
+        public bool ShouldSerializeopt_out_partner_messages() => __pbn__opt_out_partner_messages != null;
+        public void Resetopt_out_partner_messages() => __pbn__opt_out_partner_messages = null;
+        private bool? __pbn__opt_out_partner_messages;
+
+        [global::ProtoBuf.ProtoMember(14)]
+        public bool opt_out_year_in_review
+        {
+            get => __pbn__opt_out_year_in_review.GetValueOrDefault();
+            set => __pbn__opt_out_year_in_review = value;
+        }
+        public bool ShouldSerializeopt_out_year_in_review() => __pbn__opt_out_year_in_review != null;
+        public void Resetopt_out_year_in_review() => __pbn__opt_out_year_in_review = null;
+        private bool? __pbn__opt_out_year_in_review;
+
+        [global::ProtoBuf.ProtoMember(15)]
+        public bool opt_out_wishlist_demo_releases
+        {
+            get => __pbn__opt_out_wishlist_demo_releases.GetValueOrDefault();
+            set => __pbn__opt_out_wishlist_demo_releases = value;
+        }
+        public bool ShouldSerializeopt_out_wishlist_demo_releases() => __pbn__opt_out_wishlist_demo_releases != null;
+        public void Resetopt_out_wishlist_demo_releases() => __pbn__opt_out_wishlist_demo_releases = null;
+        private bool? __pbn__opt_out_wishlist_demo_releases;
+
+        [global::ProtoBuf.ProtoMember(16)]
+        public bool opt_out_creator_home_demo_releases
+        {
+            get => __pbn__opt_out_creator_home_demo_releases.GetValueOrDefault();
+            set => __pbn__opt_out_creator_home_demo_releases = value;
+        }
+        public bool ShouldSerializeopt_out_creator_home_demo_releases() => __pbn__opt_out_creator_home_demo_releases != null;
+        public void Resetopt_out_creator_home_demo_releases() => __pbn__opt_out_creator_home_demo_releases = null;
+        private bool? __pbn__opt_out_creator_home_demo_releases;
+
+        [global::ProtoBuf.ProtoMember(17)]
+        public bool opt_out_next_fest_starts
+        {
+            get => __pbn__opt_out_next_fest_starts.GetValueOrDefault();
+            set => __pbn__opt_out_next_fest_starts = value;
+        }
+        public bool ShouldSerializeopt_out_next_fest_starts() => __pbn__opt_out_next_fest_starts != null;
+        public void Resetopt_out_next_fest_starts() => __pbn__opt_out_next_fest_starts = null;
+        private bool? __pbn__opt_out_next_fest_starts;
+
+        [global::ProtoBuf.ProtoMember(18)]
+        public bool opt_out_theme_sale_starts
+        {
+            get => __pbn__opt_out_theme_sale_starts.GetValueOrDefault();
+            set => __pbn__opt_out_theme_sale_starts = value;
+        }
+        public bool ShouldSerializeopt_out_theme_sale_starts() => __pbn__opt_out_theme_sale_starts != null;
+        public void Resetopt_out_theme_sale_starts() => __pbn__opt_out_theme_sale_starts = null;
+        private bool? __pbn__opt_out_theme_sale_starts;
+
+        [global::ProtoBuf.ProtoMember(19)]
+        public bool opt_out_season_pass_ship
+        {
+            get => __pbn__opt_out_season_pass_ship.GetValueOrDefault();
+            set => __pbn__opt_out_season_pass_ship = value;
+        }
+        public bool ShouldSerializeopt_out_season_pass_ship() => __pbn__opt_out_season_pass_ship != null;
+        public void Resetopt_out_season_pass_ship() => __pbn__opt_out_season_pass_ship = null;
+        private bool? __pbn__opt_out_season_pass_ship;
+
+        [global::ProtoBuf.ProtoMember(20)]
+        public bool opt_out_roadmap_ship
+        {
+            get => __pbn__opt_out_roadmap_ship.GetValueOrDefault();
+            set => __pbn__opt_out_roadmap_ship = value;
+        }
+        public bool ShouldSerializeopt_out_roadmap_ship() => __pbn__opt_out_roadmap_ship != null;
+        public void Resetopt_out_roadmap_ship() => __pbn__opt_out_roadmap_ship = null;
+        private bool? __pbn__opt_out_roadmap_ship;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CUserAccount_SetOptOutEmailOptions_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public partial class CUserAccount_GetClientWalletDetails_Request : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -920,6 +1413,16 @@ namespace SteamKit2.Internal
             return UnifiedMessages.SendMessage<CUserAccount_GetAvailableValveDiscountPromotions_Request, CUserAccount_GetAvailableValveDiscountPromotions_Response>( "UserAccount.GetAvailableValveDiscountPromotions#1", request );
         }
 
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CUserAccount_GetOptOutEmailOptions_Response>> GetOptOutEmailOptions( CUserAccount_GetOptOutEmailOptions_Request request )
+        {
+            return UnifiedMessages.SendMessage<CUserAccount_GetOptOutEmailOptions_Request, CUserAccount_GetOptOutEmailOptions_Response>( "UserAccount.GetOptOutEmailOptions#1", request );
+        }
+
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CUserAccount_SetOptOutEmailOptions_Response>> SetOptOutEmailOptions( CUserAccount_SetOptOutEmailOptions_Request request )
+        {
+            return UnifiedMessages.SendMessage<CUserAccount_SetOptOutEmailOptions_Request, CUserAccount_SetOptOutEmailOptions_Response>( "UserAccount.SetOptOutEmailOptions#1", request );
+        }
+
         public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CUserAccount_GetWalletDetails_Response>> GetClientWalletDetails( CUserAccount_GetClientWalletDetails_Request request )
         {
             return UnifiedMessages.SendMessage<CUserAccount_GetClientWalletDetails_Request, CUserAccount_GetWalletDetails_Response>( "UserAccount.GetClientWalletDetails#1", request );
@@ -976,6 +1479,12 @@ namespace SteamKit2.Internal
             {
                 case "GetAvailableValveDiscountPromotions":
                     PostResponseMsg<CUserAccount_GetAvailableValveDiscountPromotions_Response>( packetMsg );
+                    break;
+                case "GetOptOutEmailOptions":
+                    PostResponseMsg<CUserAccount_GetOptOutEmailOptions_Response>( packetMsg );
+                    break;
+                case "SetOptOutEmailOptions":
+                    PostResponseMsg<CUserAccount_SetOptOutEmailOptions_Response>( packetMsg );
                     break;
                 case "GetClientWalletDetails":
                     PostResponseMsg<CUserAccount_GetWalletDetails_Response>( packetMsg );

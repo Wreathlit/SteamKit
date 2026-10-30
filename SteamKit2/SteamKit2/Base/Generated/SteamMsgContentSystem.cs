@@ -264,6 +264,17 @@ namespace SteamKit2.Internal
         [global::ProtoBuf.ProtoMember(16)]
         public global::System.Collections.Generic.List<string> bypass_proxies_of_type { get; } = new global::System.Collections.Generic.List<string>();
 
+        [global::ProtoBuf.ProtoMember(17)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string group
+        {
+            get => __pbn__group ?? "";
+            set => __pbn__group = value;
+        }
+        public bool ShouldSerializegroup() => __pbn__group != null;
+        public void Resetgroup() => __pbn__group = null;
+        private string __pbn__group;
+
     }
 
     [global::ProtoBuf.ProtoContract()]

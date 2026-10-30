@@ -429,6 +429,89 @@ namespace SteamKit2.Internal
         public void Resettrace_tag() => __pbn__trace_tag = null;
         private ulong? __pbn__trace_tag;
 
+        [global::ProtoBuf.ProtoMember(46)]
+        public uint wg_msg_trace_flags
+        {
+            get => __pbn__wg_msg_trace_flags.GetValueOrDefault();
+            set => __pbn__wg_msg_trace_flags = value;
+        }
+        public bool ShouldSerializewg_msg_trace_flags() => __pbn__wg_msg_trace_flags != null;
+        public void Resetwg_msg_trace_flags() => __pbn__wg_msg_trace_flags = null;
+        private uint? __pbn__wg_msg_trace_flags;
+
+        [global::ProtoBuf.ProtoMember(47)]
+        public uint wg_msg_trace_instance
+        {
+            get => __pbn__wg_msg_trace_instance.GetValueOrDefault();
+            set => __pbn__wg_msg_trace_instance = value;
+        }
+        public bool ShouldSerializewg_msg_trace_instance() => __pbn__wg_msg_trace_instance != null;
+        public void Resetwg_msg_trace_instance() => __pbn__wg_msg_trace_instance = null;
+        private uint? __pbn__wg_msg_trace_instance;
+
+        [global::ProtoBuf.ProtoMember(48)]
+        public uint wg_msg_trace_gid
+        {
+            get => __pbn__wg_msg_trace_gid.GetValueOrDefault();
+            set => __pbn__wg_msg_trace_gid = value;
+        }
+        public bool ShouldSerializewg_msg_trace_gid() => __pbn__wg_msg_trace_gid != null;
+        public void Resetwg_msg_trace_gid() => __pbn__wg_msg_trace_gid = null;
+        private uint? __pbn__wg_msg_trace_gid;
+
+        [global::ProtoBuf.ProtoMember(49)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string wg_msg_trace_token
+        {
+            get => __pbn__wg_msg_trace_token ?? "";
+            set => __pbn__wg_msg_trace_token = value;
+        }
+        public bool ShouldSerializewg_msg_trace_token() => __pbn__wg_msg_trace_token != null;
+        public void Resetwg_msg_trace_token() => __pbn__wg_msg_trace_token = null;
+        private string __pbn__wg_msg_trace_token;
+
+        [global::ProtoBuf.ProtoMember(50, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong wg_msg_trace_steamid
+        {
+            get => __pbn__wg_msg_trace_steamid.GetValueOrDefault();
+            set => __pbn__wg_msg_trace_steamid = value;
+        }
+        public bool ShouldSerializewg_msg_trace_steamid() => __pbn__wg_msg_trace_steamid != null;
+        public void Resetwg_msg_trace_steamid() => __pbn__wg_msg_trace_steamid = null;
+        private ulong? __pbn__wg_msg_trace_steamid;
+
+        [global::ProtoBuf.ProtoMember(51)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string wg_msg_trace_status
+        {
+            get => __pbn__wg_msg_trace_status ?? "";
+            set => __pbn__wg_msg_trace_status = value;
+        }
+        public bool ShouldSerializewg_msg_trace_status() => __pbn__wg_msg_trace_status != null;
+        public void Resetwg_msg_trace_status() => __pbn__wg_msg_trace_status = null;
+        private string __pbn__wg_msg_trace_status;
+
+        [global::ProtoBuf.ProtoMember(52)]
+        public uint trace_flags
+        {
+            get => __pbn__trace_flags.GetValueOrDefault();
+            set => __pbn__trace_flags = value;
+        }
+        public bool ShouldSerializetrace_flags() => __pbn__trace_flags != null;
+        public void Resettrace_flags() => __pbn__trace_flags = null;
+        private uint? __pbn__trace_flags;
+
+        [global::ProtoBuf.ProtoMember(53)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string browserapi_site
+        {
+            get => __pbn__browserapi_site ?? "";
+            set => __pbn__browserapi_site = value;
+        }
+        public bool ShouldSerializebrowserapi_site() => __pbn__browserapi_site != null;
+        public void Resetbrowserapi_site() => __pbn__browserapi_site = null;
+        private string __pbn__browserapi_site;
+
         [global::ProtoBuf.ProtoMember(15)]
         public uint ip
         {
@@ -1047,16 +1130,6 @@ namespace SteamKit2.Internal
         private global::ProtoBuf.IExtension __pbn__extensionData;
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
             => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-        [global::ProtoBuf.ProtoMember(1)]
-        public uint supported_languages
-        {
-            get => __pbn__supported_languages.GetValueOrDefault();
-            set => __pbn__supported_languages = value;
-        }
-        public bool ShouldSerializesupported_languages() => __pbn__supported_languages != null;
-        public void Resetsupported_languages() => __pbn__supported_languages = null;
-        private uint? __pbn__supported_languages;
 
         [global::ProtoBuf.ProtoMember(2)]
         public bool platform_windows
@@ -1845,6 +1918,16 @@ namespace SteamKit2.Internal
         public void Resetunlisted() => __pbn__unlisted = null;
         private bool? __pbn__unlisted;
 
+        [global::ProtoBuf.ProtoMember(32)]
+        public uint rtime_created
+        {
+            get => __pbn__rtime_created.GetValueOrDefault();
+            set => __pbn__rtime_created = value;
+        }
+        public bool ShouldSerializertime_created() => __pbn__rtime_created != null;
+        public void Resetrtime_created() => __pbn__rtime_created = null;
+        private uint? __pbn__rtime_created;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -2093,6 +2176,58 @@ namespace SteamKit2.Internal
         public bool ShouldSerializequeue_head_position_now() => __pbn__queue_head_position_now != null;
         public void Resetqueue_head_position_now() => __pbn__queue_head_position_now = null;
         private int? __pbn__queue_head_position_now;
+
+        [global::ProtoBuf.ProtoMember(13)]
+        public bool position_is_waitlist
+        {
+            get => __pbn__position_is_waitlist.GetValueOrDefault();
+            set => __pbn__position_is_waitlist = value;
+        }
+        public bool ShouldSerializeposition_is_waitlist() => __pbn__position_is_waitlist != null;
+        public void Resetposition_is_waitlist() => __pbn__position_is_waitlist = null;
+        private bool? __pbn__position_is_waitlist;
+
+        [global::ProtoBuf.ProtoMember(14)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string user_waitlist_token
+        {
+            get => __pbn__user_waitlist_token ?? "";
+            set => __pbn__user_waitlist_token = value;
+        }
+        public bool ShouldSerializeuser_waitlist_token() => __pbn__user_waitlist_token != null;
+        public void Resetuser_waitlist_token() => __pbn__user_waitlist_token = null;
+        private string __pbn__user_waitlist_token;
+
+        [global::ProtoBuf.ProtoMember(15)]
+        public bool queue_in_waitlist
+        {
+            get => __pbn__queue_in_waitlist.GetValueOrDefault();
+            set => __pbn__queue_in_waitlist = value;
+        }
+        public bool ShouldSerializequeue_in_waitlist() => __pbn__queue_in_waitlist != null;
+        public void Resetqueue_in_waitlist() => __pbn__queue_in_waitlist = null;
+        private bool? __pbn__queue_in_waitlist;
+
+        [global::ProtoBuf.ProtoMember(16)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string queue_waitlist_token
+        {
+            get => __pbn__queue_waitlist_token ?? "";
+            set => __pbn__queue_waitlist_token = value;
+        }
+        public bool ShouldSerializequeue_waitlist_token() => __pbn__queue_waitlist_token != null;
+        public void Resetqueue_waitlist_token() => __pbn__queue_waitlist_token = null;
+        private string __pbn__queue_waitlist_token;
+
+        [global::ProtoBuf.ProtoMember(17)]
+        public uint collection_time_active
+        {
+            get => __pbn__collection_time_active.GetValueOrDefault();
+            set => __pbn__collection_time_active = value;
+        }
+        public bool ShouldSerializecollection_time_active() => __pbn__collection_time_active != null;
+        public void Resetcollection_time_active() => __pbn__collection_time_active = null;
+        private uint? __pbn__collection_time_active;
 
     }
 
@@ -2356,6 +2491,87 @@ namespace SteamKit2.Internal
         public bool ShouldSerializevram_size() => __pbn__vram_size != null;
         public void Resetvram_size() => __pbn__vram_size = null;
         private uint? __pbn__vram_size;
+
+        [global::ProtoBuf.ProtoMember(18)]
+        public uint screen_width
+        {
+            get => __pbn__screen_width.GetValueOrDefault();
+            set => __pbn__screen_width = value;
+        }
+        public bool ShouldSerializescreen_width() => __pbn__screen_width != null;
+        public void Resetscreen_width() => __pbn__screen_width = null;
+        private uint? __pbn__screen_width;
+
+        [global::ProtoBuf.ProtoMember(19)]
+        public uint screen_height
+        {
+            get => __pbn__screen_height.GetValueOrDefault();
+            set => __pbn__screen_height = value;
+        }
+        public bool ShouldSerializescreen_height() => __pbn__screen_height != null;
+        public void Resetscreen_height() => __pbn__screen_height = null;
+        private uint? __pbn__screen_height;
+
+        [global::ProtoBuf.ProtoMember(20)]
+        public bool precise_frame_rate
+        {
+            get => __pbn__precise_frame_rate.GetValueOrDefault();
+            set => __pbn__precise_frame_rate = value;
+        }
+        public bool ShouldSerializeprecise_frame_rate() => __pbn__precise_frame_rate != null;
+        public void Resetprecise_frame_rate() => __pbn__precise_frame_rate = null;
+        private bool? __pbn__precise_frame_rate;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class GamePerformanceSettings : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue(EGamePerformanceSetting.k_EGamePerformanceSetting_NotSet)]
+        public EGamePerformanceSetting setting
+        {
+            get => __pbn__setting ?? EGamePerformanceSetting.k_EGamePerformanceSetting_NotSet;
+            set => __pbn__setting = value;
+        }
+        public bool ShouldSerializesetting() => __pbn__setting != null;
+        public void Resetsetting() => __pbn__setting = null;
+        private EGamePerformanceSetting? __pbn__setting;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public uint game_resolution_width
+        {
+            get => __pbn__game_resolution_width.GetValueOrDefault();
+            set => __pbn__game_resolution_width = value;
+        }
+        public bool ShouldSerializegame_resolution_width() => __pbn__game_resolution_width != null;
+        public void Resetgame_resolution_width() => __pbn__game_resolution_width = null;
+        private uint? __pbn__game_resolution_width;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public uint game_resolution_height
+        {
+            get => __pbn__game_resolution_height.GetValueOrDefault();
+            set => __pbn__game_resolution_height = value;
+        }
+        public bool ShouldSerializegame_resolution_height() => __pbn__game_resolution_height != null;
+        public void Resetgame_resolution_height() => __pbn__game_resolution_height = null;
+        private uint? __pbn__game_resolution_height;
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum EGamePerformanceSetting
+        {
+            k_EGamePerformanceSetting_NotSet = 0,
+            k_EGamePerformanceSetting_Low = 1,
+            k_EGamePerformanceSetting_Medium = 2,
+            k_EGamePerformanceSetting_High = 3,
+            k_EGamePerformanceSetting_Ultra = 4,
+            k_EGamePerformanceSetting_Custom = 5,
+        }
 
     }
 

@@ -466,6 +466,56 @@ namespace SteamKit2.Internal
 
     }
 
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CShader_ReportBucketProcessingComplete_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint appid
+        {
+            get => __pbn__appid.GetValueOrDefault();
+            set => __pbn__appid = value;
+        }
+        public bool ShouldSerializeappid() => __pbn__appid != null;
+        public void Resetappid() => __pbn__appid = null;
+        private uint? __pbn__appid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string gpu_desc
+        {
+            get => __pbn__gpu_desc ?? "";
+            set => __pbn__gpu_desc = value;
+        }
+        public bool ShouldSerializegpu_desc() => __pbn__gpu_desc != null;
+        public void Resetgpu_desc() => __pbn__gpu_desc = null;
+        private string __pbn__gpu_desc;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string driver_desc
+        {
+            get => __pbn__driver_desc ?? "";
+            set => __pbn__driver_desc = value;
+        }
+        public bool ShouldSerializedriver_desc() => __pbn__driver_desc != null;
+        public void Resetdriver_desc() => __pbn__driver_desc = null;
+        private string __pbn__driver_desc;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CShader_ReportBucketProcessingComplete_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
     public class Shader : SteamUnifiedMessages.UnifiedService
     {
         public override string ServiceName { get; } = "Shader";
@@ -500,6 +550,11 @@ namespace SteamKit2.Internal
             return UnifiedMessages.SendMessage<CShader_ReportExternalBuild_Request, CShader_ReportExternalBuild_Response>( "Shader.ReportExternalBuild#1", request );
         }
 
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CShader_ReportBucketProcessingComplete_Response>> ReportBucketProcessingComplete( CShader_ReportBucketProcessingComplete_Request request )
+        {
+            return UnifiedMessages.SendMessage<CShader_ReportBucketProcessingComplete_Request, CShader_ReportBucketProcessingComplete_Response>( "Shader.ReportBucketProcessingComplete#1", request );
+        }
+
         public override void HandleResponseMsg( string methodName, PacketClientMsgProtobuf packetMsg )
         {
             switch ( methodName )
@@ -521,6 +576,9 @@ namespace SteamKit2.Internal
                     break;
                 case "ReportExternalBuild":
                     PostResponseMsg<CShader_ReportExternalBuild_Response>( packetMsg );
+                    break;
+                case "ReportBucketProcessingComplete":
+                    PostResponseMsg<CShader_ReportBucketProcessingComplete_Response>( packetMsg );
                     break;
             }
         }

@@ -1077,6 +1077,86 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class CAccountHardware_RegisterSteamMachine_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string serial_number
+        {
+            get => __pbn__serial_number ?? "";
+            set => __pbn__serial_number = value;
+        }
+        public bool ShouldSerializeserial_number() => __pbn__serial_number != null;
+        public void Resetserial_number() => __pbn__serial_number = null;
+        private string __pbn__serial_number;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string machine_code
+        {
+            get => __pbn__machine_code ?? "";
+            set => __pbn__machine_code = value;
+        }
+        public bool ShouldSerializemachine_code() => __pbn__machine_code != null;
+        public void Resetmachine_code() => __pbn__machine_code = null;
+        private string __pbn__machine_code;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CAccountHardware_RegisterSteamMachine_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CAccountHardwarePromotions_RedeemFramePromoPackage_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string serial
+        {
+            get => __pbn__serial ?? "";
+            set => __pbn__serial = value;
+        }
+        public bool ShouldSerializeserial() => __pbn__serial != null;
+        public void Resetserial() => __pbn__serial = null;
+        private string __pbn__serial;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string component_serial
+        {
+            get => __pbn__component_serial ?? "";
+            set => __pbn__component_serial = value;
+        }
+        public bool ShouldSerializecomponent_serial() => __pbn__component_serial != null;
+        public void Resetcomponent_serial() => __pbn__component_serial = null;
+        private string __pbn__component_serial;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CAccountHardwarePromotions_RedeemFramePromoPackage_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public enum EValveIndexComponent
     {
         k_EValveIndexComponentUnknown = 0,
@@ -1168,6 +1248,11 @@ namespace SteamKit2.Internal
             return UnifiedMessages.SendMessage<CAccountHardware_GetSavedHardwareList_Request, CAccountHardware_GetSavedHardwareList_Response>( "AccountHardware.GetSavedHardwareList#1", request );
         }
 
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CAccountHardware_RegisterSteamMachine_Response>> RegisterSteamMachine( CAccountHardware_RegisterSteamMachine_Request request )
+        {
+            return UnifiedMessages.SendMessage<CAccountHardware_RegisterSteamMachine_Request, CAccountHardware_RegisterSteamMachine_Response>( "AccountHardware.RegisterSteamMachine#1", request );
+        }
+
         public override void HandleResponseMsg( string methodName, PacketClientMsgProtobuf packetMsg )
         {
             switch ( methodName )
@@ -1216,6 +1301,33 @@ namespace SteamKit2.Internal
                     break;
                 case "GetSavedHardwareList":
                     PostResponseMsg<CAccountHardware_GetSavedHardwareList_Response>( packetMsg );
+                    break;
+                case "RegisterSteamMachine":
+                    PostResponseMsg<CAccountHardware_RegisterSteamMachine_Response>( packetMsg );
+                    break;
+            }
+        }
+
+        public override void HandleNotificationMsg( string methodName, PacketClientMsgProtobuf packetMsg )
+        {
+        }
+    }
+
+    public class AccountHardwarePromotions : SteamUnifiedMessages.UnifiedService
+    {
+        public override string ServiceName { get; } = "AccountHardwarePromotions";
+
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CAccountHardwarePromotions_RedeemFramePromoPackage_Response>> RedeemFramePromoPackage( CAccountHardwarePromotions_RedeemFramePromoPackage_Request request )
+        {
+            return UnifiedMessages.SendMessage<CAccountHardwarePromotions_RedeemFramePromoPackage_Request, CAccountHardwarePromotions_RedeemFramePromoPackage_Response>( "AccountHardwarePromotions.RedeemFramePromoPackage#1", request );
+        }
+
+        public override void HandleResponseMsg( string methodName, PacketClientMsgProtobuf packetMsg )
+        {
+            switch ( methodName )
+            {
+                case "RedeemFramePromoPackage":
+                    PostResponseMsg<CAccountHardwarePromotions_RedeemFramePromoPackage_Response>( packetMsg );
                     break;
             }
         }

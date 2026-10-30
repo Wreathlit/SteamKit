@@ -647,11 +647,26 @@ namespace SteamKit2.GC.Dota.Internal
             global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
                 => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
-            [global::ProtoBuf.ProtoMember(1, IsRequired = true)]
-            public uint highlight_id { get; set; }
+            [global::ProtoBuf.ProtoMember(1)]
+            public uint highlight_id
+            {
+                get => __pbn__highlight_id.GetValueOrDefault();
+                set => __pbn__highlight_id = value;
+            }
+            public bool ShouldSerializehighlight_id() => __pbn__highlight_id != null;
+            public void Resethighlight_id() => __pbn__highlight_id = null;
+            private uint? __pbn__highlight_id;
 
-            [global::ProtoBuf.ProtoMember(2, IsRequired = true)]
-            public CMsgBattleReport_HighlightCategory category { get; set; } = CMsgBattleReport_HighlightCategory.k_eHighlightGeneral;
+            [global::ProtoBuf.ProtoMember(2)]
+            [global::System.ComponentModel.DefaultValue(CMsgBattleReport_HighlightCategory.k_eHighlightGeneral)]
+            public CMsgBattleReport_HighlightCategory category
+            {
+                get => __pbn__category ?? CMsgBattleReport_HighlightCategory.k_eHighlightGeneral;
+                set => __pbn__category = value;
+            }
+            public bool ShouldSerializecategory() => __pbn__category != null;
+            public void Resetcategory() => __pbn__category = null;
+            private CMsgBattleReport_HighlightCategory? __pbn__category;
 
             [global::ProtoBuf.ProtoMember(3)]
             [global::System.ComponentModel.DefaultValue(CMsgBattleReport_HighlightTier.k_eHighlightTierLow)]

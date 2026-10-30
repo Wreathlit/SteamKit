@@ -704,36 +704,6 @@ namespace SteamKit2.Internal
         public void Resetis_chrome_os() => __pbn__is_chrome_os = null;
         private bool? __pbn__is_chrome_os;
 
-        [global::ProtoBuf.ProtoMember(99)]
-        public bool is_steam_box_deprecated
-        {
-            get => __pbn__is_steam_box_deprecated.GetValueOrDefault();
-            set => __pbn__is_steam_box_deprecated = value;
-        }
-        public bool ShouldSerializeis_steam_box_deprecated() => __pbn__is_steam_box_deprecated != null;
-        public void Resetis_steam_box_deprecated() => __pbn__is_steam_box_deprecated = null;
-        private bool? __pbn__is_steam_box_deprecated;
-
-        [global::ProtoBuf.ProtoMember(107)]
-        public bool is_steam_deck_deprecated
-        {
-            get => __pbn__is_steam_deck_deprecated.GetValueOrDefault();
-            set => __pbn__is_steam_deck_deprecated = value;
-        }
-        public bool ShouldSerializeis_steam_deck_deprecated() => __pbn__is_steam_deck_deprecated != null;
-        public void Resetis_steam_deck_deprecated() => __pbn__is_steam_deck_deprecated = null;
-        private bool? __pbn__is_steam_deck_deprecated;
-
-        [global::ProtoBuf.ProtoMember(110)]
-        public bool is_tesla_deprecated
-        {
-            get => __pbn__is_tesla_deprecated.GetValueOrDefault();
-            set => __pbn__is_tesla_deprecated = value;
-        }
-        public bool ShouldSerializeis_tesla_deprecated() => __pbn__is_tesla_deprecated != null;
-        public void Resetis_tesla_deprecated() => __pbn__is_tesla_deprecated = null;
-        private bool? __pbn__is_tesla_deprecated;
-
         [global::ProtoBuf.ProtoMember(111)]
         public uint gaming_device_type
         {

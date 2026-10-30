@@ -601,6 +601,16 @@ namespace SteamKit2.Internal
         public void Resetinclude_extended_appinfo() => __pbn__include_extended_appinfo = null;
         private bool? __pbn__include_extended_appinfo;
 
+        [global::ProtoBuf.ProtoMember(9)]
+        public bool include_family_licenses
+        {
+            get => __pbn__include_family_licenses.GetValueOrDefault();
+            set => __pbn__include_family_licenses = value;
+        }
+        public bool ShouldSerializeinclude_family_licenses() => __pbn__include_family_licenses != null;
+        public void Resetinclude_family_licenses() => __pbn__include_family_licenses = null;
+        private bool? __pbn__include_family_licenses;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -817,6 +827,16 @@ namespace SteamKit2.Internal
             public void Resetplaytime_disconnected() => __pbn__playtime_disconnected = null;
             private int? __pbn__playtime_disconnected;
 
+            [global::ProtoBuf.ProtoMember(21)]
+            public bool family_shared
+            {
+                get => __pbn__family_shared.GetValueOrDefault();
+                set => __pbn__family_shared = value;
+            }
+            public bool ShouldSerializefamily_shared() => __pbn__family_shared != null;
+            public void Resetfamily_shared() => __pbn__family_shared = null;
+            private bool? __pbn__family_shared;
+
         }
 
     }
@@ -881,6 +901,16 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeappid() => __pbn__appid != null;
         public void Resetappid() => __pbn__appid = null;
         private uint? __pbn__appid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public bool include_family_licenses
+        {
+            get => __pbn__include_family_licenses.GetValueOrDefault();
+            set => __pbn__include_family_licenses = value;
+        }
+        public bool ShouldSerializeinclude_family_licenses() => __pbn__include_family_licenses != null;
+        public void Resetinclude_family_licenses() => __pbn__include_family_licenses = null;
+        private bool? __pbn__include_family_licenses;
 
     }
 
@@ -2261,6 +2291,56 @@ namespace SteamKit2.Internal
             public void Resetvetted() => __pbn__vetted = null;
             private bool? __pbn__vetted;
 
+            [global::ProtoBuf.ProtoMember(8)]
+            public uint groups_completed_base
+            {
+                get => __pbn__groups_completed_base.GetValueOrDefault();
+                set => __pbn__groups_completed_base = value;
+            }
+            public bool ShouldSerializegroups_completed_base() => __pbn__groups_completed_base != null;
+            public void Resetgroups_completed_base() => __pbn__groups_completed_base = null;
+            private uint? __pbn__groups_completed_base;
+
+            [global::ProtoBuf.ProtoMember(9)]
+            public uint groups_total_base
+            {
+                get => __pbn__groups_total_base.GetValueOrDefault();
+                set => __pbn__groups_total_base = value;
+            }
+            public bool ShouldSerializegroups_total_base() => __pbn__groups_total_base != null;
+            public void Resetgroups_total_base() => __pbn__groups_total_base = null;
+            private uint? __pbn__groups_total_base;
+
+            [global::ProtoBuf.ProtoMember(10)]
+            public uint groups_completed_dlc
+            {
+                get => __pbn__groups_completed_dlc.GetValueOrDefault();
+                set => __pbn__groups_completed_dlc = value;
+            }
+            public bool ShouldSerializegroups_completed_dlc() => __pbn__groups_completed_dlc != null;
+            public void Resetgroups_completed_dlc() => __pbn__groups_completed_dlc = null;
+            private uint? __pbn__groups_completed_dlc;
+
+            [global::ProtoBuf.ProtoMember(11)]
+            public uint groups_total_dlc
+            {
+                get => __pbn__groups_total_dlc.GetValueOrDefault();
+                set => __pbn__groups_total_dlc = value;
+            }
+            public bool ShouldSerializegroups_total_dlc() => __pbn__groups_total_dlc != null;
+            public void Resetgroups_total_dlc() => __pbn__groups_total_dlc = null;
+            private uint? __pbn__groups_total_dlc;
+
+            [global::ProtoBuf.ProtoMember(12)]
+            public uint base_game_total
+            {
+                get => __pbn__base_game_total.GetValueOrDefault();
+                set => __pbn__base_game_total = value;
+            }
+            public bool ShouldSerializebase_game_total() => __pbn__base_game_total != null;
+            public void Resetbase_game_total() => __pbn__base_game_total = null;
+            private uint? __pbn__base_game_total;
+
         }
 
     }
@@ -2293,6 +2373,16 @@ namespace SteamKit2.Internal
         public void Resetlanguage() => __pbn__language = null;
         private string __pbn__language;
 
+        [global::ProtoBuf.ProtoMember(3)]
+        public bool hash_only
+        {
+            get => __pbn__hash_only.GetValueOrDefault();
+            set => __pbn__hash_only = value;
+        }
+        public bool ShouldSerializehash_only() => __pbn__hash_only != null;
+        public void Resethash_only() => __pbn__hash_only = null;
+        private bool? __pbn__hash_only;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -2304,6 +2394,29 @@ namespace SteamKit2.Internal
 
         [global::ProtoBuf.ProtoMember(1)]
         public global::System.Collections.Generic.List<Achievement> achievements { get; } = new global::System.Collections.Generic.List<Achievement>();
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public int schema_version
+        {
+            get => __pbn__schema_version.GetValueOrDefault();
+            set => __pbn__schema_version = value;
+        }
+        public bool ShouldSerializeschema_version() => __pbn__schema_version != null;
+        public void Resetschema_version() => __pbn__schema_version = null;
+        private int? __pbn__schema_version;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public global::System.Collections.Generic.List<Group> groups { get; } = new global::System.Collections.Generic.List<Group>();
+
+        [global::ProtoBuf.ProtoMember(4)]
+        public uint schema_hash
+        {
+            get => __pbn__schema_hash.GetValueOrDefault();
+            set => __pbn__schema_hash = value;
+        }
+        public bool ShouldSerializeschema_hash() => __pbn__schema_hash != null;
+        public void Resetschema_hash() => __pbn__schema_hash = null;
+        private uint? __pbn__schema_hash;
 
         [global::ProtoBuf.ProtoContract()]
         public partial class Achievement : global::ProtoBuf.IExtensible
@@ -2388,6 +2501,461 @@ namespace SteamKit2.Internal
             public void Resetplayer_percent_unlocked() => __pbn__player_percent_unlocked = null;
             private string __pbn__player_percent_unlocked;
 
+            [global::ProtoBuf.ProtoMember(8)]
+            public uint internal_key
+            {
+                get => __pbn__internal_key.GetValueOrDefault();
+                set => __pbn__internal_key = value;
+            }
+            public bool ShouldSerializeinternal_key() => __pbn__internal_key != null;
+            public void Resetinternal_key() => __pbn__internal_key = null;
+            private uint? __pbn__internal_key;
+
+            [global::ProtoBuf.ProtoMember(9)]
+            public int min_progress_int
+            {
+                get => __pbn__min_progress_int.GetValueOrDefault();
+                set => __pbn__min_progress_int = value;
+            }
+            public bool ShouldSerializemin_progress_int() => __pbn__min_progress_int != null;
+            public void Resetmin_progress_int() => __pbn__min_progress_int = null;
+            private int? __pbn__min_progress_int;
+
+            [global::ProtoBuf.ProtoMember(10)]
+            public int max_progress_int
+            {
+                get => __pbn__max_progress_int.GetValueOrDefault();
+                set => __pbn__max_progress_int = value;
+            }
+            public bool ShouldSerializemax_progress_int() => __pbn__max_progress_int != null;
+            public void Resetmax_progress_int() => __pbn__max_progress_int = null;
+            private int? __pbn__max_progress_int;
+
+            [global::ProtoBuf.ProtoMember(11)]
+            public uint groupid
+            {
+                get => __pbn__groupid.GetValueOrDefault();
+                set => __pbn__groupid = value;
+            }
+            public bool ShouldSerializegroupid() => __pbn__groupid != null;
+            public void Resetgroupid() => __pbn__groupid = null;
+            private uint? __pbn__groupid;
+
+            [global::ProtoBuf.ProtoMember(12)]
+            public bool archived
+            {
+                get => __pbn__archived.GetValueOrDefault();
+                set => __pbn__archived = value;
+            }
+            public bool ShouldSerializearchived() => __pbn__archived != null;
+            public void Resetarchived() => __pbn__archived = null;
+            private bool? __pbn__archived;
+
+            [global::ProtoBuf.ProtoMember(13)]
+            [global::System.ComponentModel.DefaultValue(EAchievementProgressType.k_EAchievementProgressType_Invalid)]
+            public EAchievementProgressType progress_type
+            {
+                get => __pbn__progress_type ?? EAchievementProgressType.k_EAchievementProgressType_Invalid;
+                set => __pbn__progress_type = value;
+            }
+            public bool ShouldSerializeprogress_type() => __pbn__progress_type != null;
+            public void Resetprogress_type() => __pbn__progress_type = null;
+            private EAchievementProgressType? __pbn__progress_type;
+
+            [global::ProtoBuf.ProtoMember(14)]
+            public float min_progress_float
+            {
+                get => __pbn__min_progress_float.GetValueOrDefault();
+                set => __pbn__min_progress_float = value;
+            }
+            public bool ShouldSerializemin_progress_float() => __pbn__min_progress_float != null;
+            public void Resetmin_progress_float() => __pbn__min_progress_float = null;
+            private float? __pbn__min_progress_float;
+
+            [global::ProtoBuf.ProtoMember(15)]
+            public float max_progress_float
+            {
+                get => __pbn__max_progress_float.GetValueOrDefault();
+                set => __pbn__max_progress_float = value;
+            }
+            public bool ShouldSerializemax_progress_float() => __pbn__max_progress_float != null;
+            public void Resetmax_progress_float() => __pbn__max_progress_float = null;
+            private float? __pbn__max_progress_float;
+
+        }
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class Group : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            public uint groupid
+            {
+                get => __pbn__groupid.GetValueOrDefault();
+                set => __pbn__groupid = value;
+            }
+            public bool ShouldSerializegroupid() => __pbn__groupid != null;
+            public void Resetgroupid() => __pbn__groupid = null;
+            private uint? __pbn__groupid;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            [global::System.ComponentModel.DefaultValue("")]
+            public string localized_name
+            {
+                get => __pbn__localized_name ?? "";
+                set => __pbn__localized_name = value;
+            }
+            public bool ShouldSerializelocalized_name() => __pbn__localized_name != null;
+            public void Resetlocalized_name() => __pbn__localized_name = null;
+            private string __pbn__localized_name;
+
+            [global::ProtoBuf.ProtoMember(3)]
+            public uint dlcappid
+            {
+                get => __pbn__dlcappid.GetValueOrDefault();
+                set => __pbn__dlcappid = value;
+            }
+            public bool ShouldSerializedlcappid() => __pbn__dlcappid != null;
+            public void Resetdlcappid() => __pbn__dlcappid = null;
+            private uint? __pbn__dlcappid;
+
+            [global::ProtoBuf.ProtoMember(4)]
+            public bool archived
+            {
+                get => __pbn__archived.GetValueOrDefault();
+                set => __pbn__archived = value;
+            }
+            public bool ShouldSerializearchived() => __pbn__archived != null;
+            public void Resetarchived() => __pbn__archived = null;
+            private bool? __pbn__archived;
+
+            [global::ProtoBuf.ProtoMember(5)]
+            public bool developeronly
+            {
+                get => __pbn__developeronly.GetValueOrDefault();
+                set => __pbn__developeronly = value;
+            }
+            public bool ShouldSerializedeveloperonly() => __pbn__developeronly != null;
+            public void Resetdeveloperonly() => __pbn__developeronly = null;
+            private bool? __pbn__developeronly;
+
+            [global::ProtoBuf.ProtoMember(6)]
+            public uint order
+            {
+                get => __pbn__order.GetValueOrDefault();
+                set => __pbn__order = value;
+            }
+            public bool ShouldSerializeorder() => __pbn__order != null;
+            public void Resetorder() => __pbn__order = null;
+            private uint? __pbn__order;
+
+            [global::ProtoBuf.ProtoMember(7)]
+            public bool ispublic
+            {
+                get => __pbn__ispublic.GetValueOrDefault();
+                set => __pbn__ispublic = value;
+            }
+            public bool ShouldSerializeispublic() => __pbn__ispublic != null;
+            public void Resetispublic() => __pbn__ispublic = null;
+            private bool? __pbn__ispublic;
+
+            [global::ProtoBuf.ProtoMember(8)]
+            public uint total_achievements
+            {
+                get => __pbn__total_achievements.GetValueOrDefault();
+                set => __pbn__total_achievements = value;
+            }
+            public bool ShouldSerializetotal_achievements() => __pbn__total_achievements != null;
+            public void Resettotal_achievements() => __pbn__total_achievements = null;
+            private uint? __pbn__total_achievements;
+
+            [global::ProtoBuf.ProtoMember(9)]
+            public uint completion_achievements
+            {
+                get => __pbn__completion_achievements.GetValueOrDefault();
+                set => __pbn__completion_achievements = value;
+            }
+            public bool ShouldSerializecompletion_achievements() => __pbn__completion_achievements != null;
+            public void Resetcompletion_achievements() => __pbn__completion_achievements = null;
+            private uint? __pbn__completion_achievements;
+
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPlayer_GetUserAchievements_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public ulong steamid
+        {
+            get => __pbn__steamid.GetValueOrDefault();
+            set => __pbn__steamid = value;
+        }
+        public bool ShouldSerializesteamid() => __pbn__steamid != null;
+        public void Resetsteamid() => __pbn__steamid = null;
+        private ulong? __pbn__steamid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public uint appid
+        {
+            get => __pbn__appid.GetValueOrDefault();
+            set => __pbn__appid = value;
+        }
+        public bool ShouldSerializeappid() => __pbn__appid != null;
+        public void Resetappid() => __pbn__appid = null;
+        private uint? __pbn__appid;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPlayer_GetUserAchievements_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public global::System.Collections.Generic.List<Achievement> achievements { get; } = new global::System.Collections.Generic.List<Achievement>();
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public int schema_version
+        {
+            get => __pbn__schema_version.GetValueOrDefault();
+            set => __pbn__schema_version = value;
+        }
+        public bool ShouldSerializeschema_version() => __pbn__schema_version != null;
+        public void Resetschema_version() => __pbn__schema_version = null;
+        private int? __pbn__schema_version;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public uint schema_hash
+        {
+            get => __pbn__schema_hash.GetValueOrDefault();
+            set => __pbn__schema_hash = value;
+        }
+        public bool ShouldSerializeschema_hash() => __pbn__schema_hash != null;
+        public void Resetschema_hash() => __pbn__schema_hash = null;
+        private uint? __pbn__schema_hash;
+
+        [global::ProtoBuf.ProtoMember(4)]
+        public global::System.Collections.Generic.List<Group> groups { get; } = new global::System.Collections.Generic.List<Group>();
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class Achievement : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            public uint internal_key
+            {
+                get => __pbn__internal_key.GetValueOrDefault();
+                set => __pbn__internal_key = value;
+            }
+            public bool ShouldSerializeinternal_key() => __pbn__internal_key != null;
+            public void Resetinternal_key() => __pbn__internal_key = null;
+            private uint? __pbn__internal_key;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            public bool unlocked
+            {
+                get => __pbn__unlocked.GetValueOrDefault();
+                set => __pbn__unlocked = value;
+            }
+            public bool ShouldSerializeunlocked() => __pbn__unlocked != null;
+            public void Resetunlocked() => __pbn__unlocked = null;
+            private bool? __pbn__unlocked;
+
+            [global::ProtoBuf.ProtoMember(3, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+            public uint unlock_time
+            {
+                get => __pbn__unlock_time.GetValueOrDefault();
+                set => __pbn__unlock_time = value;
+            }
+            public bool ShouldSerializeunlock_time() => __pbn__unlock_time != null;
+            public void Resetunlock_time() => __pbn__unlock_time = null;
+            private uint? __pbn__unlock_time;
+
+            [global::ProtoBuf.ProtoMember(4)]
+            public int progress_int
+            {
+                get => __pbn__progress_int.GetValueOrDefault();
+                set => __pbn__progress_int = value;
+            }
+            public bool ShouldSerializeprogress_int() => __pbn__progress_int != null;
+            public void Resetprogress_int() => __pbn__progress_int = null;
+            private int? __pbn__progress_int;
+
+            [global::ProtoBuf.ProtoMember(5)]
+            public float progress_float
+            {
+                get => __pbn__progress_float.GetValueOrDefault();
+                set => __pbn__progress_float = value;
+            }
+            public bool ShouldSerializeprogress_float() => __pbn__progress_float != null;
+            public void Resetprogress_float() => __pbn__progress_float = null;
+            private float? __pbn__progress_float;
+
+        }
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class Group : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            public uint groupid
+            {
+                get => __pbn__groupid.GetValueOrDefault();
+                set => __pbn__groupid = value;
+            }
+            public bool ShouldSerializegroupid() => __pbn__groupid != null;
+            public void Resetgroupid() => __pbn__groupid = null;
+            private uint? __pbn__groupid;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            public bool is_achievable
+            {
+                get => __pbn__is_achievable.GetValueOrDefault();
+                set => __pbn__is_achievable = value;
+            }
+            public bool ShouldSerializeis_achievable() => __pbn__is_achievable != null;
+            public void Resetis_achievable() => __pbn__is_achievable = null;
+            private bool? __pbn__is_achievable;
+
+            [global::ProtoBuf.ProtoMember(3)]
+            public uint completed_achievements
+            {
+                get => __pbn__completed_achievements.GetValueOrDefault();
+                set => __pbn__completed_achievements = value;
+            }
+            public bool ShouldSerializecompleted_achievements() => __pbn__completed_achievements != null;
+            public void Resetcompleted_achievements() => __pbn__completed_achievements = null;
+            private uint? __pbn__completed_achievements;
+
+            [global::ProtoBuf.ProtoMember(4)]
+            public bool is_completed
+            {
+                get => __pbn__is_completed.GetValueOrDefault();
+                set => __pbn__is_completed = value;
+            }
+            public bool ShouldSerializeis_completed() => __pbn__is_completed != null;
+            public void Resetis_completed() => __pbn__is_completed = null;
+            private bool? __pbn__is_completed;
+
+            [global::ProtoBuf.ProtoMember(9, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+            public uint time_completed
+            {
+                get => __pbn__time_completed.GetValueOrDefault();
+                set => __pbn__time_completed = value;
+            }
+            public bool ShouldSerializetime_completed() => __pbn__time_completed != null;
+            public void Resettime_completed() => __pbn__time_completed = null;
+            private uint? __pbn__time_completed;
+
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPlayer_GetGlobalAchievementPercentages_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint appid
+        {
+            get => __pbn__appid.GetValueOrDefault();
+            set => __pbn__appid = value;
+        }
+        public bool ShouldSerializeappid() => __pbn__appid != null;
+        public void Resetappid() => __pbn__appid = null;
+        private uint? __pbn__appid;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CPlayer_GetGlobalAchievementPercentages_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public global::System.Collections.Generic.List<Achievement> achievements { get; } = new global::System.Collections.Generic.List<Achievement>();
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public global::System.Collections.Generic.List<Group> groups { get; } = new global::System.Collections.Generic.List<Group>();
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class Achievement : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            public uint internal_key
+            {
+                get => __pbn__internal_key.GetValueOrDefault();
+                set => __pbn__internal_key = value;
+            }
+            public bool ShouldSerializeinternal_key() => __pbn__internal_key != null;
+            public void Resetinternal_key() => __pbn__internal_key = null;
+            private uint? __pbn__internal_key;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            public float player_percent_unlocked
+            {
+                get => __pbn__player_percent_unlocked.GetValueOrDefault();
+                set => __pbn__player_percent_unlocked = value;
+            }
+            public bool ShouldSerializeplayer_percent_unlocked() => __pbn__player_percent_unlocked != null;
+            public void Resetplayer_percent_unlocked() => __pbn__player_percent_unlocked = null;
+            private float? __pbn__player_percent_unlocked;
+
+        }
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class Group : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            public uint groupid
+            {
+                get => __pbn__groupid.GetValueOrDefault();
+                set => __pbn__groupid = value;
+            }
+            public bool ShouldSerializegroupid() => __pbn__groupid != null;
+            public void Resetgroupid() => __pbn__groupid = null;
+            private uint? __pbn__groupid;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            public float player_percent_completed
+            {
+                get => __pbn__player_percent_completed.GetValueOrDefault();
+                set => __pbn__player_percent_completed = value;
+            }
+            public bool ShouldSerializeplayer_percent_completed() => __pbn__player_percent_completed != null;
+            public void Resetplayer_percent_completed() => __pbn__player_percent_completed = null;
+            private float? __pbn__player_percent_completed;
+
         }
 
     }
@@ -2439,6 +3007,26 @@ namespace SteamKit2.Internal
         public void Resetcrc_stats() => __pbn__crc_stats = null;
         private uint? __pbn__crc_stats;
 
+        [global::ProtoBuf.ProtoMember(5)]
+        public uint crc_schema
+        {
+            get => __pbn__crc_schema.GetValueOrDefault();
+            set => __pbn__crc_schema = value;
+        }
+        public bool ShouldSerializecrc_schema() => __pbn__crc_schema != null;
+        public void Resetcrc_schema() => __pbn__crc_schema = null;
+        private uint? __pbn__crc_schema;
+
+        [global::ProtoBuf.ProtoMember(6)]
+        public bool app_running
+        {
+            get => __pbn__app_running.GetValueOrDefault();
+            set => __pbn__app_running = value;
+        }
+        public bool ShouldSerializeapp_running() => __pbn__app_running != null;
+        public void Resetapp_running() => __pbn__app_running = null;
+        private bool? __pbn__app_running;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -2480,6 +3068,16 @@ namespace SteamKit2.Internal
 
         [global::ProtoBuf.ProtoMember(4)]
         public global::System.Collections.Generic.List<Stats> stats { get; } = new global::System.Collections.Generic.List<Stats>();
+
+        [global::ProtoBuf.ProtoMember(5)]
+        public uint crc_schema
+        {
+            get => __pbn__crc_schema.GetValueOrDefault();
+            set => __pbn__crc_schema = value;
+        }
+        public bool ShouldSerializecrc_schema() => __pbn__crc_schema != null;
+        public void Resetcrc_schema() => __pbn__crc_schema = null;
+        private uint? __pbn__crc_schema;
 
         [global::ProtoBuf.ProtoContract()]
         public partial class Unlock_Time : global::ProtoBuf.IExtensible
@@ -4844,6 +5442,14 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public enum EAchievementProgressType
+    {
+        k_EAchievementProgressType_Invalid = 0,
+        k_EAchievementProgressType_Int = 1,
+        k_EAchievementProgressType_Float = 2,
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public enum EProfileCustomizationStyle
     {
         k_EProfileCustomizationStyleDefault = 0,
@@ -5006,6 +5612,16 @@ namespace SteamKit2.Internal
         public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CPlayer_GetGameAchievements_Response>> GetGameAchievements( CPlayer_GetGameAchievements_Request request )
         {
             return UnifiedMessages.SendMessage<CPlayer_GetGameAchievements_Request, CPlayer_GetGameAchievements_Response>( "Player.GetGameAchievements#1", request );
+        }
+
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CPlayer_GetUserAchievements_Response>> GetUserAchievements( CPlayer_GetUserAchievements_Request request )
+        {
+            return UnifiedMessages.SendMessage<CPlayer_GetUserAchievements_Request, CPlayer_GetUserAchievements_Response>( "Player.GetUserAchievements#1", request );
+        }
+
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CPlayer_GetGlobalAchievementPercentages_Response>> GetGlobalAchievementPercentages( CPlayer_GetGlobalAchievementPercentages_Request request )
+        {
+            return UnifiedMessages.SendMessage<CPlayer_GetGlobalAchievementPercentages_Request, CPlayer_GetGlobalAchievementPercentages_Response>( "Player.GetGlobalAchievementPercentages#1", request );
         }
 
         public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CPlayer_GetUserStats_Response>> GetUserStats( CPlayer_GetUserStats_Request request )
@@ -5231,6 +5847,12 @@ namespace SteamKit2.Internal
                     break;
                 case "GetGameAchievements":
                     PostResponseMsg<CPlayer_GetGameAchievements_Response>( packetMsg );
+                    break;
+                case "GetUserAchievements":
+                    PostResponseMsg<CPlayer_GetUserAchievements_Response>( packetMsg );
+                    break;
+                case "GetGlobalAchievementPercentages":
+                    PostResponseMsg<CPlayer_GetGlobalAchievementPercentages_Response>( packetMsg );
                     break;
                 case "GetUserStats":
                     PostResponseMsg<CPlayer_GetUserStats_Response>( packetMsg );

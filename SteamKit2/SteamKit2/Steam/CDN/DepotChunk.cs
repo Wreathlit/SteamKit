@@ -54,9 +54,9 @@ namespace SteamKit2.CDN
             {
                 var written = aes.DecryptCbc( data[ iv.Length.. ], iv, buffer, PaddingMode.PKCS7 );
 
-                if ( buffer.Length < 16 )
+                if ( written < 16 )
                 {
-                    throw new InvalidDataException( $"Not enough data in the decrypted depot chunk (was {buffer.Length} bytes)." );
+                    throw new InvalidDataException( $"Not enough data in the decrypted depot chunk (was {written} bytes)." );
                 }
 
                 if ( buffer[ 0 ] == 'V' && buffer[ 1 ] == 'S' && buffer[ 2 ] == 'Z' && buffer[ 3 ] == 'a' ) // Zstd
@@ -65,8 +65,7 @@ namespace SteamKit2.CDN
                 }
                 else if ( buffer[ 0 ] == 'V' && buffer[ 1 ] == 'Z' && buffer[ 2 ] == 'a' ) // LZMA
                 {
-                    using var decryptedStream = new MemoryStream( buffer, 0, written );
-                    writtenDecompressed = VZipUtil.Decompress( decryptedStream, destination, verifyChecksum: false );
+                    writtenDecompressed = VZipUtil.Decompress( buffer.AsSpan( 0, written ), destination, verifyChecksum: false );
                 }
                 else if ( buffer[ 0 ] == 'P' && buffer[ 1 ] == 'K' && buffer[ 2 ] == 0x03 && buffer[ 3 ] == 0x04 ) // PKzip
                 {

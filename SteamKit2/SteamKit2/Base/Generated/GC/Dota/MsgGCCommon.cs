@@ -1391,6 +1391,16 @@ namespace SteamKit2.GC.Dota.Internal
         [global::ProtoBuf.ProtoMember(42)]
         public global::System.Collections.Generic.List<CMatchPlayerTimedCustomStat> custom_stats { get; } = new global::System.Collections.Generic.List<CMatchPlayerTimedCustomStat>();
 
+        [global::ProtoBuf.ProtoMember(43)]
+        public uint summon_kill_gold
+        {
+            get => __pbn__summon_kill_gold.GetValueOrDefault();
+            set => __pbn__summon_kill_gold = value;
+        }
+        public bool ShouldSerializesummon_kill_gold() => __pbn__summon_kill_gold != null;
+        public void Resetsummon_kill_gold() => __pbn__summon_kill_gold = null;
+        private uint? __pbn__summon_kill_gold;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -8321,6 +8331,7 @@ namespace SteamKit2.GC.Dota.Internal
             k_eSuccess = 1,
             k_eTooBusy = 2,
             k_eDisabled = 3,
+            k_eForbidden = 4,
         }
 
     }
@@ -9992,6 +10003,16 @@ namespace SteamKit2.GC.Dota.Internal
             [global::ProtoBuf.ProtoMember(9)]
             public global::System.Collections.Generic.List<Recipe> recipes { get; } = new global::System.Collections.Generic.List<Recipe>();
 
+            [global::ProtoBuf.ProtoMember(10)]
+            public bool is_innate
+            {
+                get => __pbn__is_innate.GetValueOrDefault();
+                set => __pbn__is_innate = value;
+            }
+            public bool ShouldSerializeis_innate() => __pbn__is_innate != null;
+            public void Resetis_innate() => __pbn__is_innate = null;
+            private bool? __pbn__is_innate;
+
             [global::ProtoBuf.ProtoContract()]
             public partial class Recipe : global::ProtoBuf.IExtensible
             {
@@ -11194,15 +11215,15 @@ namespace SteamKit2.GC.Dota.Internal
         private string __pbn__ability_name_loc_token;
 
         [global::ProtoBuf.ProtoMember(2)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string ability_category_loc_token
+        [global::System.ComponentModel.DefaultValue(EAbilityTooltipCategory.kPassive)]
+        public EAbilityTooltipCategory ability_category
         {
-            get => __pbn__ability_category_loc_token ?? "";
-            set => __pbn__ability_category_loc_token = value;
+            get => __pbn__ability_category ?? EAbilityTooltipCategory.kPassive;
+            set => __pbn__ability_category = value;
         }
-        public bool ShouldSerializeability_category_loc_token() => __pbn__ability_category_loc_token != null;
-        public void Resetability_category_loc_token() => __pbn__ability_category_loc_token = null;
-        private string __pbn__ability_category_loc_token;
+        public bool ShouldSerializeability_category() => __pbn__ability_category != null;
+        public void Resetability_category() => __pbn__ability_category = null;
+        private EAbilityTooltipCategory? __pbn__ability_category;
 
         [global::ProtoBuf.ProtoMember(3)]
         public int ability_level
@@ -11256,21 +11277,46 @@ namespace SteamKit2.GC.Dota.Internal
         private string __pbn__summary_description_loc_token;
 
         [global::ProtoBuf.ProtoMember(8)]
-        [global::System.ComponentModel.DefaultValue("")]
-        public string summary_description_level_up_loc_token
-        {
-            get => __pbn__summary_description_level_up_loc_token ?? "";
-            set => __pbn__summary_description_level_up_loc_token = value;
-        }
-        public bool ShouldSerializesummary_description_level_up_loc_token() => __pbn__summary_description_level_up_loc_token != null;
-        public void Resetsummary_description_level_up_loc_token() => __pbn__summary_description_level_up_loc_token = null;
-        private string __pbn__summary_description_level_up_loc_token;
+        public global::System.Collections.Generic.List<Attribute> summary_description_embed_values { get; } = new global::System.Collections.Generic.List<Attribute>();
 
         [global::ProtoBuf.ProtoMember(9)]
-        public global::System.Collections.Generic.List<SummaryDescriptionEmbedValue> summary_description_embed_values { get; } = new global::System.Collections.Generic.List<SummaryDescriptionEmbedValue>();
+        public global::System.Collections.Generic.List<string> summary_description_surfaced_lines { get; } = new global::System.Collections.Generic.List<string>();
 
         [global::ProtoBuf.ProtoMember(10)]
-        public FacetDisplayProperties summary_description_facet { get; set; }
+        public global::System.Collections.Generic.List<SummaryDescriptionEmbeddedSubAbility> summary_description_embedded_sub_abilities { get; } = new global::System.Collections.Generic.List<SummaryDescriptionEmbeddedSubAbility>();
+
+        [global::ProtoBuf.ProtoMember(11)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string summary_description_aghs_scepter
+        {
+            get => __pbn__summary_description_aghs_scepter ?? "";
+            set => __pbn__summary_description_aghs_scepter = value;
+        }
+        public bool ShouldSerializesummary_description_aghs_scepter() => __pbn__summary_description_aghs_scepter != null;
+        public void Resetsummary_description_aghs_scepter() => __pbn__summary_description_aghs_scepter = null;
+        private string __pbn__summary_description_aghs_scepter;
+
+        [global::ProtoBuf.ProtoMember(12)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string summary_description_aghs_shard
+        {
+            get => __pbn__summary_description_aghs_shard ?? "";
+            set => __pbn__summary_description_aghs_shard = value;
+        }
+        public bool ShouldSerializesummary_description_aghs_shard() => __pbn__summary_description_aghs_shard != null;
+        public void Resetsummary_description_aghs_shard() => __pbn__summary_description_aghs_shard = null;
+        private string __pbn__summary_description_aghs_shard;
+
+        [global::ProtoBuf.ProtoMember(13)]
+        [global::System.ComponentModel.DefaultValue("")]
+        public string preview_video_url
+        {
+            get => __pbn__preview_video_url ?? "";
+            set => __pbn__preview_video_url = value;
+        }
+        public bool ShouldSerializepreview_video_url() => __pbn__preview_video_url != null;
+        public void Resetpreview_video_url() => __pbn__preview_video_url = null;
+        private string __pbn__preview_video_url;
 
         [global::ProtoBuf.ProtoMember(20)]
         public global::System.Collections.Generic.List<TooltipContentChunk> chunks { get; } = new global::System.Collections.Generic.List<TooltipContentChunk>();
@@ -11382,70 +11428,6 @@ namespace SteamKit2.GC.Dota.Internal
         }
 
         [global::ProtoBuf.ProtoContract()]
-        public partial class FacetDisplayProperties : global::ProtoBuf.IExtensible
-        {
-            private global::ProtoBuf.IExtension __pbn__extensionData;
-            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-            [global::ProtoBuf.ProtoMember(1)]
-            [global::System.ComponentModel.DefaultValue("")]
-            public string facet_name_loc_token
-            {
-                get => __pbn__facet_name_loc_token ?? "";
-                set => __pbn__facet_name_loc_token = value;
-            }
-            public bool ShouldSerializefacet_name_loc_token() => __pbn__facet_name_loc_token != null;
-            public void Resetfacet_name_loc_token() => __pbn__facet_name_loc_token = null;
-            private string __pbn__facet_name_loc_token;
-
-            [global::ProtoBuf.ProtoMember(2)]
-            [global::System.ComponentModel.DefaultValue("")]
-            public string facet_desc_loc_token
-            {
-                get => __pbn__facet_desc_loc_token ?? "";
-                set => __pbn__facet_desc_loc_token = value;
-            }
-            public bool ShouldSerializefacet_desc_loc_token() => __pbn__facet_desc_loc_token != null;
-            public void Resetfacet_desc_loc_token() => __pbn__facet_desc_loc_token = null;
-            private string __pbn__facet_desc_loc_token;
-
-            [global::ProtoBuf.ProtoMember(3)]
-            [global::System.ComponentModel.DefaultValue("")]
-            public string facet_icon_style_name
-            {
-                get => __pbn__facet_icon_style_name ?? "";
-                set => __pbn__facet_icon_style_name = value;
-            }
-            public bool ShouldSerializefacet_icon_style_name() => __pbn__facet_icon_style_name != null;
-            public void Resetfacet_icon_style_name() => __pbn__facet_icon_style_name = null;
-            private string __pbn__facet_icon_style_name;
-
-            [global::ProtoBuf.ProtoMember(4)]
-            [global::System.ComponentModel.DefaultValue("")]
-            public string facet_color_style_name
-            {
-                get => __pbn__facet_color_style_name ?? "";
-                set => __pbn__facet_color_style_name = value;
-            }
-            public bool ShouldSerializefacet_color_style_name() => __pbn__facet_color_style_name != null;
-            public void Resetfacet_color_style_name() => __pbn__facet_color_style_name = null;
-            private string __pbn__facet_color_style_name;
-
-            [global::ProtoBuf.ProtoMember(5)]
-            [global::System.ComponentModel.DefaultValue("")]
-            public string facet_gradient_style_name
-            {
-                get => __pbn__facet_gradient_style_name ?? "";
-                set => __pbn__facet_gradient_style_name = value;
-            }
-            public bool ShouldSerializefacet_gradient_style_name() => __pbn__facet_gradient_style_name != null;
-            public void Resetfacet_gradient_style_name() => __pbn__facet_gradient_style_name = null;
-            private string __pbn__facet_gradient_style_name;
-
-        }
-
-        [global::ProtoBuf.ProtoContract()]
         public partial class Attribute : global::ProtoBuf.IExtensible
         {
             private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -11454,31 +11436,39 @@ namespace SteamKit2.GC.Dota.Internal
 
             [global::ProtoBuf.ProtoMember(1)]
             [global::System.ComponentModel.DefaultValue("")]
-            public string name_loc_token
+            public string internal_name
             {
-                get => __pbn__name_loc_token ?? "";
-                set => __pbn__name_loc_token = value;
+                get => __pbn__internal_name ?? "";
+                set => __pbn__internal_name = value;
             }
-            public bool ShouldSerializename_loc_token() => __pbn__name_loc_token != null;
-            public void Resetname_loc_token() => __pbn__name_loc_token = null;
-            private string __pbn__name_loc_token;
+            public bool ShouldSerializeinternal_name() => __pbn__internal_name != null;
+            public void Resetinternal_name() => __pbn__internal_name = null;
+            private string __pbn__internal_name;
 
             [global::ProtoBuf.ProtoMember(2)]
-            [global::System.ComponentModel.DefaultValue(CDotaMsgStructuredTooltipProperties.EAttributeType.kUnknown)]
-            public CDotaMsgStructuredTooltipProperties.EAttributeType type
+            [global::System.ComponentModel.DefaultValue("")]
+            public string localized_name_text
             {
-                get => __pbn__type ?? CDotaMsgStructuredTooltipProperties.EAttributeType.kUnknown;
-                set => __pbn__type = value;
+                get => __pbn__localized_name_text ?? "";
+                set => __pbn__localized_name_text = value;
             }
-            public bool ShouldSerializetype() => __pbn__type != null;
-            public void Resettype() => __pbn__type = null;
-            private CDotaMsgStructuredTooltipProperties.EAttributeType? __pbn__type;
+            public bool ShouldSerializelocalized_name_text() => __pbn__localized_name_text != null;
+            public void Resetlocalized_name_text() => __pbn__localized_name_text = null;
+            private string __pbn__localized_name_text;
 
             [global::ProtoBuf.ProtoMember(3)]
-            public CDotaMsgStructuredTooltipProperties.AttributeValue value { get; set; }
+            [global::System.ComponentModel.DefaultValue(CDotaMsgStructuredTooltipProperties.EAttributeType.kUnknown)]
+            public CDotaMsgStructuredTooltipProperties.EAttributeType resolved_type
+            {
+                get => __pbn__resolved_type ?? CDotaMsgStructuredTooltipProperties.EAttributeType.kUnknown;
+                set => __pbn__resolved_type = value;
+            }
+            public bool ShouldSerializeresolved_type() => __pbn__resolved_type != null;
+            public void Resetresolved_type() => __pbn__resolved_type = null;
+            private CDotaMsgStructuredTooltipProperties.EAttributeType? __pbn__resolved_type;
 
             [global::ProtoBuf.ProtoMember(4)]
-            public CDotaMsgStructuredTooltipProperties.FacetDisplayProperties facet { get; set; }
+            public CDotaMsgStructuredTooltipProperties.AttributeValue value { get; set; }
 
         }
 
@@ -11523,18 +11513,6 @@ namespace SteamKit2.GC.Dota.Internal
         }
 
         [global::ProtoBuf.ProtoContract()]
-        public partial class AttributeGroupDesc_Facet : global::ProtoBuf.IExtensible
-        {
-            private global::ProtoBuf.IExtension __pbn__extensionData;
-            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-            [global::ProtoBuf.ProtoMember(1)]
-            public CDotaMsgStructuredTooltipProperties.FacetDisplayProperties facet { get; set; }
-
-        }
-
-        [global::ProtoBuf.ProtoContract()]
         public partial class AttributeGroupDescription : global::ProtoBuf.IExtensible
         {
             private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -11553,22 +11531,22 @@ namespace SteamKit2.GC.Dota.Internal
             private global::ProtoBuf.DiscriminatedUnionObject __pbn__attr_group_desc;
 
             [global::ProtoBuf.ProtoMember(2)]
-            public CDotaMsgStructuredTooltipProperties.AttributeGroupDesc_Specific specific
+            public CDotaMsgStructuredTooltipProperties.AttributeGroupDesc_Basic characteristics
             {
-                get => __pbn__attr_group_desc.Is(2) ? ((CDotaMsgStructuredTooltipProperties.AttributeGroupDesc_Specific)__pbn__attr_group_desc.Object) : default;
+                get => __pbn__attr_group_desc.Is(2) ? ((CDotaMsgStructuredTooltipProperties.AttributeGroupDesc_Basic)__pbn__attr_group_desc.Object) : default;
                 set => __pbn__attr_group_desc = new global::ProtoBuf.DiscriminatedUnionObject(2, value);
             }
-            public bool ShouldSerializespecific() => __pbn__attr_group_desc.Is(2);
-            public void Resetspecific() => global::ProtoBuf.DiscriminatedUnionObject.Reset(ref __pbn__attr_group_desc, 2);
+            public bool ShouldSerializecharacteristics() => __pbn__attr_group_desc.Is(2);
+            public void Resetcharacteristics() => global::ProtoBuf.DiscriminatedUnionObject.Reset(ref __pbn__attr_group_desc, 2);
 
             [global::ProtoBuf.ProtoMember(3)]
-            public CDotaMsgStructuredTooltipProperties.AttributeGroupDesc_Facet facet
+            public CDotaMsgStructuredTooltipProperties.AttributeGroupDesc_Specific specific
             {
-                get => __pbn__attr_group_desc.Is(3) ? ((CDotaMsgStructuredTooltipProperties.AttributeGroupDesc_Facet)__pbn__attr_group_desc.Object) : default;
+                get => __pbn__attr_group_desc.Is(3) ? ((CDotaMsgStructuredTooltipProperties.AttributeGroupDesc_Specific)__pbn__attr_group_desc.Object) : default;
                 set => __pbn__attr_group_desc = new global::ProtoBuf.DiscriminatedUnionObject(3, value);
             }
-            public bool ShouldSerializefacet() => __pbn__attr_group_desc.Is(3);
-            public void Resetfacet() => global::ProtoBuf.DiscriminatedUnionObject.Reset(ref __pbn__attr_group_desc, 3);
+            public bool ShouldSerializespecific() => __pbn__attr_group_desc.Is(3);
+            public void Resetspecific() => global::ProtoBuf.DiscriminatedUnionObject.Reset(ref __pbn__attr_group_desc, 3);
 
         }
 
@@ -11612,7 +11590,7 @@ namespace SteamKit2.GC.Dota.Internal
         }
 
         [global::ProtoBuf.ProtoContract()]
-        public partial class SummaryDescriptionEmbedValue : global::ProtoBuf.IExtensible
+        public partial class SummaryDescriptionEmbeddedSubAbility : global::ProtoBuf.IExtensible
         {
             private global::ProtoBuf.IExtension __pbn__extensionData;
             global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -11620,29 +11598,46 @@ namespace SteamKit2.GC.Dota.Internal
 
             [global::ProtoBuf.ProtoMember(1)]
             [global::System.ComponentModel.DefaultValue("")]
-            public string name
+            public string ability_name_loc_token
             {
-                get => __pbn__name ?? "";
-                set => __pbn__name = value;
+                get => __pbn__ability_name_loc_token ?? "";
+                set => __pbn__ability_name_loc_token = value;
             }
-            public bool ShouldSerializename() => __pbn__name != null;
-            public void Resetname() => __pbn__name = null;
-            private string __pbn__name;
+            public bool ShouldSerializeability_name_loc_token() => __pbn__ability_name_loc_token != null;
+            public void Resetability_name_loc_token() => __pbn__ability_name_loc_token = null;
+            private string __pbn__ability_name_loc_token;
 
             [global::ProtoBuf.ProtoMember(2)]
-            [global::System.ComponentModel.DefaultValue(CDotaMsgStructuredTooltipProperties.EAttributeType.kUnknown)]
-            public CDotaMsgStructuredTooltipProperties.EAttributeType type
+            [global::System.ComponentModel.DefaultValue("")]
+            public string ability_desc_loc_token
             {
-                get => __pbn__type ?? CDotaMsgStructuredTooltipProperties.EAttributeType.kUnknown;
-                set => __pbn__type = value;
+                get => __pbn__ability_desc_loc_token ?? "";
+                set => __pbn__ability_desc_loc_token = value;
             }
-            public bool ShouldSerializetype() => __pbn__type != null;
-            public void Resettype() => __pbn__type = null;
-            private CDotaMsgStructuredTooltipProperties.EAttributeType? __pbn__type;
+            public bool ShouldSerializeability_desc_loc_token() => __pbn__ability_desc_loc_token != null;
+            public void Resetability_desc_loc_token() => __pbn__ability_desc_loc_token = null;
+            private string __pbn__ability_desc_loc_token;
 
             [global::ProtoBuf.ProtoMember(3)]
-            public CDotaMsgStructuredTooltipProperties.AttributeValue value { get; set; }
+            [global::System.ComponentModel.DefaultValue("")]
+            public string ability_icon_url
+            {
+                get => __pbn__ability_icon_url ?? "";
+                set => __pbn__ability_icon_url = value;
+            }
+            public bool ShouldSerializeability_icon_url() => __pbn__ability_icon_url != null;
+            public void Resetability_icon_url() => __pbn__ability_icon_url = null;
+            private string __pbn__ability_icon_url;
 
+        }
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum EAbilityTooltipCategory
+        {
+            kPassive = 1,
+            kAutocast = 2,
+            kToggle = 3,
+            kChanneled = 4,
         }
 
         [global::ProtoBuf.ProtoContract()]
@@ -11662,6 +11657,17 @@ namespace SteamKit2.GC.Dota.Internal
             kDebuffValue = 11,
             kBuffPercentage = 12,
             kBuffValue = 13,
+            kMagicalDamagePercentage = 14,
+            kHealthPercentage = 15,
+            kManaPercentage = 16,
+            kNumCharges = 17,
+            kDebuffDuration = 18,
+            kBuffDuration = 19,
+            kAbilityDefinedDamage = 20,
+            kDispellability = 21,
+            kSpellImmunityPiercing = 22,
+            kHealthPercentageAsPureDamage = 23,
+            kPhysicalDamagePercentage = 24,
         }
 
     }

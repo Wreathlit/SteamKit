@@ -468,6 +468,153 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class CGameServers_FriendsQuery_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public global::System.Collections.Generic.List<Server> servers { get; } = new global::System.Collections.Generic.List<Server>();
+
+        [global::ProtoBuf.ProtoMember(2, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public global::System.Collections.Generic.List<ulong> friends { get; } = new global::System.Collections.Generic.List<ulong>();
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public uint app_id
+        {
+            get => __pbn__app_id.GetValueOrDefault();
+            set => __pbn__app_id = value;
+        }
+        public bool ShouldSerializeapp_id() => __pbn__app_id != null;
+        public void Resetapp_id() => __pbn__app_id = null;
+        private uint? __pbn__app_id;
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class Server : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            public uint server_ip
+            {
+                get => __pbn__server_ip.GetValueOrDefault();
+                set => __pbn__server_ip = value;
+            }
+            public bool ShouldSerializeserver_ip() => __pbn__server_ip != null;
+            public void Resetserver_ip() => __pbn__server_ip = null;
+            private uint? __pbn__server_ip;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            public uint server_port
+            {
+                get => __pbn__server_port.GetValueOrDefault();
+                set => __pbn__server_port = value;
+            }
+            public bool ShouldSerializeserver_port() => __pbn__server_port != null;
+            public void Resetserver_port() => __pbn__server_port = null;
+            private uint? __pbn__server_port;
+
+            [global::ProtoBuf.ProtoMember(4, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+            public ulong steamid
+            {
+                get => __pbn__steamid.GetValueOrDefault();
+                set => __pbn__steamid = value;
+            }
+            public bool ShouldSerializesteamid() => __pbn__steamid != null;
+            public void Resetsteamid() => __pbn__steamid = null;
+            private ulong? __pbn__steamid;
+
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CGameServers_FriendsQuery_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public global::System.Collections.Generic.List<Server> servers { get; } = new global::System.Collections.Generic.List<Server>();
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class Server : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            public global::System.Collections.Generic.List<Friend> friends { get; } = new global::System.Collections.Generic.List<Friend>();
+
+            [global::ProtoBuf.ProtoMember(2, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+            public ulong steamid_server
+            {
+                get => __pbn__steamid_server.GetValueOrDefault();
+                set => __pbn__steamid_server = value;
+            }
+            public bool ShouldSerializesteamid_server() => __pbn__steamid_server != null;
+            public void Resetsteamid_server() => __pbn__steamid_server = null;
+            private ulong? __pbn__steamid_server;
+
+            [global::ProtoBuf.ProtoMember(3)]
+            public uint app_id
+            {
+                get => __pbn__app_id.GetValueOrDefault();
+                set => __pbn__app_id = value;
+            }
+            public bool ShouldSerializeapp_id() => __pbn__app_id != null;
+            public void Resetapp_id() => __pbn__app_id = null;
+            private uint? __pbn__app_id;
+
+            [global::ProtoBuf.ProtoContract()]
+            public partial class Friend : global::ProtoBuf.IExtensible
+            {
+                private global::ProtoBuf.IExtension __pbn__extensionData;
+                global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                    => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+                [global::ProtoBuf.ProtoMember(1, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+                public ulong steamid
+                {
+                    get => __pbn__steamid.GetValueOrDefault();
+                    set => __pbn__steamid = value;
+                }
+                public bool ShouldSerializesteamid() => __pbn__steamid != null;
+                public void Resetsteamid() => __pbn__steamid = null;
+                private ulong? __pbn__steamid;
+
+                [global::ProtoBuf.ProtoMember(2)]
+                public uint time_played
+                {
+                    get => __pbn__time_played.GetValueOrDefault();
+                    set => __pbn__time_played = value;
+                }
+                public bool ShouldSerializetime_played() => __pbn__time_played != null;
+                public void Resettime_played() => __pbn__time_played = null;
+                private uint? __pbn__time_played;
+
+                [global::ProtoBuf.ProtoMember(3)]
+                public uint time_current
+                {
+                    get => __pbn__time_current.GetValueOrDefault();
+                    set => __pbn__time_current = value;
+                }
+                public bool ShouldSerializetime_current() => __pbn__time_current != null;
+                public void Resettime_current() => __pbn__time_current = null;
+                private uint? __pbn__time_current;
+
+            }
+
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public partial class CGameServers_ReportServerPingReply_Notification : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -497,6 +644,78 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeclient_sdr_location_string() => __pbn__client_sdr_location_string != null;
         public void Resetclient_sdr_location_string() => __pbn__client_sdr_location_string = null;
         private string __pbn__client_sdr_location_string;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CGameServers_MasterServerQuery_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint appid
+        {
+            get => __pbn__appid.GetValueOrDefault();
+            set => __pbn__appid = value;
+        }
+        public bool ShouldSerializeappid() => __pbn__appid != null;
+        public void Resetappid() => __pbn__appid = null;
+        private uint? __pbn__appid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public CMsgClientGMSServerQuery query_data { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CGameServers_MasterServerQuery_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public CMsgGMSClientServerQueryResponse query_response { get; set; }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CGameServers_RestrictPlayersToSteamClan_Request : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong steamid
+        {
+            get => __pbn__steamid.GetValueOrDefault();
+            set => __pbn__steamid = value;
+        }
+        public bool ShouldSerializesteamid() => __pbn__steamid != null;
+        public void Resetsteamid() => __pbn__steamid = null;
+        private ulong? __pbn__steamid;
+
+        [global::ProtoBuf.ProtoMember(2, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong steamidclan
+        {
+            get => __pbn__steamidclan.GetValueOrDefault();
+            set => __pbn__steamidclan = value;
+        }
+        public bool ShouldSerializesteamidclan() => __pbn__steamidclan != null;
+        public void Resetsteamidclan() => __pbn__steamidclan = null;
+        private ulong? __pbn__steamidclan;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CGameServers_RestrictPlayersToSteamClan_Response : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
     }
 
@@ -546,9 +765,24 @@ namespace SteamKit2.Internal
             return UnifiedMessages.SendMessage<CGameServers_QueryByFakeIP_Request, CGameServers_GameServerQuery_Response>( "GameServers.QueryByFakeIP#1", request );
         }
 
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CGameServers_FriendsQuery_Response>> FriendsQuery( CGameServers_FriendsQuery_Request request )
+        {
+            return UnifiedMessages.SendMessage<CGameServers_FriendsQuery_Request, CGameServers_FriendsQuery_Response>( "GameServers.FriendsQuery#1", request );
+        }
+
         public void ReportServerPingReply(CGameServers_ReportServerPingReply_Notification request )
         {
             UnifiedMessages.SendNotification<CGameServers_ReportServerPingReply_Notification>( "GameServers.ReportServerPingReply#1", request );
+        }
+
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CGameServers_MasterServerQuery_Response>> MasterServerQuery( CGameServers_MasterServerQuery_Request request )
+        {
+            return UnifiedMessages.SendMessage<CGameServers_MasterServerQuery_Request, CGameServers_MasterServerQuery_Response>( "GameServers.MasterServerQuery#1", request );
+        }
+
+        public AsyncJob<SteamUnifiedMessages.ServiceMethodResponse<CGameServers_RestrictPlayersToSteamClan_Response>> RestrictPlayersToSteamClan( CGameServers_RestrictPlayersToSteamClan_Request request )
+        {
+            return UnifiedMessages.SendMessage<CGameServers_RestrictPlayersToSteamClan_Request, CGameServers_RestrictPlayersToSteamClan_Response>( "GameServers.RestrictPlayersToSteamClan#1", request );
         }
 
         public override void HandleResponseMsg( string methodName, PacketClientMsgProtobuf packetMsg )
@@ -563,6 +797,15 @@ namespace SteamKit2.Internal
                     break;
                 case "QueryByFakeIP":
                     PostResponseMsg<CGameServers_GameServerQuery_Response>( packetMsg );
+                    break;
+                case "FriendsQuery":
+                    PostResponseMsg<CGameServers_FriendsQuery_Response>( packetMsg );
+                    break;
+                case "MasterServerQuery":
+                    PostResponseMsg<CGameServers_MasterServerQuery_Response>( packetMsg );
+                    break;
+                case "RestrictPlayersToSteamClan":
+                    PostResponseMsg<CGameServers_RestrictPlayersToSteamClan_Response>( packetMsg );
                     break;
             }
         }

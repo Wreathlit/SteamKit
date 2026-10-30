@@ -224,6 +224,16 @@ namespace SteamKit2.GC.Dota.Internal
             public void Resetwinning_team_id() => __pbn__winning_team_id = null;
             private uint? __pbn__winning_team_id;
 
+            [global::ProtoBuf.ProtoMember(3)]
+            public uint duration
+            {
+                get => __pbn__duration.GetValueOrDefault();
+                set => __pbn__duration = value;
+            }
+            public bool ShouldSerializeduration() => __pbn__duration != null;
+            public void Resetduration() => __pbn__duration = null;
+            private uint? __pbn__duration;
+
         }
 
         [global::ProtoBuf.ProtoContract()]
@@ -682,6 +692,16 @@ namespace SteamKit2.GC.Dota.Internal
             public bool ShouldSerializetiebreak_coinflip() => __pbn__tiebreak_coinflip != null;
             public void Resettiebreak_coinflip() => __pbn__tiebreak_coinflip = null;
             private uint? __pbn__tiebreak_coinflip;
+
+            [global::ProtoBuf.ProtoMember(19)]
+            public uint tiebereak_average_game_length
+            {
+                get => __pbn__tiebereak_average_game_length.GetValueOrDefault();
+                set => __pbn__tiebereak_average_game_length = value;
+            }
+            public bool ShouldSerializetiebereak_average_game_length() => __pbn__tiebereak_average_game_length != null;
+            public void Resettiebereak_average_game_length() => __pbn__tiebereak_average_game_length = null;
+            private uint? __pbn__tiebereak_average_game_length;
 
         }
 

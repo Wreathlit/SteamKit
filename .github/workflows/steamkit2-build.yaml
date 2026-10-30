@@ -47,22 +47,23 @@ jobs:
 
     - name: Run Tests
       run: >
-        dotnet test 
+        dotnet test
         --configuration ${{ matrix.configuration }}
         --verbosity normal
-        SteamKit2/Tests/Tests.csproj
-        /p:CollectCoverage=true
-        /p:CoverletOutputFormat=lcov
-        /p:CoverletOutput='./Coverage/lcov.info'
-        /p:Include="[SteamKit2]SteamKit*"
-        /p:Exclude="[SteamKit2]SteamKit2*Internal*"
+        --project SteamKit2/Tests/Tests.csproj
+        --results-directory SteamKit2/Tests/Coverage
+        --
+        --coverlet
+        --coverlet-output-format lcov
+        --coverlet-include "[SteamKit2]SteamKit*"
+        --coverlet-exclude "[SteamKit2]SteamKit2*Internal*"
 
     - name: Upload test coverage
       uses: codecov/codecov-action@v7
       if: matrix.configuration == 'Debug'
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: ./SteamKit2/Tests/Coverage/lcov.info
+        directory: ./SteamKit2/Tests/Coverage
         fail_ci_if_error: false
         verbose: true
 

@@ -34,6 +34,8 @@ namespace SteamKit2.Internal
         k_PublishedFileQueryType_RankedByInappropriateContentRating = 19,
         k_PublishedFileQueryType_RankedByBanContentCheck = 20,
         k_PublishedFileQueryType_RankedByLastUpdatedDate = 21,
+        k_PublishedFileQueryType_RankedByNumParentItems = 22,
+        k_PublishedFileQueryType_RankedByNumParentCollections = 23,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -161,16 +163,6 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
-    public enum EStartupMovieVariant
-    {
-        k_EStartupMovieVariant_Invalid = 0,
-        k_EStartupMovieVariant_Generic = 1,
-        k_EStartupMovieVariant_DeckBlue = 2,
-        k_EStartupMovieVariant_DeckOrange = 3,
-        k_EStartupMovieVariant_Machine = 4,
-    }
-
-    [global::ProtoBuf.ProtoContract()]
     public enum EColorGamutLabelSet
     {
         k_ColorGamutLabelSet_Default = 0,
@@ -201,6 +193,16 @@ namespace SteamKit2.Internal
         k_BluetoothDeviceType_Joystick = 9,
         k_BluetoothDeviceType_Gamepad = 10,
         k_BluetoothDeviceType_Keyboard = 11,
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public enum ESpeakerConfiguration
+    {
+        k_ESpeakerConfiguration_Other = 0,
+        k_ESpeakerConfiguration_Stereo = 1,
+        k_ESpeakerConfiguration_51 = 2,
+        k_ESpeakerConfiguration_71 = 3,
+        k_ESpeakerConfiguration_51_Ac3 = 4,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -250,6 +252,13 @@ namespace SteamKit2.Internal
         k_ESystemServiceState_Unavailable = 0,
         k_ESystemServiceState_Disabled = 1,
         k_ESystemServiceState_Enabled = 2,
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public enum EBluetoothAudioPreference
+    {
+        k_EBluetoothAudioPreference_Quality = 0,
+        k_EBluetoothAudioPreference_Latency = 1,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -714,6 +723,7 @@ namespace SteamKit2.Internal
         k_ECompromiseDetectionType_MaliciousRefund = 5,
         k_ECompromiseDetectionType_Move2FA = 6,
         k_ECompromiseDetectionType_DeviceType = 7,
+        k_ECompromiseDetectionType_LeakedCredentialList = 8,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -785,11 +795,16 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
-    public enum EChildProcessQueryCommand
+    public enum EAppTestType
     {
-        k_EChildProcessQueryCommand_Invalid = 0,
-        k_EChildProcessQueryCommand_GpuTopology = 1,
-        k_EChildProcessQueryCommand_Max = 2,
+        k_EAppTestType_BuildReview = 0,
+        k_EAppTestType_StorePageReview = 1,
+        k_EAppTestType_SteamChina_BuildReview = 2,
+        k_EAppTestType_SteamChina_StorePageReview = 3,
+        k_EAppTestType_SteamChinaPlatformOperator_StorePageReview = 4,
+        k_EAppTestType_SteamChinaPlatformOperator_BuildReview = 5,
+        k_EAppTestType_SteamDeckCompatibilityReview = 6,
+        k_EAppTestType_SteamFrameCompatibilityReview = 7,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -822,6 +837,18 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public enum EWindowsUpdateOperationResult
+    {
+        k_EWindowsUpdateOperationResult_Unknown = -1,
+        k_EWindowsUpdateOperationResult_NotStarted = 0,
+        k_EWindowsUpdateOperationResult_InProgress = 1,
+        k_EWindowsUpdateOperationResult_Succeeded = 2,
+        k_EWindowsUpdateOperationResult_SucceededWithErrors = 3,
+        k_EWindowsUpdateOperationResult_Failed = 4,
+        k_EWindowsUpdateOperationResult_Aborted = 5,
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public enum EExternalSaleEventType
     {
         k_EExternalSaleEventType_Unknown = 0,
@@ -846,7 +873,7 @@ namespace SteamKit2.Internal
     {
         k_EContentReportSubjectType_Invalid = 0,
         k_EContentReportSubjectType_ForumPost = 1,
-        k_EContentReportSubjectType_Unused = 2,
+        k_EContentReportSubjectType_CommentThread = 2,
         k_EContentReportSubjectType_UGCFile = 3,
         k_EContentReportSubjectType_FriendChatMsg = 4,
         k_EContentReportSubjectType_ChatRoomMsg = 5,
@@ -891,7 +918,8 @@ namespace SteamKit2.Internal
         k_EContentReportResolution_RemoveAndKick = 13,
         k_EContentReportResolution_Sanctioned = 14,
         k_EContentReportResolution_Sustained = 15,
-        k_EContentReportResolution_MAX = 16,
+        k_EContentReportResolution_Broken = 16,
+        k_EContentReportResolution_MAX = 17,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -908,7 +936,10 @@ namespace SteamKit2.Internal
         k_EContentModerationSanction_Warned = 8,
         k_EContentModerationSanction_KickedFromGroup = 9,
         k_EContentModerationSanction_HarassmentBanned = 10,
-        k_EContentModerationSanction_MAX = 11,
+        k_EContentModerationSanction_HarassmentStrike = 11,
+        k_EContentModerationSanction_Escalate = 12,
+        k_EContentModerationSanction_MarkedIncompatible = 13,
+        k_EContentModerationSanction_MAX = 14,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -922,7 +953,7 @@ namespace SteamKit2.Internal
         k_EContentReportSubjectAction_Updated = 5,
         k_EContentReportSubjectAction_Escalated = 6,
         k_EContentReportSubjectAction_Disputed = 7,
-        k_EContentReportSubjectAction_SustainedOnDispute = 8,
+        k_EContentReportSubjectAction_Sustained = 8,
         k_EContentReportSubjectAction_Locked = 9,
         k_EContentReportSubjectAction_Unlocked = 10,
         k_EContentReportSubjectAction_Deleted = 11,
@@ -937,6 +968,7 @@ namespace SteamKit2.Internal
         k_EContentReportSubjectAction_Claimed = 20,
         k_EContentReportSubjectAction_Released = 21,
         k_EContentReportSubjectAction_PrivateMessaged = 22,
+        k_EContentReportSubjectAction_OwnerDisputed = 23,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1006,7 +1038,13 @@ namespace SteamKit2.Internal
         k_EContentReportReason_NegativeEffectonDiscourseOrElections = 61,
         k_EContentReportReason_QuotesModeratedContent = 62,
         k_EContentReportReason_CredibleThreatOfViolence = 63,
-        k_EContentReportReason_MAX = 64,
+        k_EContentReportReason_AutoCreatedOnModeration = 64,
+        k_EContentReportReason_Piracy = 65,
+        k_EContentReportReason_ToSViolation = 66,
+        k_EContentReportReason_Miscategorized = 67,
+        k_EContentReportReason_BypassingProfanityFilter = 68,
+        k_EContentReportReason_BulkDeletion = 69,
+        k_EContentReportReason_MAX = 70,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1056,6 +1094,17 @@ namespace SteamKit2.Internal
         k_ECommentDeleteReason_Support = 4,
         k_ECommentDeleteReason_Spam = 5,
         k_ECommentDeleteReason_AccountDeletion = 6,
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public enum EDLCHighlightReason
+    {
+        k_EDLCHighlightReason_None = 0,
+        k_EDLCHighlightReason_New = 1,
+        k_EDLCHighlightReason_ComingSoon = 2,
+        k_EDLCHighlightReason_PlayerFavorite = 3,
+        k_EDLCHighlightReason_Recommended = 4,
+        k_EDLCHighlightReason_NewPlayers = 5,
     }
 
 }

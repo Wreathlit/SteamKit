@@ -1050,6 +1050,26 @@ namespace SteamKit2.GC.Dota.Internal
         public void Resettracked_stat_id() => __pbn__tracked_stat_id = null;
         private uint? __pbn__tracked_stat_id;
 
+        [global::ProtoBuf.ProtoMember(81)]
+        public float modifier_purged_duration
+        {
+            get => __pbn__modifier_purged_duration.GetValueOrDefault();
+            set => __pbn__modifier_purged_duration = value;
+        }
+        public bool ShouldSerializemodifier_purged_duration() => __pbn__modifier_purged_duration != null;
+        public void Resetmodifier_purged_duration() => __pbn__modifier_purged_duration = null;
+        private float? __pbn__modifier_purged_duration;
+
+        [global::ProtoBuf.ProtoMember(82)]
+        public bool heal_from_regen
+        {
+            get => __pbn__heal_from_regen.GetValueOrDefault();
+            set => __pbn__heal_from_regen = value;
+        }
+        public bool ShouldSerializeheal_from_regen() => __pbn__heal_from_regen != null;
+        public void Resetheal_from_regen() => __pbn__heal_from_regen = null;
+        private bool? __pbn__heal_from_regen;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1131,36 +1151,8 @@ namespace SteamKit2.GC.Dota.Internal
             => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
         [global::ProtoBuf.ProtoMember(1)]
-        public global::System.Collections.Generic.List<MaterialCountsEntry> material_counts { get; } = new global::System.Collections.Generic.List<MaterialCountsEntry>();
-
-        [global::ProtoBuf.ProtoContract()]
-        public partial class MaterialCountsEntry : global::ProtoBuf.IExtensible
-        {
-            private global::ProtoBuf.IExtension __pbn__extensionData;
-            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-            [global::ProtoBuf.ProtoMember(1)]
-            public uint key
-            {
-                get => __pbn__key.GetValueOrDefault();
-                set => __pbn__key = value;
-            }
-            public bool ShouldSerializekey() => __pbn__key != null;
-            public void Resetkey() => __pbn__key = null;
-            private uint? __pbn__key;
-
-            [global::ProtoBuf.ProtoMember(2)]
-            public int value
-            {
-                get => __pbn__value.GetValueOrDefault();
-                set => __pbn__value = value;
-            }
-            public bool ShouldSerializevalue() => __pbn__value != null;
-            public void Resetvalue() => __pbn__value = null;
-            private int? __pbn__value;
-
-        }
+        [global::ProtoBuf.ProtoMap]
+        public global::System.Collections.Generic.Dictionary<uint, int> material_counts { get; } = new global::System.Collections.Generic.Dictionary<uint, int>();
 
     }
 
@@ -1392,69 +1384,6 @@ namespace SteamKit2.GC.Dota.Internal
         DOTA_GC_TEAM_CUSTOM_7 = 12,
         DOTA_GC_TEAM_CUSTOM_8 = 13,
         DOTA_GC_TEAM_NEUTRALS = 14,
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public enum EEvent
-    {
-        EVENT_ID_NONE = 0,
-        EVENT_ID_DIRETIDE = 1,
-        EVENT_ID_SPRING_FESTIVAL = 2,
-        EVENT_ID_FROSTIVUS_2013 = 3,
-        EVENT_ID_COMPENDIUM_2014 = 4,
-        EVENT_ID_NEXON_PC_BANG = 5,
-        EVENT_ID_PWRD_DAC_2015 = 6,
-        EVENT_ID_NEW_BLOOM_2015 = 7,
-        EVENT_ID_INTERNATIONAL_2015 = 8,
-        EVENT_ID_FALL_MAJOR_2015 = 9,
-        EVENT_ID_ORACLE_PA = 10,
-        EVENT_ID_NEW_BLOOM_2015_PREBEAST = 11,
-        EVENT_ID_FROSTIVUS = 12,
-        EVENT_ID_WINTER_MAJOR_2016 = 13,
-        EVENT_ID_INTERNATIONAL_2016 = 14,
-        EVENT_ID_FALL_MAJOR_2016 = 15,
-        EVENT_ID_WINTER_MAJOR_2017 = 16,
-        EVENT_ID_NEW_BLOOM_2017 = 17,
-        EVENT_ID_INTERNATIONAL_2017 = 18,
-        EVENT_ID_PLUS_SUBSCRIPTION = 19,
-        EVENT_ID_SINGLES_DAY_2017 = 20,
-        EVENT_ID_FROSTIVUS_2017 = 21,
-        EVENT_ID_INTERNATIONAL_2018 = 22,
-        EVENT_ID_FROSTIVUS_2018 = 23,
-        EVENT_ID_NEW_BLOOM_2019 = 24,
-        EVENT_ID_INTERNATIONAL_2019 = 25,
-        EVENT_ID_NEW_PLAYER_EXPERIENCE = 26,
-        EVENT_ID_FROSTIVUS_2019 = 27,
-        EVENT_ID_NEW_BLOOM_2020 = 28,
-        EVENT_ID_INTERNATIONAL_2020 = 29,
-        EVENT_ID_TEAM_FANDOM = 30,
-        EVENT_ID_DIRETIDE_2020 = 31,
-        EVENT_ID_SPRING_2021 = 32,
-        EVENT_ID_FALL_2021 = 33,
-        EVENT_ID_TEAM_FANDOM_FALL_2021 = 34,
-        EVENT_ID_TEAM_2021_2022_TOUR2 = 35,
-        EVENT_ID_INTERNATIONAL_2022 = 36,
-        EVENT_ID_TEAM_2021_2022_TOUR3 = 37,
-        EVENT_ID_TEAM_INTERNATIONAL_2022 = 38,
-        EVENT_ID_PERMANENT_GRANTS = 39,
-        EVENT_ID_MUERTA_RELEASE_SPRING2023 = 40,
-        EVENT_ID_TEAM_2023_TOUR1 = 41,
-        EVENT_ID_TEAM_2023_TOUR2 = 42,
-        EVENT_ID_TEAM_2023_TOUR3 = 43,
-        EVENT_ID_INTERNATIONAL_2023 = 45,
-        EVENT_ID_10TH_ANNIVERSARY = 46,
-        EVENT_ID_CROWNFALL = 47,
-        EVENT_ID_FROSTIVUS_2023 = 48,
-        EVENT_ID_INTERNATIONAL_2024 = 49,
-        EVENT_ID_FROSTIVUS_2024 = 50,
-        EVENT_ID_MONSTER_HUNTER = 51,
-        EVENT_ID_INTERNATIONAL_2025 = 52,
-        EVENT_ID_FALL_2025 = 53,
-        EVENT_ID_WINTER_2025 = 55,
-        EVENT_ID_SPRING_2026 = 56,
-        EVENT_ID_SUMMER_2026 = 57,
-        EVENT_ID_FALL_2026 = 58,
-        EVENT_ID_WINTER_2026 = 59,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1823,6 +1752,10 @@ namespace SteamKit2.GC.Dota.Internal
         DOTA_BOT_MODE_MINION = 25,
         DOTA_BOT_MODE_OUTPOST = 26,
         DOTA_BOT_MODE_BOT_CHALLENGE_ENDGAME = 27,
+        DOTA_BOT_MODE_WATCHER = 28,
+        DOTA_BOT_MODE_WISDOM_SHRINE = 29,
+        DOTA_BOT_MODE_LOTUS_POOL = 30,
+        DOTA_BOT_MODE_DEWARD = 31,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1915,6 +1848,11 @@ namespace SteamKit2.GC.Dota.Internal
         k_EBadgeType_TI14_FinalsDay3 = 24,
         k_EBadgeType_TI14_FinalsDay4 = 25,
         k_EBadgeType_TI14_Special = 26,
+        k_EBadgeType_TI15_FinalsDay1 = 27,
+        k_EBadgeType_TI15_FinalsDay2 = 28,
+        k_EBadgeType_TI15_FinalsDay3 = 29,
+        k_EBadgeType_TI15_FinalsDay4 = 30,
+        k_EBadgeType_TI15_Special = 31,
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -2112,13 +2050,6 @@ namespace SteamKit2.GC.Dota.Internal
         DPC_PUSH_NOTIFICATION_FANTASY_PLAYER_CLEARED = 40,
         DPC_PUSH_NOTIFICATION_FANTASY_DAILY_SUMMARY = 41,
         DPC_PUSH_NOTIFICATION_FANTASY_FINAL_RESULTS = 42,
-    }
-
-    [global::ProtoBuf.ProtoContract()]
-    public enum EEventActionScoreMode
-    {
-        k_eEventActionScoreMode_Add = 0,
-        k_eEventActionScoreMode_Min = 1,
     }
 
     [global::ProtoBuf.ProtoContract()]

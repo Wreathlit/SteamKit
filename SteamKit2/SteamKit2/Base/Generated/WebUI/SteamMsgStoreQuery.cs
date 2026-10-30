@@ -173,6 +173,26 @@ namespace SteamKit2.WebUI.Internal
         public void Resetinclude_bundles() => __pbn__include_bundles = null;
         private bool? __pbn__include_bundles;
 
+        [global::ProtoBuf.ProtoMember(6)]
+        public bool include_dlc
+        {
+            get => __pbn__include_dlc.GetValueOrDefault();
+            set => __pbn__include_dlc = value;
+        }
+        public bool ShouldSerializeinclude_dlc() => __pbn__include_dlc != null;
+        public void Resetinclude_dlc() => __pbn__include_dlc = null;
+        private bool? __pbn__include_dlc;
+
+        [global::ProtoBuf.ProtoMember(7)]
+        public int min_discount_percent
+        {
+            get => __pbn__min_discount_percent.GetValueOrDefault();
+            set => __pbn__min_discount_percent = value;
+        }
+        public bool ShouldSerializemin_discount_percent() => __pbn__min_discount_percent != null;
+        public void Resetmin_discount_percent() => __pbn__min_discount_percent = null;
+        private int? __pbn__min_discount_percent;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -440,6 +460,16 @@ namespace SteamKit2.WebUI.Internal
         public void Resetsearch_creators() => __pbn__search_creators = null;
         private bool? __pbn__search_creators;
 
+        [global::ProtoBuf.ProtoMember(11)]
+        public bool use_name_match_scoring
+        {
+            get => __pbn__use_name_match_scoring.GetValueOrDefault();
+            set => __pbn__use_name_match_scoring = value;
+        }
+        public bool ShouldSerializeuse_name_match_scoring() => __pbn__use_name_match_scoring != null;
+        public void Resetuse_name_match_scoring() => __pbn__use_name_match_scoring = null;
+        private bool? __pbn__use_name_match_scoring;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -505,11 +535,23 @@ namespace SteamKit2.WebUI.Internal
         [global::ProtoBuf.ProtoMember(12)]
         public CStoreQueryFilters_PriceFilters price_filters { get; set; }
 
+        [global::ProtoBuf.ProtoMember(13)]
+        public CStoreQueryFilters_ReleaseDateFilter release_date_filter { get; set; }
+
         [global::ProtoBuf.ProtoMember(15)]
         public global::System.Collections.Generic.List<int> content_descriptors_must_match { get; } = new global::System.Collections.Generic.List<int>();
 
         [global::ProtoBuf.ProtoMember(16)]
         public global::System.Collections.Generic.List<int> content_descriptors_excluded { get; } = new global::System.Collections.Generic.List<int>();
+
+        [global::ProtoBuf.ProtoMember(17)]
+        public CStoreQueryFilters_DiscountedDatesFilter discounted_dates_filter { get; set; }
+
+        [global::ProtoBuf.ProtoMember(18)]
+        public CStoreQueryFilters_CompatibilityFilter compatibility_filter { get; set; }
+
+        [global::ProtoBuf.ProtoMember(19)]
+        public CStoreQueryFilters_ReviewScoreFilter review_score_filter { get; set; }
 
         [global::ProtoBuf.ProtoMember(40)]
         public int regional_top_n_sellers
@@ -556,6 +598,67 @@ namespace SteamKit2.WebUI.Internal
 
         [global::ProtoBuf.ProtoMember(45)]
         public global::System.Collections.Generic.List<uint> parent_appids { get; } = new global::System.Collections.Generic.List<uint>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CStoreQueryFilters_CompatibilityFilter : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public int device
+        {
+            get => __pbn__device.GetValueOrDefault();
+            set => __pbn__device = value;
+        }
+        public bool ShouldSerializedevice() => __pbn__device != null;
+        public void Resetdevice() => __pbn__device = null;
+        private int? __pbn__device;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public global::System.Collections.Generic.List<int> categories { get; } = new global::System.Collections.Generic.List<int>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CStoreQueryFilters_DiscountedDatesFilter : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint start_date
+        {
+            get => __pbn__start_date.GetValueOrDefault();
+            set => __pbn__start_date = value;
+        }
+        public bool ShouldSerializestart_date() => __pbn__start_date != null;
+        public void Resetstart_date() => __pbn__start_date = null;
+        private uint? __pbn__start_date;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public uint end_date
+        {
+            get => __pbn__end_date.GetValueOrDefault();
+            set => __pbn__end_date = value;
+        }
+        public bool ShouldSerializeend_date() => __pbn__end_date != null;
+        public void Resetend_date() => __pbn__end_date = null;
+        private uint? __pbn__end_date;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public bool allow_partial_overlap
+        {
+            get => __pbn__allow_partial_overlap.GetValueOrDefault();
+            set => __pbn__allow_partial_overlap = value;
+        }
+        public bool ShouldSerializeallow_partial_overlap() => __pbn__allow_partial_overlap != null;
+        public void Resetallow_partial_overlap() => __pbn__allow_partial_overlap = null;
+        private bool? __pbn__allow_partial_overlap;
 
     }
 
@@ -617,6 +720,74 @@ namespace SteamKit2.WebUI.Internal
         public bool ShouldSerializemin_discount_percent() => __pbn__min_discount_percent != null;
         public void Resetmin_discount_percent() => __pbn__min_discount_percent = null;
         private int? __pbn__min_discount_percent;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CStoreQueryFilters_ReleaseDateFilter : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public int release_date_type
+        {
+            get => __pbn__release_date_type.GetValueOrDefault();
+            set => __pbn__release_date_type = value;
+        }
+        public bool ShouldSerializerelease_date_type() => __pbn__release_date_type != null;
+        public void Resetrelease_date_type() => __pbn__release_date_type = null;
+        private int? __pbn__release_date_type;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public int start_date
+        {
+            get => __pbn__start_date.GetValueOrDefault();
+            set => __pbn__start_date = value;
+        }
+        public bool ShouldSerializestart_date() => __pbn__start_date != null;
+        public void Resetstart_date() => __pbn__start_date = null;
+        private int? __pbn__start_date;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public int end_date
+        {
+            get => __pbn__end_date.GetValueOrDefault();
+            set => __pbn__end_date = value;
+        }
+        public bool ShouldSerializeend_date() => __pbn__end_date != null;
+        public void Resetend_date() => __pbn__end_date = null;
+        private int? __pbn__end_date;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CStoreQueryFilters_ReviewScoreFilter : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public int min_score
+        {
+            get => __pbn__min_score.GetValueOrDefault();
+            set => __pbn__min_score = value;
+        }
+        public bool ShouldSerializemin_score() => __pbn__min_score != null;
+        public void Resetmin_score() => __pbn__min_score = null;
+        private int? __pbn__min_score;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public bool allow_unreviewed
+        {
+            get => __pbn__allow_unreviewed.GetValueOrDefault();
+            set => __pbn__allow_unreviewed = value;
+        }
+        public bool ShouldSerializeallow_unreviewed() => __pbn__allow_unreviewed != null;
+        public void Resetallow_unreviewed() => __pbn__allow_unreviewed = null;
+        private bool? __pbn__allow_unreviewed;
 
     }
 

@@ -59,14 +59,15 @@ class CNetPacket
 public:
 	HCONNECTION m_hConnection;
 
+	uint32 m_unUnk1;
+	uint32 m_unUnk2;
+
 	uint8* m_pubData;
 	uint32 m_cubData;
 
 	int m_cRef;
 
 	uint8* m_pubNetworkBuffer;
-
-	CNetPacket* m_pNext;
 };
 
 

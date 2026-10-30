@@ -316,6 +316,16 @@ namespace SteamKit2.GC.Dota.Internal
         [global::ProtoBuf.ProtoMember(1)]
         public global::System.Collections.Generic.List<CMsgDOTAPlayerInfo> player_infos { get; } = new global::System.Collections.Generic.List<CMsgDOTAPlayerInfo>();
 
+        [global::ProtoBuf.ProtoMember(2)]
+        public uint retry_time
+        {
+            get => __pbn__retry_time.GetValueOrDefault();
+            set => __pbn__retry_time = value;
+        }
+        public bool ShouldSerializeretry_time() => __pbn__retry_time != null;
+        public void Resetretry_time() => __pbn__retry_time = null;
+        private uint? __pbn__retry_time;
+
     }
 
     [global::ProtoBuf.ProtoContract()]
@@ -1391,6 +1401,16 @@ namespace SteamKit2.GC.Dota.Internal
             public void Resetsuffix() => __pbn__suffix = null;
             private uint? __pbn__suffix;
 
+            [global::ProtoBuf.ProtoMember(10)]
+            public uint team_id
+            {
+                get => __pbn__team_id.GetValueOrDefault();
+                set => __pbn__team_id = value;
+            }
+            public bool ShouldSerializeteam_id() => __pbn__team_id != null;
+            public void Resetteam_id() => __pbn__team_id = null;
+            private uint? __pbn__team_id;
+
             [global::ProtoBuf.ProtoMember(7)]
             public global::System.Collections.Generic.List<CMsgDotaFantasyCraftingTabletPeriodData.Gem> gems { get; } = new global::System.Collections.Generic.List<CMsgDotaFantasyCraftingTabletPeriodData.Gem>();
 
@@ -1426,29 +1446,8 @@ namespace SteamKit2.GC.Dota.Internal
             => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
 
         [global::ProtoBuf.ProtoMember(1)]
-        public global::System.Collections.Generic.List<TabletPeriodDataEntry> tablet_period_data { get; } = new global::System.Collections.Generic.List<TabletPeriodDataEntry>();
-
-        [global::ProtoBuf.ProtoContract()]
-        public partial class TabletPeriodDataEntry : global::ProtoBuf.IExtensible
-        {
-            private global::ProtoBuf.IExtension __pbn__extensionData;
-            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-            [global::ProtoBuf.ProtoMember(1)]
-            public uint key
-            {
-                get => __pbn__key.GetValueOrDefault();
-                set => __pbn__key = value;
-            }
-            public bool ShouldSerializekey() => __pbn__key != null;
-            public void Resetkey() => __pbn__key = null;
-            private uint? __pbn__key;
-
-            [global::ProtoBuf.ProtoMember(2)]
-            public CMsgDotaFantasyCraftingTabletPeriodData value { get; set; }
-
-        }
+        [global::ProtoBuf.ProtoMap]
+        public global::System.Collections.Generic.Dictionary<uint, CMsgDotaFantasyCraftingTabletPeriodData> tablet_period_data { get; } = new global::System.Collections.Generic.Dictionary<uint, CMsgDotaFantasyCraftingTabletPeriodData>();
 
     }
 
@@ -1463,10 +1462,12 @@ namespace SteamKit2.GC.Dota.Internal
         public global::System.Collections.Generic.List<uint> available_rolls { get; } = new global::System.Collections.Generic.List<uint>();
 
         [global::ProtoBuf.ProtoMember(2)]
-        public global::System.Collections.Generic.List<PeriodRollTokensEntry> period_roll_tokens { get; } = new global::System.Collections.Generic.List<PeriodRollTokensEntry>();
+        [global::ProtoBuf.ProtoMap]
+        public global::System.Collections.Generic.Dictionary<uint, uint> period_roll_tokens { get; } = new global::System.Collections.Generic.Dictionary<uint, uint>();
 
         [global::ProtoBuf.ProtoMember(3)]
-        public global::System.Collections.Generic.List<PeriodScoresEntry> period_scores { get; } = new global::System.Collections.Generic.List<PeriodScoresEntry>();
+        [global::ProtoBuf.ProtoMap]
+        public global::System.Collections.Generic.Dictionary<uint, CMsgDotaFantasyCraftingUserData.PeriodScore> period_scores { get; } = new global::System.Collections.Generic.Dictionary<uint, CMsgDotaFantasyCraftingUserData.PeriodScore>();
 
         [global::ProtoBuf.ProtoContract()]
         public partial class PeriodScore : global::ProtoBuf.IExtensible
@@ -1494,57 +1495,6 @@ namespace SteamKit2.GC.Dota.Internal
             public bool ShouldSerializepercentile() => __pbn__percentile != null;
             public void Resetpercentile() => __pbn__percentile = null;
             private float? __pbn__percentile;
-
-        }
-
-        [global::ProtoBuf.ProtoContract()]
-        public partial class PeriodRollTokensEntry : global::ProtoBuf.IExtensible
-        {
-            private global::ProtoBuf.IExtension __pbn__extensionData;
-            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-            [global::ProtoBuf.ProtoMember(1)]
-            public uint key
-            {
-                get => __pbn__key.GetValueOrDefault();
-                set => __pbn__key = value;
-            }
-            public bool ShouldSerializekey() => __pbn__key != null;
-            public void Resetkey() => __pbn__key = null;
-            private uint? __pbn__key;
-
-            [global::ProtoBuf.ProtoMember(2)]
-            public uint value
-            {
-                get => __pbn__value.GetValueOrDefault();
-                set => __pbn__value = value;
-            }
-            public bool ShouldSerializevalue() => __pbn__value != null;
-            public void Resetvalue() => __pbn__value = null;
-            private uint? __pbn__value;
-
-        }
-
-        [global::ProtoBuf.ProtoContract()]
-        public partial class PeriodScoresEntry : global::ProtoBuf.IExtensible
-        {
-            private global::ProtoBuf.IExtension __pbn__extensionData;
-            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
-                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
-
-            [global::ProtoBuf.ProtoMember(1)]
-            public uint key
-            {
-                get => __pbn__key.GetValueOrDefault();
-                set => __pbn__key = value;
-            }
-            public bool ShouldSerializekey() => __pbn__key != null;
-            public void Resetkey() => __pbn__key = null;
-            private uint? __pbn__key;
-
-            [global::ProtoBuf.ProtoMember(2)]
-            public CMsgDotaFantasyCraftingUserData.PeriodScore value { get; set; }
 
         }
 
@@ -1996,6 +1946,209 @@ namespace SteamKit2.GC.Dota.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgClientToGCFantasyCraftingSelectTeam : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint fantasy_league
+        {
+            get => __pbn__fantasy_league.GetValueOrDefault();
+            set => __pbn__fantasy_league = value;
+        }
+        public bool ShouldSerializefantasy_league() => __pbn__fantasy_league != null;
+        public void Resetfantasy_league() => __pbn__fantasy_league = null;
+        private uint? __pbn__fantasy_league;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue(Fantasy_Roles.FANTASY_ROLE_UNDEFINED)]
+        public Fantasy_Roles role
+        {
+            get => __pbn__role ?? Fantasy_Roles.FANTASY_ROLE_UNDEFINED;
+            set => __pbn__role = value;
+        }
+        public bool ShouldSerializerole() => __pbn__role != null;
+        public void Resetrole() => __pbn__role = null;
+        private Fantasy_Roles? __pbn__role;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public uint team_id
+        {
+            get => __pbn__team_id.GetValueOrDefault();
+            set => __pbn__team_id = value;
+        }
+        public bool ShouldSerializeteam_id() => __pbn__team_id != null;
+        public void Resetteam_id() => __pbn__team_id = null;
+        private uint? __pbn__team_id;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgClientToGCFantasyCraftingSelectTeamResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue(EResponse.k_eInternalError)]
+        public EResponse response
+        {
+            get => __pbn__response ?? EResponse.k_eInternalError;
+            set => __pbn__response = value;
+        }
+        public bool ShouldSerializeresponse() => __pbn__response != null;
+        public void Resetresponse() => __pbn__response = null;
+        private EResponse? __pbn__response;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public CMsgDotaFantasyCraftingTabletData tablet_data { get; set; }
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum EResponse
+        {
+            k_eInternalError = 0,
+            k_eSuccess = 1,
+            k_eTooBusy = 2,
+            k_eDisabled = 3,
+            k_eTimeout = 4,
+            k_eInvalidLeague = 5,
+            k_eInvalidTeam = 7,
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgClientToGCFantasyCraftingSelectGlobalPrefix : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint fantasy_league
+        {
+            get => __pbn__fantasy_league.GetValueOrDefault();
+            set => __pbn__fantasy_league = value;
+        }
+        public bool ShouldSerializefantasy_league() => __pbn__fantasy_league != null;
+        public void Resetfantasy_league() => __pbn__fantasy_league = null;
+        private uint? __pbn__fantasy_league;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public uint prefix
+        {
+            get => __pbn__prefix.GetValueOrDefault();
+            set => __pbn__prefix = value;
+        }
+        public bool ShouldSerializeprefix() => __pbn__prefix != null;
+        public void Resetprefix() => __pbn__prefix = null;
+        private uint? __pbn__prefix;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgClientToGCFantasyCraftingSelectGlobalPrefixResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue(EResponse.k_eInternalError)]
+        public EResponse response
+        {
+            get => __pbn__response ?? EResponse.k_eInternalError;
+            set => __pbn__response = value;
+        }
+        public bool ShouldSerializeresponse() => __pbn__response != null;
+        public void Resetresponse() => __pbn__response = null;
+        private EResponse? __pbn__response;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public CMsgDotaFantasyCraftingTabletData tablet_data { get; set; }
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum EResponse
+        {
+            k_eInternalError = 0,
+            k_eSuccess = 1,
+            k_eTooBusy = 2,
+            k_eDisabled = 3,
+            k_eTimeout = 4,
+            k_eInvalidLeague = 5,
+            k_eInvalidPrefix = 7,
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgClientToGCFantasyCraftingSelectGlobalSuffix : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint fantasy_league
+        {
+            get => __pbn__fantasy_league.GetValueOrDefault();
+            set => __pbn__fantasy_league = value;
+        }
+        public bool ShouldSerializefantasy_league() => __pbn__fantasy_league != null;
+        public void Resetfantasy_league() => __pbn__fantasy_league = null;
+        private uint? __pbn__fantasy_league;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public uint suffix
+        {
+            get => __pbn__suffix.GetValueOrDefault();
+            set => __pbn__suffix = value;
+        }
+        public bool ShouldSerializesuffix() => __pbn__suffix != null;
+        public void Resetsuffix() => __pbn__suffix = null;
+        private uint? __pbn__suffix;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CMsgClientToGCFantasyCraftingSelectGlobalSuffixResponse : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        [global::System.ComponentModel.DefaultValue(EResponse.k_eInternalError)]
+        public EResponse response
+        {
+            get => __pbn__response ?? EResponse.k_eInternalError;
+            set => __pbn__response = value;
+        }
+        public bool ShouldSerializeresponse() => __pbn__response != null;
+        public void Resetresponse() => __pbn__response = null;
+        private EResponse? __pbn__response;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public CMsgDotaFantasyCraftingTabletData tablet_data { get; set; }
+
+        [global::ProtoBuf.ProtoContract()]
+        public enum EResponse
+        {
+            k_eInternalError = 0,
+            k_eSuccess = 1,
+            k_eTooBusy = 2,
+            k_eDisabled = 3,
+            k_eTimeout = 4,
+            k_eInvalidLeague = 5,
+            k_eInvalidSuffix = 7,
+        }
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public partial class CMsgClientToGCFantasyCraftingGenerateTablets : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -2014,6 +2167,39 @@ namespace SteamKit2.GC.Dota.Internal
 
         [global::ProtoBuf.ProtoMember(2)]
         public global::System.Collections.Generic.List<uint> account_ids { get; } = new global::System.Collections.Generic.List<uint>();
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public global::System.Collections.Generic.List<TeamChoice> selected_teams { get; } = new global::System.Collections.Generic.List<TeamChoice>();
+
+        [global::ProtoBuf.ProtoContract()]
+        public partial class TeamChoice : global::ProtoBuf.IExtensible
+        {
+            private global::ProtoBuf.IExtension __pbn__extensionData;
+            global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+                => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+            [global::ProtoBuf.ProtoMember(1)]
+            [global::System.ComponentModel.DefaultValue(Fantasy_Roles.FANTASY_ROLE_UNDEFINED)]
+            public Fantasy_Roles fantasy_role
+            {
+                get => __pbn__fantasy_role ?? Fantasy_Roles.FANTASY_ROLE_UNDEFINED;
+                set => __pbn__fantasy_role = value;
+            }
+            public bool ShouldSerializefantasy_role() => __pbn__fantasy_role != null;
+            public void Resetfantasy_role() => __pbn__fantasy_role = null;
+            private Fantasy_Roles? __pbn__fantasy_role;
+
+            [global::ProtoBuf.ProtoMember(2)]
+            public uint team_id
+            {
+                get => __pbn__team_id.GetValueOrDefault();
+                set => __pbn__team_id = value;
+            }
+            public bool ShouldSerializeteam_id() => __pbn__team_id != null;
+            public void Resetteam_id() => __pbn__team_id = null;
+            private uint? __pbn__team_id;
+
+        }
 
     }
 
@@ -2051,6 +2237,7 @@ namespace SteamKit2.GC.Dota.Internal
             k_eTimeout = 4,
             k_eInvalidLeague = 5,
             k_eInvalidPlayer = 6,
+            k_eInvalidTeam = 7,
         }
 
     }

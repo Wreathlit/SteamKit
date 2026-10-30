@@ -9,6 +9,16 @@
 #include "csimplescan.h"
 #include "steamclient.h"
 
+#include <cstddef>
+
+#ifdef X64BITS
+static_assert(offsetof(CNetPacket, m_pubData) == 16, "Wrong offset of CNetPacket::m_pubData on 64-bit");
+static_assert(offsetof(CNetPacket, m_cubData) == 24, "Wrong offset of CNetPacket::m_cubData on 64-bit");
+#else
+static_assert(offsetof(CNetPacket, m_pubData) == 12, "Wrong offset of CNetPacket::m_pubData on 32-bit");
+static_assert(offsetof(CNetPacket, m_cubData) == 16, "Wrong offset of CNetPacket::m_cubData on 32-bit");
+#endif
+
 
 namespace NetHook
 {
@@ -29,8 +39,8 @@ CNet::CNet() noexcept
 		"\x48\x8B\xC4\x55\x48\x8D\x68\x00\x48\x81\xEC\x00\x00\x00\x00\x48\x89\x70\x00\x49\x8B\xF0\x48\x89\x78\x00\x4C\x89\x60",
 		"xxxxxxx?xxx????xxx?xxxxxx?xxx",
 #else
-		"\x55\x8B\xEC\x83\xEC\x64\xA1\x00\x00\x00\x00\x53\x8B\xD9\x57",
-		"xxxxxxx????xxxx",
+		"\x55\x8B\xEC\x83\xEC\xCC\xA1\xCC\xCC\xCC\xCC\x53\x8B\xD9\x89\x5D\xCC\x83\x38\xCC\x75\xCC\x33\xC0\xEB\xCC\x8D\x45\xCC\x50\x6A\xCC\x68\xCC\xCC\xCC\xCC\xFF\x15\xCC\xCC\xCC\xCC\x83\xC4\xCC\x83\x7B\xCC\x02",
+		"xxxxx?x????xxxxx?xx?x?xxx?xx?xx?x????xx????xx?xx?x",
 #endif
 		(void**)&pBuildFunc
 	);
@@ -42,11 +52,11 @@ CNet::CNet() noexcept
 	RecvPktFn pRecvPktFunc = nullptr;
 	const bool bFoundRecvPktFunc = steamClientScan.FindFunction(
 #ifdef X64BITS
-		"\x48\x8B\xC4\x55\x48\x8D\xA8\xCC\xCC\xCC\xCC\x48\x81\xEC\xCC\xCC\xCC\xCC\x48\x89\x58\x08\x48\x8B",
-		"xxxxxxx????xxx????xxxxxx",
+		"\x48\x8B\xC4\x55\x48\x8D\xA8\xCC\xCC\xCC\xCC\x48\x81\xEC\xCC\xCC\xCC\xCC\x48\x89\x58\x08\x48\x8B\xDA\x48\x89\x70\xCC\x48\x8B\xF1",
+		"xxxxxxx????xxx????xxxxxxxxxx?xxx",
 #else
-		"\x55\x8B\xEC\x81\xEC\x00\x04\x00\x00\xA1\x00\x00\x00\x00\x56\x57\x8B\xF9",
-		"xxxxx?x??x????xxxx",
+		"\x55\x8B\xEC\x81\xEC\xCC\xCC\xCC\xCC\xA1\xCC\xCC\xCC\xCC\x56\x8B\xF1\x57",
+		"xxxxx????x????xxxx",
 #endif
 		(void**)&pRecvPktFunc
 	);

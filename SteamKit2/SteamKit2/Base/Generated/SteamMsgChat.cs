@@ -3461,6 +3461,58 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public partial class CChatRoomMemberNotice : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public uint accountid
+        {
+            get => __pbn__accountid.GetValueOrDefault();
+            set => __pbn__accountid = value;
+        }
+        public bool ShouldSerializeaccountid() => __pbn__accountid != null;
+        public void Resetaccountid() => __pbn__accountid = null;
+        private uint? __pbn__accountid;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        [global::System.ComponentModel.DefaultValue(EChatRoomNotice.k_EChatRoomNotice_Invalid)]
+        public EChatRoomNotice notice_type
+        {
+            get => __pbn__notice_type ?? EChatRoomNotice.k_EChatRoomNotice_Invalid;
+            set => __pbn__notice_type = value;
+        }
+        public bool ShouldSerializenotice_type() => __pbn__notice_type != null;
+        public void Resetnotice_type() => __pbn__notice_type = null;
+        private EChatRoomNotice? __pbn__notice_type;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CChatRoomGroupMemberNotices : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public ulong chat_group_id
+        {
+            get => __pbn__chat_group_id.GetValueOrDefault();
+            set => __pbn__chat_group_id = value;
+        }
+        public bool ShouldSerializechat_group_id() => __pbn__chat_group_id != null;
+        public void Resetchat_group_id() => __pbn__chat_group_id = null;
+        private ulong? __pbn__chat_group_id;
+
+        [global::ProtoBuf.ProtoMember(2)]
+        public global::System.Collections.Generic.List<CChatRoomMemberNotice> member_notices { get; } = new global::System.Collections.Generic.List<CChatRoomMemberNotice>();
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public partial class CChatRoom_SetSessionActiveChatRoomGroups_Response : global::ProtoBuf.IExtensible
     {
         private global::ProtoBuf.IExtension __pbn__extensionData;
@@ -3472,6 +3524,9 @@ namespace SteamKit2.Internal
 
         [global::ProtoBuf.ProtoMember(2)]
         public global::System.Collections.Generic.List<ulong> virtualize_members_chat_group_ids { get; } = new global::System.Collections.Generic.List<ulong>();
+
+        [global::ProtoBuf.ProtoMember(3)]
+        public global::System.Collections.Generic.List<CChatRoomGroupMemberNotices> chat_group_notices { get; } = new global::System.Collections.Generic.List<CChatRoomGroupMemberNotices>();
 
     }
 
@@ -3678,6 +3733,46 @@ namespace SteamKit2.Internal
         private global::ProtoBuf.IExtension __pbn__extensionData;
         global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
             => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CChatRoom_DismissChatRoomNotice_Notification : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public ulong chat_group_id
+        {
+            get => __pbn__chat_group_id.GetValueOrDefault();
+            set => __pbn__chat_group_id = value;
+        }
+        public bool ShouldSerializechat_group_id() => __pbn__chat_group_id != null;
+        public void Resetchat_group_id() => __pbn__chat_group_id = null;
+        private ulong? __pbn__chat_group_id;
+
+        [global::ProtoBuf.ProtoMember(2, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong steamid_sender
+        {
+            get => __pbn__steamid_sender.GetValueOrDefault();
+            set => __pbn__steamid_sender = value;
+        }
+        public bool ShouldSerializesteamid_sender() => __pbn__steamid_sender != null;
+        public void Resetsteamid_sender() => __pbn__steamid_sender = null;
+        private ulong? __pbn__steamid_sender;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue(EChatRoomNotice.k_EChatRoomNotice_Invalid)]
+        public EChatRoomNotice notice_type
+        {
+            get => __pbn__notice_type ?? EChatRoomNotice.k_EChatRoomNotice_Invalid;
+            set => __pbn__notice_type = value;
+        }
+        public bool ShouldSerializenotice_type() => __pbn__notice_type != null;
+        public void Resetnotice_type() => __pbn__notice_type = null;
+        private EChatRoomNotice? __pbn__notice_type;
 
     }
 
@@ -4244,6 +4339,16 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeskip_lock() => __pbn__skip_lock != null;
         public void Resetskip_lock() => __pbn__skip_lock = null;
         private bool? __pbn__skip_lock;
+
+        [global::ProtoBuf.ProtoMember(9)]
+        public ulong reported_content_id
+        {
+            get => __pbn__reported_content_id.GetValueOrDefault();
+            set => __pbn__reported_content_id = value;
+        }
+        public bool ShouldSerializereported_content_id() => __pbn__reported_content_id != null;
+        public void Resetreported_content_id() => __pbn__reported_content_id = null;
+        private ulong? __pbn__reported_content_id;
 
     }
 
@@ -4981,6 +5086,56 @@ namespace SteamKit2.Internal
         public bool ShouldSerializeis_add() => __pbn__is_add != null;
         public void Resetis_add() => __pbn__is_add = null;
         private bool? __pbn__is_add;
+
+    }
+
+    [global::ProtoBuf.ProtoContract()]
+    public partial class CChatRoom_ChatRoomNotice_Notification : global::ProtoBuf.IExtensible
+    {
+        private global::ProtoBuf.IExtension __pbn__extensionData;
+        global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+            => global::ProtoBuf.Extensible.GetExtensionObject(ref __pbn__extensionData, createIfMissing);
+
+        [global::ProtoBuf.ProtoMember(1)]
+        public ulong chat_group_id
+        {
+            get => __pbn__chat_group_id.GetValueOrDefault();
+            set => __pbn__chat_group_id = value;
+        }
+        public bool ShouldSerializechat_group_id() => __pbn__chat_group_id != null;
+        public void Resetchat_group_id() => __pbn__chat_group_id = null;
+        private ulong? __pbn__chat_group_id;
+
+        [global::ProtoBuf.ProtoMember(2, DataFormat = global::ProtoBuf.DataFormat.FixedSize)]
+        public ulong steamid_sender
+        {
+            get => __pbn__steamid_sender.GetValueOrDefault();
+            set => __pbn__steamid_sender = value;
+        }
+        public bool ShouldSerializesteamid_sender() => __pbn__steamid_sender != null;
+        public void Resetsteamid_sender() => __pbn__steamid_sender = null;
+        private ulong? __pbn__steamid_sender;
+
+        [global::ProtoBuf.ProtoMember(3)]
+        [global::System.ComponentModel.DefaultValue(EChatRoomNotice.k_EChatRoomNotice_Invalid)]
+        public EChatRoomNotice notice_type
+        {
+            get => __pbn__notice_type ?? EChatRoomNotice.k_EChatRoomNotice_Invalid;
+            set => __pbn__notice_type = value;
+        }
+        public bool ShouldSerializenotice_type() => __pbn__notice_type != null;
+        public void Resetnotice_type() => __pbn__notice_type = null;
+        private EChatRoomNotice? __pbn__notice_type;
+
+        [global::ProtoBuf.ProtoMember(4)]
+        public bool active
+        {
+            get => __pbn__active.GetValueOrDefault();
+            set => __pbn__active = value;
+        }
+        public bool ShouldSerializeactive() => __pbn__active != null;
+        public void Resetactive() => __pbn__active = null;
+        private bool? __pbn__active;
 
     }
 
@@ -5831,6 +5986,13 @@ namespace SteamKit2.Internal
     }
 
     [global::ProtoBuf.ProtoContract()]
+    public enum EChatRoomNotice
+    {
+        k_EChatRoomNotice_Invalid = 0,
+        k_EChatRoomNotice_Suspicious = 1,
+    }
+
+    [global::ProtoBuf.ProtoContract()]
     public enum EChatRoomMemberStateChange
     {
         k_EChatRoomMemberStateChange_Invalid = 0,
@@ -6113,6 +6275,11 @@ namespace SteamKit2.Internal
             return UnifiedMessages.SendMessage<CChatRoom_DeleteChatMessages_Request, CChatRoom_DeleteChatMessages_Response>( "ChatRoom.DeleteChatMessages#1", request );
         }
 
+        public void DismissChatRoomNotice(CChatRoom_DismissChatRoomNotice_Notification request )
+        {
+            UnifiedMessages.SendNotification<CChatRoom_DismissChatRoomNotice_Notification>( "ChatRoom.DismissChatRoomNotice#1", request );
+        }
+
         public void UpdateMemberListView(CChatRoom_UpdateMemberListView_Notification request )
         {
             UnifiedMessages.SendNotification<CChatRoom_UpdateMemberListView_Notification>( "ChatRoom.UpdateMemberListView#1", request );
@@ -6313,6 +6480,9 @@ namespace SteamKit2.Internal
                 case "AckChatMessage":
                     PostNotificationMsg<CChatRoom_AckChatMessage_Notification>( packetMsg );
                     break;
+                case "DismissChatRoomNotice":
+                    PostNotificationMsg<CChatRoom_DismissChatRoomNotice_Notification>( packetMsg );
+                    break;
                 case "UpdateMemberListView":
                     PostNotificationMsg<CChatRoom_UpdateMemberListView_Notification>( packetMsg );
                     break;
@@ -6411,6 +6581,11 @@ namespace SteamKit2.Internal
             UnifiedMessages.SendNotification<CChatRoom_MessageReaction_Notification>( "ChatRoomClient.NotifyMessageReaction#1", request );
         }
 
+        public void NotifyChatRoomNotice(CChatRoom_ChatRoomNotice_Notification request )
+        {
+            UnifiedMessages.SendNotification<CChatRoom_ChatRoomNotice_Notification>( "ChatRoomClient.NotifyChatRoomNotice#1", request );
+        }
+
         public override void HandleResponseMsg( string methodName, PacketClientMsgProtobuf packetMsg )
         {
         }
@@ -6451,6 +6626,9 @@ namespace SteamKit2.Internal
                     break;
                 case "NotifyMessageReaction":
                     PostNotificationMsg<CChatRoom_MessageReaction_Notification>( packetMsg );
+                    break;
+                case "NotifyChatRoomNotice":
+                    PostNotificationMsg<CChatRoom_ChatRoomNotice_Notification>( packetMsg );
                     break;
             }
         }
